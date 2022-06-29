@@ -1,6 +1,20 @@
 <template>
     <div class="main">
-        <div class="carrossel"></div>
+        <div class="carrossel">
+            <div class="botao" id="prev"></div>
+              <carousel-3d :autoplay="true" :autoplayTimeout=4000 :autoplayHoverPause="true" perspective=0 width=660 height=250 :onMainSlideClick="carrossas">
+                <slide :index="0">
+                    <img src="@/assets/bgImage1.png" alt="">
+                </slide>
+                <slide :index="1">
+                    <img src="@/assets/bgImage2.png" alt="">
+                </slide>
+                <slide :index="2">
+                    <img src="@/assets/valoranttopico.jpg" alt="">
+                </slide>
+            </carousel-3d>
+            <div class="botao" id="next"></div>
+        </div>
         <div class="topico">
             <div class="valorant">
                 <img src="@/assets/logoValorant.png" alt="">
@@ -10,8 +24,12 @@
 </template>
 
 <script>
+import { Carousel3d, Slide } from 'vue-carousel-3d';
 export default {
-    
+    components: {
+    Carousel3d,
+    Slide
+  },
 }
 </script>
 
@@ -24,6 +42,8 @@ export default {
     flex-direction: column;
 }
 .carrossel{
+    display: flex;
+    align-items: center;
     margin: 55px auto;
     width: 1500px;
     height: 400px;
@@ -67,5 +87,18 @@ export default {
         width: 325px;
         height: 100px;
     }
+}
+.carousel-3d-slide{
+    cursor: pointer;
+    background-color: #2D265F;
+}
+.carousel-3d-slide img {
+    top: -100px;
+    position: relative;
+}
+.botao{
+    background: aqua;
+    width: 20px;
+    height: 20px;
 }
 </style>
