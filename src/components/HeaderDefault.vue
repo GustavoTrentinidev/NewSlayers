@@ -3,7 +3,7 @@
     <img class="logo" draggable="false" src="@/assets/logo.png" alt="">
     <div class="nav">
       <h1 class="logo-name">NewSlayers</h1>
-      <label class="label-noticias" for="noticias"><h1>Noticias</h1></label>
+      <label for="noticias"><h1 class="label-noticias">Noticias</h1></label>
       <label for="noticias" class="triangulo"></label>
       <select class="select-noticias" id="noticias" name="noticias">
         <option class="opcao" value="australia">Australia</option>
@@ -42,6 +42,10 @@ export default {
   display: flex;
   align-items: center;
 }
+.nav  .logo-name:hover, .login:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
 .logo-name{
   position: relative;
   left: 30px;
@@ -57,6 +61,7 @@ export default {
   border: none;
   height: 30px;
   border: 0;
+  cursor: pointer;
 }
 .opcao{
   color: #fff;

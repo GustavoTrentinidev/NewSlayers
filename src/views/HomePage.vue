@@ -1,19 +1,22 @@
 <template>
     <div class="main">
         <div class="carrossel">
-            <div class="botao" id="prev"></div>
-              <carousel-3d :autoplay="true" :autoplayTimeout=4000 :autoplayHoverPause="true" perspective=0 width=660 height=250 :onMainSlideClick="carrossas">
-                <slide :index="0">
-                    <img src="@/assets/bgImage1.png" alt="">
+              <carousel-3d @before-slide-change="mudarCor" @after-slide-change="mudarCor" ref="mycarousel" :controls-visible="true" perspective=0 width=660 height=300 :controls-prev-html="'&#10096; '" :controls-next-html="'&#10097;'" :autoplay="true" :autoplayTimeout=4000 :autoplayHoverPause="true">
+                <slide class="index0" :index="0">
+                    <img src="@/assets/imagensTeste/pyke.jpg" alt="">
                 </slide>
-                <slide :index="1">
-                    <img src="@/assets/bgImage2.png" alt="">
+                <slide class="index1" :index="1">
+                    <img src="@/assets/imagensTeste/gnar.jpg" alt="">
                 </slide>
-                <slide :index="2">
-                    <img src="@/assets/valoranttopico.jpg" alt="">
+                <slide class="index2" :index="2">
+                    <img src="@/assets/imagensTeste/yasuo.jpg" alt="">
                 </slide>
             </carousel-3d>
-            <div class="botao" id="next"></div>
+            <div class="carrossel-botoes">
+                <div class="botao" @click="goToSlide(0)" ref="botao0"></div>
+                <div class="botao" @click="goToSlide(1)" ref="botao1"></div>
+                <div class="botao" @click="goToSlide(2)" ref="botao2"></div>
+            </div>
         </div>
         <div class="topico">
             <div class="valorant">
@@ -30,6 +33,29 @@ export default {
     Carousel3d,
     Slide
   },
+  mounted(){
+    this.mudarCor()
+  },
+  methods:{
+    goToSlide(index) {
+        this.$refs.mycarousel.goSlide(index)
+    },
+    mudarCor(){
+        if (this.$refs.mycarousel.currentIndex == 0){
+            this.$refs.botao0.style.backgroundColor = '#fff'
+            this.$refs.botao1.style.backgroundColor = '#5F4CB4'
+            this.$refs.botao2.style.backgroundColor = '#5F4CB4'
+        } else if(this.$refs.mycarousel.currentIndex == 1){
+            this.$refs.botao0.style.backgroundColor = '#5F4CB4'
+            this.$refs.botao1.style.backgroundColor = '#fff'
+            this.$refs.botao2.style.backgroundColor = '#5F4CB4'
+        } else if(this.$refs.mycarousel.currentIndex == 2){
+            this.$refs.botao0.style.backgroundColor = '#5F4CB4'
+            this.$refs.botao1.style.backgroundColor = '#5F4CB4'
+            this.$refs.botao2.style.backgroundColor = '#fff'
+        }
+    }
+  }
 }
 </script>
 
@@ -43,12 +69,13 @@ export default {
 }
 .carrossel{
     display: flex;
+    flex-direction: column;
     align-items: center;
     margin: 55px auto;
     width: 1500px;
     height: 400px;
-    background-color: #14112C;
 }
+
 .topico{
     margin: 0 auto;
     position: relative;
@@ -93,12 +120,25 @@ export default {
     background-color: #2D265F;
 }
 .carousel-3d-slide img {
-    top: -100px;
     position: relative;
 }
-.botao{
-    background: aqua;
+.carrossel-botoes{
+    display: flex;
+}
+.carrossel-botoes .botao{
+    background: #5F4CB4;
     width: 20px;
     height: 20px;
+    margin: 10px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+.carousel-3d-controls .prev{
+    color: #fff;
+    left: 100px;
+}
+.carousel-3d-controls .next{
+    color: #fff;
+    right: 100px;
 }
 </style>

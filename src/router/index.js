@@ -9,11 +9,10 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '',
-    name: 'default',
     component: () => import("@/layouts/DefaultLayout.vue"),
     children: [
       {
-        path: '/home',
+        path: '/',
         component: Home
       }
     ]
