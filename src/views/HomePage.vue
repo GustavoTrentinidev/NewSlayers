@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <div class="carrossel">
-              <carousel-3d @before-slide-change="mudarCor" @after-slide-change="mudarCor" ref="mycarousel" :controls-visible="true" perspective=0 width=660 height=300 :controls-prev-html="'&#10096; '" :controls-next-html="'&#10097;'" :autoplay="true" :autoplayTimeout=4000 :autoplayHoverPause="true">
+              <carousel-3d @before-slide-change="verificaCor" @after-slide-change="verificaCor" ref="mycarousel" :controls-visible="true" perspective=0 width=660 height=300 :controls-prev-html="'&#10096; '" :controls-next-html="'&#10097;'" :autoplay="true" :autoplayTimeout=4000 :autoplayHoverPause="true">
                 <slide class="index0" :index="0">
                     <img src="@/assets/imagensTeste/pyke.jpg" alt="">
                 </slide>
@@ -13,9 +13,9 @@
                 </slide>
             </carousel-3d>
             <div class="carrossel-botoes">
-                <div class="botao" @click="goToSlide(0)" ref="botao0"></div>
-                <div class="botao" @click="goToSlide(1)" ref="botao1"></div>
-                <div class="botao" @click="goToSlide(2)" ref="botao2"></div>
+                <div class="botao" @click="goToSlide(0)"></div>
+                <div class="botao" @click="goToSlide(1)"></div>
+                <div class="botao" @click="goToSlide(2)"></div>
             </div>
         </div>
         <div class="topico">
@@ -34,26 +34,22 @@ export default {
     Slide
   },
   mounted(){
-    this.mudarCor()
+    this.verificaCor()
   },
   methods:{
     goToSlide(index) {
         this.$refs.mycarousel.goSlide(index)
     },
-    mudarCor(){
-        if (this.$refs.mycarousel.currentIndex == 0){
-            this.$refs.botao0.style.backgroundColor = '#fff'
-            this.$refs.botao1.style.backgroundColor = '#5F4CB4'
-            this.$refs.botao2.style.backgroundColor = '#5F4CB4'
-        } else if(this.$refs.mycarousel.currentIndex == 1){
-            this.$refs.botao0.style.backgroundColor = '#5F4CB4'
-            this.$refs.botao1.style.backgroundColor = '#fff'
-            this.$refs.botao2.style.backgroundColor = '#5F4CB4'
-        } else if(this.$refs.mycarousel.currentIndex == 2){
-            this.$refs.botao0.style.backgroundColor = '#5F4CB4'
-            this.$refs.botao1.style.backgroundColor = '#5F4CB4'
-            this.$refs.botao2.style.backgroundColor = '#fff'
-        }
+    verificaCor(){
+        let botoes = document.querySelectorAll('.carrossel-botoes .botao')
+        let currentIndex = this.$refs.mycarousel.currentIndex
+        botoes.forEach(botao => {
+            this.mudaCor(botao)
+        })
+        this.mudaCor(botoes[currentIndex], "#fff")
+    },
+    mudaCor(el,cor = "#5F4CB4"){
+        el.style.backgroundColor = cor
     }
   }
 }
