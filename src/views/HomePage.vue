@@ -19,8 +19,36 @@
             </div>
         </div>
         <div class="topico">
-            <div class="valorant">
-                <img src="@/assets/logoValorant.png" alt="">
+            <div class="topico-box">
+                <div class="valorant">
+                    <img src="@/assets/logoValorant.png" alt="">
+                </div>
+            </div>
+            <div class="noticias-topico">
+                <div class="noticia-exemplo direita">
+                    <h1 class="texto-noticia-exemplo">TÍTULO NOTÍCIA</h1>
+                    <img class="imagem-noticia-exemplo" src="@/assets/imagensTeste/valorantnoticia.jpg" alt="">
+                </div>
+                <div class="noticia-exemplo esquerda">
+                    <h1 class="texto-noticia-exemplo">TÍTULO NOTÍCIA</h1>
+                    <img class="imagem-noticia-exemplo" src="@/assets/imagensTeste/valorantnoticia.jpg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="topico topico-lol">
+            <div class="topico-box">
+                <div class="league">
+                </div>
+            </div>
+            <div class="noticias-topico">
+                <div class="noticia-exemplo direita">
+                    <h1 class="texto-noticia-exemplo">TÍTULO NOTÍCIA</h1>
+                    <img class="imagem-noticia-exemplo" src="@/assets/imagensTeste/valorantnoticia.jpg" alt="">
+                </div>
+                <div class="noticia-exemplo esquerda">
+                    <h1 class="texto-noticia-exemplo">TÍTULO NOTÍCIA</h1>
+                    <img class="imagem-noticia-exemplo" src="@/assets/imagensTeste/valorantnoticia.jpg" alt="">
+                </div>
             </div>
         </div>
     </div>
@@ -55,9 +83,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .main{
-    height: 100vh;
+
     position: relative;
     top: 75px;
     display: flex;
@@ -72,16 +100,16 @@ export default {
     height: 400px;
 }
 
-.topico{
+.topico-box{
     margin: 0 auto;
     position: relative;
     height: 300px;
-    margin: 0 55px;
+    margin: 0 55px 64px 55px;
     padding: 20px;
     border: 5px solid #fff;
     background-color: #14112C;
 }
-.topico .valorant{
+.topico-box .valorant, .league{
     background-image: url("@/assets/valoranttopico.jpg");
     background-position: 50% 33%;
     background-repeat: no-repeat;
@@ -90,10 +118,48 @@ export default {
     left: -55px;
     right: -55px;
 }
-.valorant img{
+.topico-box .league{
+    background-image: url("@/assets/imagensTeste/lolimagem.png") !important;
+    background-position: center;
+    background-size: cover;
+}
+
+.valorant img, .league img{
     display: block;
     margin: -30px auto;
     max-width: 70%;
+}
+
+.noticias-topico{
+    display: flex;
+    flex-direction: column;
+}
+
+.noticia-exemplo{
+    width: 1200px;
+    height: 330px;
+    background-color: #2D265F;
+    margin: 0px 100px 50px 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.direita{
+    align-self: flex-end;
+}
+.esquerda{
+    align-self: flex-start;
+    flex-direction: row-reverse;
+}
+
+.texto-noticia-exemplo{
+    color: #fff;
+    font-size: 80px;
+    font-weight: 100;
+}
+.imagem-noticia-exemplo{
+    max-width: 500px;
 }
 
 @media (min-width: 300px) and (max-width: 767px) {
@@ -103,8 +169,7 @@ export default {
         height: 100px;
         background-color: #14112C;
     }
-    .valorant{
-        background-image: url("@/assets/valoranttopico.jpg");
+    .valorant , .league{
         background-position: 50% 33%;
         position: absolute;
         width: 325px;
@@ -137,4 +202,5 @@ export default {
     color: #fff;
     right: 100px;
 }
+
 </style>
