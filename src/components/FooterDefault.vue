@@ -16,7 +16,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .footer{
     margin-top: 100px;
     width: 100%;

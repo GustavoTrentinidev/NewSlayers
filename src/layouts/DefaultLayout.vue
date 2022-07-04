@@ -17,6 +17,7 @@ export default {
 
 <style>
 body{
-    background-image: url("@/assets/backGround.png");
+    background-image: linear-gradient(black, #00164b);
+    /* background-image: url("@/assets/backGround.png"); */
 }
 </style>

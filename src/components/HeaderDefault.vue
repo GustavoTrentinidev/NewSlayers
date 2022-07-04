@@ -2,7 +2,7 @@
   <div class="header">
     <img class="logo" draggable="false" src="@/assets/logo.png" alt="">
     <div class="nav">
-      <h1 class="logo-name">NewSlayers</h1>
+      <router-link to="/noticias"><h1 class="logo-name">NewSlayers</h1></router-link>
       <label for="noticias"><h1 class="label-noticias">Noticias</h1></label>
       <label for="noticias" class="triangulo"></label>
       <select class="select-noticias" id="noticias" name="noticias">
@@ -29,6 +29,7 @@ export default {
   width: 100%;
   display: flex;
   color: #fff;
+  top: 0;  
 }
 .logo{
   position: relative;

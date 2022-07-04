@@ -85,7 +85,6 @@ export default {
 
 <style scoped>
 .main{
-
     position: relative;
     top: 75px;
     display: flex;
@@ -194,12 +193,13 @@ export default {
     border-radius: 100%;
     cursor: pointer;
 }
+
+
 .carousel-3d-controls .prev{
-    color: #fff;
+    color: #fff !important;
     left: 100px;
 }
 .carousel-3d-controls .next{
-    color: #fff;
     right: 100px;
 }
 
