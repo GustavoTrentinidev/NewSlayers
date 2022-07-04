@@ -7,13 +7,16 @@
             <h1 class="texto" >Notícias</h1>
         </div>
         <NoticiasContainer/>
+        <MelhoresAutores/>
     </div>
 </template>
 
 <script>
 import NoticiasContainer from "@/components/ReadNoticias.vue"
+import MelhoresAutores from "@/components/MelhoresAutores.vue"
+
 export default {
-    components: {NoticiasContainer}
+    components: {NoticiasContainer, MelhoresAutores}
 }
 </script>
 

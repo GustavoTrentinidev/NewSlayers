@@ -1,9 +1,14 @@
 <template>
     <div class="container">
         <div v-for="(noticia, index) in noticias" :key="index" class="noticia">
-            <img :src="noticia.img" alt="">
+            <img draggable="false" :src="noticia.img" alt="">
         </div>
-        <div class="showHide" @click="displayNone = !displayNone, showHide()"></div>
+        <div class="showHide" @click="displayNone = !displayNone, showHide()">
+            <div :class="{opened: displayNone}" class="rotateArrow">
+                <div class="flecha esquerdaCima"></div>
+                <div class="flecha direitaCima"></div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -79,14 +84,51 @@ export default {
 
 .noticia img{
     width: 100%;
-    max-height: 100%;
+    height: 100%;
     border: 5px solid #fff;
     box-sizing: border-box;
 }
 .showHide{
     width: 50px;
     height: 50px;
-    background: #fff;
     margin: 0 auto;
+    position: relative;
+    cursor: pointer;
+}
+.flecha{
+    background: #fff;
+    width: 25px;
+    height: 5px;
+    position: absolute;
+}
+.esquerdaCima{
+    transform: rotate(-45deg);
+    left:5px;
+}
+.direitaCima{
+    transform: rotate(45deg);
+    right: 5px;
+}
+.opened{
+    transform-origin: center;
+    transform: rotateX(-180deg);
+}
+/* .esquerdaBaixo{
+    transform: rotate(45deg);
+    left:5px;
+}
+.direitaBaixo{
+    transform: rotate(-45deg);
+    right: 5px;
+} */
+.rotateArrow {
+    transition: .3s;
+}
+
+@media (min-width: 300px) and (max-width: 767px) {
+    .container{
+        width: 300px;
+        gap: 0;
+    }
 }
 </style>
