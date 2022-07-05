@@ -1,7 +1,7 @@
 <template>
   <div class="autores">
       <div class="autor" v-for="(autor, index) in melhoresAutores" :key="index">
-            <carousel-3d :ref="(el)" display="1" width="360" height="480" :disable3d="true" border="0" :autoplay="true" :autoplayTimeout="5000" :autoplayHoverPause="true">
+            <carousel-3d display="1" width="360" height="480" :disable3d="true" border="0" :autoplay="true" :autoplayTimeout="5000" :autoplayHoverPause="true">
                 <slide class="slide" :style="'background-image: url('+ noticia.img + ')'" :index="index" v-for="(noticia, index) in autor.noticiasMaisCurtidas" :key="index">
                     <div class="carrossel-botoes">
                         <div class="botao" v-for="(noticia, index) in autor.noticiasMaisCurtidas" :key="index" @click="goToSlide()"></div>
