@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <img class="logo" draggable="false" src="@/assets/logo.png" alt="">
+    <router-link to="/"><img class="logo" draggable="false" src="@/assets/logo.png" alt=""></router-link>
     <div class="nav">
       <router-link to="/noticias"><h1 class="logo-name">NewSlayers</h1></router-link>
       <label for="noticias"><h1 class="label-noticias">Noticias</h1></label>

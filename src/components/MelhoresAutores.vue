@@ -39,9 +39,9 @@ export default {
         console.log(retornoIf)
         for (var i in retornoIf){
             if(retornoIf[i]){
-                console.log(i)
+                console.log(index)
                 console.log(this.$refs.mycarousel[i])
-                this.goToSlide(index,this.$refs.mycarousel[i])
+                this.$refs.mycarousel[i].goSlide(index)
             }
         }
     },
