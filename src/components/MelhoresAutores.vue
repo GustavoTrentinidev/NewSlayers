@@ -1,11 +1,11 @@
 <template>
   <div class="autores">
       <div class="autor" v-for="(autor, index) in melhoresAutores" :key="index">
-            <carousel-3d :ref="mycarousel" display="1" width="360" height="480" :disable3d="true" border="0" :autoplay="true" :autoplayTimeout="5000" :autoplayHoverPause="true">
+            <carousel-3d  ref="mycarousel" @before-slide-change="verificaCor" @after-slide-change="verificaCor" display="1" width="360" height="480" :disable3d="true" border="0" :autoplay="true" :autoplayTimeout="5000" :autoplayHoverPause="true">
                 <slide class="slide" :style="'background-image: url('+ noticia.img + ')'" :index="index" v-for="(noticia, index) in autor.noticiasMaisCurtidas" :key="index">
-                    <div class="carrossel-botoes">
-                        <div class="botao" v-for="(noticia, index) in autor.noticiasMaisCurtidas" :key="index" @click="goToSlide($event,index)"></div>
-                    </div>
+                <div class="carrossel-botoes">
+                    <div class="botao" v-for="(noticia, index) in autor.noticiasMaisCurtidas" :key="index" @click="verificacao($event,index)"></div>
+                </div>
                 </slide>
             </carousel-3d>
             <div class="informacoes-autor">
@@ -23,11 +23,41 @@ export default {
         Carousel3d,
         Slide,
   },
+  mounted(){
+    this.verificaCor()
+  },
   methods:{
-    goToSlide(e,index){
-        console.log(e.target.parentNode.parentNode.parentNode.parentNode,index)
-        console.log(this.$refs.mycarousel)
-    }
+    verificacao(e,index){
+        var retornoIf = []
+        this.$refs.mycarousel.forEach(carrossel => {
+            if(e.target.parentNode.parentNode.parentNode.parentNode == carrossel.$el){
+                retornoIf.push(true)
+            }else{
+                retornoIf.push(false)
+            }
+        });
+        console.log(retornoIf)
+        for (var i in retornoIf){
+            if(retornoIf[i]){
+                console.log(index)
+                console.log(this.$refs.mycarousel[i])
+                this.$refs.mycarousel[i].goSlide(index)
+            }
+        }
+    },
+    goToSlide(index, elemento){
+        elemento.goSlide(index)
+    },
+    verificaCor(){
+        this.$refs.mycarousel.forEach(carrossel =>{
+            carrossel.$el.childNodes[0].childNodes.forEach(slide => {
+                slide.childNodes[0].childNodes.forEach(botao => {
+                    botao.style.backgroundColor = '#5F4CB4'
+                })
+                slide.childNodes[0].childNodes[carrossel.currentIndex].style.backgroundColor = '#fff'
+            })
+        })
+    },
   },
     data(){
         return{
@@ -125,6 +155,7 @@ export default {
   position: absolute;
   bottom: 70px;
   left: 35%;
+  z-index: 1000;
 }
 .carrossel-botoes .botao {
     background: #5f4cb4;

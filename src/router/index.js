@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '@/views/HomePage.vue'
 import Login from '@/views/LoginPage.vue'
 import NoticiasHome from '@/views/NoticiasHome.vue'
+import TopicoView from '@/views/TopicoView.vue'
 
 Vue.use(VueRouter)
 
@@ -19,7 +20,12 @@ const routes = [
       {
         path:'/noticias',
         component: NoticiasHome
-      }
+      },
+      {
+        path:`/noticias/:topico`,
+        component: TopicoView,
+        props: true
+      },
     ]
   },
   {
@@ -32,13 +38,16 @@ const routes = [
         component: Login,
       }
     ]
-  }
+  },
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior () {
+    return { x: 0, y: 0 }
+  }
 })
 
 export default router

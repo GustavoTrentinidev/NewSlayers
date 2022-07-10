@@ -1,16 +1,16 @@
 <template>
   <div class="header">
-    <img class="logo" draggable="false" src="@/assets/logo.png" alt="">
+    <router-link to="/"><img class="logo" draggable="false" src="@/assets/logo.png" alt=""></router-link>
     <div class="nav">
       <router-link to="/noticias"><h1 class="logo-name">NewSlayers</h1></router-link>
       <label for="noticias"><h1 class="label-noticias">Noticias</h1></label>
       <label for="noticias" class="triangulo"></label>
       <select class="select-noticias" id="noticias" name="noticias">
-        <option class="opcao" value="australia">Australia</option>
-        <option class="opcao" value="canada">Canada</option>
-        <option class="opcao" value="usa">USA</option>
+        <option class="opcao" value="league of legends">League of Legends</option>
+        <option class="opcao" value="wild rift">Wild Rift</option>
+        <option class="opcao" value="VALORANT">VALORANT</option>
       </select>
-      <h1 class="login">Login</h1>
+      <router-link to="/login" class="login"><h1 >Login</h1></router-link>
     </div>
   </div>
 </template>
