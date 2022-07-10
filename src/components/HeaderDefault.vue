@@ -10,14 +10,16 @@
         <option class="opcao" value="wild rift">Wild Rift</option>
         <option class="opcao" value="VALORANT">VALORANT</option>
       </select>
-      <router-link to="/login" class="login"><h1 >Login</h1></router-link>
+      <h1 class="publicar perfil" v-if="tipo == 1">Publicar notícia</h1>
+      <router-link v-if="!(this.$route.path == '/perfil')" to="/login" class="login"><h1 >Login</h1></router-link>
+      <h1 class="login perfil" v-else>{{nome}}</h1>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-
+  props: ['nome', 'tipo']
 }
 </script>
 
@@ -80,6 +82,14 @@ export default {
 .nav:last-child .login{
   position: absolute;
   right: 20px;
+}
+.publicar{
+  position: absolute;
+  right: 150px;
+  text-decoration: underline;
+}
+.perfil{
+  font-weight: normal;
 }
 
 @media (min-width: 300px) and (max-width: 767px) {

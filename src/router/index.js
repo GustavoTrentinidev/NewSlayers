@@ -4,6 +4,7 @@ import Home from '@/views/HomePage.vue'
 import Login from '@/views/LoginPage.vue'
 import NoticiasHome from '@/views/NoticiasHome.vue'
 import TopicoView from '@/views/TopicoView.vue'
+import PerfilPage from '@/views/PerfilPage.vue'
 
 Vue.use(VueRouter)
 
@@ -25,6 +26,10 @@ const routes = [
         path:`/noticias/:topico`,
         component: TopicoView,
         props: true
+      },
+      {
+        path:'/perfil',
+        component: PerfilPage,
       },
     ]
   },
