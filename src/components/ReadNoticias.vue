@@ -6,7 +6,7 @@
             </div>
             
         </div>  
-        <div class="showHide" @click="displayNone = !displayNone, showHide()">
+        <div class="showHide" @click="displayNone = !displayNone, showHide()" v-if="noticias.length > 12">
             <div :class="{opened: displayNone}" class="rotateArrow">
                 <div class="flecha esquerdaCima"></div>
                 <div class="flecha direitaCima"></div>
@@ -21,17 +21,17 @@ export default {
         return{
             displayNone: true,
             noticias: [
-                {img: require('@/assets/imagensTeste/wild.jpg')},
-                {img: require('@/assets/imagensTeste/wild.jpg')},
-                {img: require('@/assets/imagensTeste/wild.jpg')},
-                {img: require('@/assets/imagensTeste/wild.jpg')},
-                {img: require('@/assets/imagensTeste/wild.jpg')},
-                {img: require('@/assets/imagensTeste/wild.jpg')},
-                {img: require('@/assets/imagensTeste/wild.jpg')},
+                {img: require('@/assets/melhoresAutoresImg/cinematic1.jpg')},
+                {img: require('@/assets/melhoresAutoresImg/cinematic2.jpg')},
+                {img: require('@/assets/melhoresAutoresImg/cinematic3.jpg')},
+                {img: require('@/assets/melhoresAutoresImg/cinematic4.jpg')},
+                {img: require('@/assets/melhoresAutoresImg/cinematic7.jpg')},
+                {img: require('@/assets/melhoresAutoresImg/cinematic6.jpg')},
+                {img: require('@/assets/melhoresAutoresImg/cinematic8.jpg')},
+                {img: require('@/assets/melhoresAutoresImg/cinematic9.jpg')},
                 {img: require('@/assets/imagensTeste/wild.jpg')},
                 {img: require('@/assets/imagensTeste/wild.jpg')},
                 {img: require('@/assets/imagensTeste/gnar.jpg')},
-                {img: require('@/assets/imagensTeste/wild.jpg')},
                 {img: require('@/assets/imagensTeste/pyke.jpg')},
                 {img: require('@/assets/imagensTeste/yasuo.jpg')},
             ]
