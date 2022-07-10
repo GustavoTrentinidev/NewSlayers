@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="topico">
-      <div class="topico-box">
+      <div class="topico-box" @click="$router.push({path:'/noticias/valorant'})">
         <div class="valorant">
           <img src="@/assets/logoValorant.png" alt="" />
         </div>
@@ -57,7 +57,7 @@
       </div>
     </div>
     <div class="topico topico-lol">
-      <div class="topico-box">
+      <div class="topico-box" @click="$router.push({path:'/noticias/leagueoflegends'})">
         <div class="league"></div>
       </div>
       <div class="noticias-topico">
@@ -147,7 +147,7 @@ export default {
   right: -55px;
 }
 .topico-box .league {
-  background-image: url("@/assets/imagensTeste/lolimagem.png") !important;
+  background-image: url("@/assets/leagueoflegendstopico.jpg") !important;
   background-position: center;
   background-size: cover;
 }

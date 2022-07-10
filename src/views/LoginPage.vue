@@ -14,7 +14,7 @@
                         <input class="input" placeholder="Login" name="login" type="text">
                             <label for="login">Senha</label>
                         <input class="input" placeholder="Senha" name="senha" type="text">
-                        <button class="login">Entrar</button>
+                        <button class="login" @click="$router.push(path='/')">Entrar</button>
                         <span class="forget">Esqueceu a senha?</span>
                         <hr class="divider">
                         <button class="login">Criar nova conta</button>

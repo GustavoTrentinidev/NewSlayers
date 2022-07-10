@@ -1,14 +1,17 @@
 <template>
-    <div class="container">
-        <div v-for="(noticia, index) in noticias" :key="index" class="noticia">
-            <img draggable="false" :src="noticia.img" alt="">
-        </div>
+    <div>
+        <div class="container">
+            <div v-for="(noticia, index) in noticias" :key="index" class="noticia">
+                <img draggable="false" :src="noticia.img" alt="">
+            </div>
+            
+        </div>  
         <div class="showHide" @click="displayNone = !displayNone, showHide()">
             <div :class="{opened: displayNone}" class="rotateArrow">
                 <div class="flecha esquerdaCima"></div>
                 <div class="flecha direitaCima"></div>
             </div>
-        </div>
+        </div> 
     </div>
 </template>
 
@@ -30,14 +33,6 @@ export default {
                 {img: require('@/assets/imagensTeste/gnar.jpg')},
                 {img: require('@/assets/imagensTeste/wild.jpg')},
                 {img: require('@/assets/imagensTeste/pyke.jpg')},
-                {img: require('@/assets/imagensTeste/yasuo.jpg')},
-                {img: require('@/assets/imagensTeste/yasuo.jpg')},
-                {img: require('@/assets/imagensTeste/yasuo.jpg')},
-                {img: require('@/assets/imagensTeste/yasuo.jpg')},
-                {img: require('@/assets/imagensTeste/yasuo.jpg')},
-                {img: require('@/assets/imagensTeste/yasuo.jpg')},
-                {img: require('@/assets/imagensTeste/yasuo.jpg')},
-                {img: require('@/assets/imagensTeste/yasuo.jpg')},
                 {img: require('@/assets/imagensTeste/yasuo.jpg')},
             ]
         }
@@ -67,7 +62,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 .container{
     display: flex;
     flex-wrap: wrap;
@@ -91,7 +86,7 @@ export default {
 .showHide{
     width: 50px;
     height: 50px;
-    margin: 0 auto;
+    margin: 50px auto 0 auto;
     position: relative;
     cursor: pointer;
 }
