@@ -21,7 +21,7 @@
             </div>
             <div class="noticias-user">
                 <div class="botao-mostrar">Notícias curtidas</div>
-                <div class="botao-mostrar">Notícias publicadas</div>
+                <div class="botao-mostrar" v-if="user.tipo == 1">Notícias publicadas</div>
             </div>
         </div>
     </div>
