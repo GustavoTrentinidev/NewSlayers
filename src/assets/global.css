@@ -7,11 +7,17 @@ body {
 }
 
 .carousel-3d-controls .prev {
-    color: #fff;
     left: 100px;
 }
 
 .carousel-3d-controls .next {
-    color: #fff;
     right: 100px;
+}
+
+.carousel-3d-controls .prev, .carousel-3d-controls .next{
+    color: #fff;
+}
+
+.carrossel .carousel-3d-container{
+    margin: 0;
 }

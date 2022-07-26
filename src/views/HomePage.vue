@@ -7,13 +7,15 @@
         ref="mycarousel"
         :controls-visible="true"
         perspective="0"
-        width="660"
-        height="300"
+        width="1920"
+        height="700"
         :controls-prev-html="'&#10096; '"
         :controls-next-html="'&#10097;'"
         :autoplay="true"
         :autoplayTimeout="4000"
         :autoplayHoverPause="true"
+        :disable3d="true"
+        display="5"
       >
         <slide class="index0" :index="0">
           <img src="@/assets/imagensTeste/pyke.jpg" alt="" />
@@ -122,9 +124,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 55px auto;
-  width: 1500px;
-  height: 400px;
+  margin: 0px auto 55px auto;
+  width: 1920px;
+  height: 700px;
 }
 
 .topico-box {
@@ -215,6 +217,8 @@ export default {
 }
 .carrossel-botoes {
   display: flex;
+  position: relative;
+  top: -80px;
 }
 .carrossel-botoes .botao {
   background: #5f4cb4;
