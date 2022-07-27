@@ -18,3 +18,8 @@ body {
     color: #fff;
     font-size: 60px;
 }
+
+.VueCarousel .VueCarousel-pagination{
+    position: relative;
+    top: -120px;
+  }

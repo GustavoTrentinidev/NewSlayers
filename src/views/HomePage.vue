@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="carrossel">
-      <carousel :perPage="Number(1)" :navigationEnabled="true" :navigationClickTargetSize="Number(20)" paginationActiveColor="#fff" :paginationSize="25" paginationColor="#2d265f" :autoplay="true" :loop="true">
+      <carousel :perPage="Number(1)" :navigationEnabled="true" :navigationClickTargetSize="Number(20)" paginationActiveColor="#fff" :paginationSize="40" paginationColor="#020013" :autoplay="true" :loop="true">
         <slide>
           <img src="@/assets/imagensTeste/pyke.jpg" alt="" />
         </slide>
@@ -94,10 +94,7 @@ html{
   width: 1920px;
   height: 100%;
 }
-.VueCarousel-dot-container{
-  position: relative;
-  top: -200px;
-}
+
 .VueCarousel button {
   position: absolute;
   right: 200px;

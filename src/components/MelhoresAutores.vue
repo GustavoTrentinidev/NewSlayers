@@ -1,13 +1,11 @@
 <template>
   <div class="autores">
       <div class="autor" v-for="(autor, index) in melhoresAutores" :key="index">
-            <carousel-3d  ref="mycarousel" @before-slide-change="verificaCor" @after-slide-change="verificaCor" display="1" width="360" height="480" :disable3d="true" border="0" :autoplay="true" :autoplayTimeout="5000" :autoplayHoverPause="true">
-                <slide class="slide" :style="'background-image: url('+ noticia.img + ')'" :index="index" v-for="(noticia, index) in autor.noticiasMaisCurtidas" :key="index">
-                <div class="carrossel-botoes">
-                    <div class="botao" v-for="(noticia, index) in autor.noticiasMaisCurtidas" :key="index" @click="verificacao($event,index)"></div>
-                </div>
+            <carousel ref="mycarousel" :perPage="Number(1)" paginationActiveColor="#fff" :paginationSize="25" paginationColor="#020013" :autoplay="true" :loop="true">
+                <slide class="slide" :index="index" v-for="(noticia, index) in autor.noticiasMaisCurtidas" :key="index">
+                    <div class="imagem-slide" :style="'background-image: url('+ noticia.img + ')'"></div>
                 </slide>
-            </carousel-3d>
+            </carousel>
             <div class="informacoes-autor">
                 <img class="icone" :src="autor.icone" alt="">
                 <h1>{{autor.nome}}</h1>
@@ -17,47 +15,11 @@
 </template>
 
 <script>
-import { Carousel3d, Slide } from "vue-carousel";
+import { Carousel, Slide } from "vue-carousel";
 export default {
     components: {
-        Carousel3d,
+        Carousel,
         Slide,
-  },
-  mounted(){
-    this.verificaCor()
-  },
-  methods:{
-    verificacao(e,index){
-        var retornoIf = []
-        this.$refs.mycarousel.forEach(carrossel => {
-            if(e.target.parentNode.parentNode.parentNode.parentNode == carrossel.$el){
-                retornoIf.push(true)
-            }else{
-                retornoIf.push(false)
-            }
-        });
-        console.log(retornoIf)
-        for (var i in retornoIf){
-            if(retornoIf[i]){
-                console.log(index)
-                console.log(this.$refs.mycarousel[i])
-                this.$refs.mycarousel[i].goSlide(index)
-            }
-        }
-    },
-    goToSlide(index, elemento){
-        elemento.goSlide(index)
-    },
-    verificaCor(){
-        this.$refs.mycarousel.forEach(carrossel =>{
-            carrossel.$el.childNodes[0].childNodes.forEach(slide => {
-                slide.childNodes[0].childNodes.forEach(botao => {
-                    botao.style.backgroundColor = '#5F4CB4'
-                })
-                slide.childNodes[0].childNodes[carrossel.currentIndex].style.backgroundColor = '#fff'
-            })
-        })
-    },
   },
     data(){
         return{
@@ -126,6 +88,7 @@ export default {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    border: 10px solid #423981;
 }
 .informacoes-autor .icone{
     max-width: 70px;
@@ -140,29 +103,25 @@ export default {
 }
 .informacoes-autor{
     display: flex;
+    position: relative;
+    top: -65px;
 }
 .informacoes-autor h1{
     position: relative;
     top: -10px;
     left: 35px;
 }
-.slide {
-    background-position: center;
+
+.VueCarousel{
+    height: 100%;
+}
+.VueCarousel .imagem-slide{
+    height: 530px;
 }
 
-.carrossel-botoes {
-  display: flex;
-  position: absolute;
-  bottom: 70px;
-  left: 35%;
-  z-index: 1000;
+.imagem-slide {
+    background-position: center;
+    background-size: cover;
 }
-.carrossel-botoes .botao {
-    background: #5f4cb4;
-  width: 20px;
-  height: 20px;
-  margin: 10px;
-  border-radius: 100%;
-  cursor: pointer;
-}
+
 </style>
