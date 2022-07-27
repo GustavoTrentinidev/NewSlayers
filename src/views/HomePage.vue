@@ -1,37 +1,17 @@
 <template>
   <div class="main">
     <div class="carrossel">
-      <carousel-3d
-        @before-slide-change="verificaCor"
-        @after-slide-change="verificaCor"
-        ref="mycarousel"
-        :controls-visible="true"
-        perspective="0"
-        width="1920"
-        height="700"
-        :controls-prev-html="'&#10096; '"
-        :controls-next-html="'&#10097;'"
-        :autoplay="true"
-        :autoplayTimeout="4000"
-        :autoplayHoverPause="true"
-        :disable3d="true"
-        display="5"
-      >
-        <slide class="index0" :index="0">
+      <carousel :perPage="Number(1)" :navigationEnabled="true" :navigationClickTargetSize="Number(20)" paginationActiveColor="#fff" :paginationSize="25" paginationColor="#2d265f" :autoplay="true" :loop="true">
+        <slide>
           <img src="@/assets/imagensTeste/pyke.jpg" alt="" />
         </slide>
-        <slide class="index1" :index="1">
+        <slide>
           <img src="@/assets/imagensTeste/gnar.jpg" alt="" />
         </slide>
-        <slide class="index2" :index="2">
+        <slide>
           <img src="@/assets/imagensTeste/yasuo.jpg" alt="" />
         </slide>
-      </carousel-3d>
-      <div class="carrossel-botoes">
-        <div class="botao" @click="goToSlide(0)"></div>
-        <div class="botao" @click="goToSlide(1)"></div>
-        <div class="botao" @click="goToSlide(2)"></div>
-      </div>
+      </carousel>
     </div>
     <div class="topico">
       <div class="topico-box" @click="$router.push({path:'/noticias/valorant'})">
@@ -85,55 +65,47 @@
 </template>
 
 <script>
-import { Carousel3d, Slide } from "vue-carousel-3d";
+import { Carousel, Slide } from "vue-carousel";
 export default {
   components: {
-    Carousel3d,
+    Carousel,
     Slide,
-  },
-  mounted() {
-    this.verificaCor();
-  },
-  methods: {
-    goToSlide(index) {
-      this.$refs.mycarousel.goSlide(index);
-    },
-    verificaCor() {
-      let botoes = document.querySelectorAll(".carrossel-botoes .botao");
-      let currentIndex = this.$refs.mycarousel.currentIndex;
-      botoes.forEach((botao) => {
-        this.mudaCor(botao);
-      });
-      this.mudaCor(botoes[currentIndex], "#fff");
-    },
-    mudaCor(el, cor = "#5F4CB4") {
-      el.style.backgroundColor = cor;
-    },
   },
 };
 </script>
 
 <style scoped>
+html{
+  max-width: 1920px;
+}
 .main {
   position: relative;
   top: 75px;
   display: flex;
   flex-direction: column;
 }
-.carrossel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0px auto 55px auto;
-  width: 1920px;
+.carrossel{
   height: 700px;
 }
-
+.VueCarousel{
+  height: 700px;
+}
+.VueCarousel img {
+  width: 1920px;
+  height: 100%;
+}
+.VueCarousel-dot-container{
+  position: relative;
+  top: -200px;
+}
+.VueCarousel button {
+  position: absolute;
+  right: 200px;
+}
 .topico-box {
-  margin: 0 auto;
   position: relative;
   height: 300px;
-  margin: 0 55px 64px 55px;
+  margin: 64px 55px 64px 55px;
   padding: 20px;
   border: 5px solid #fff;
   background-color: #14112c;
@@ -207,25 +179,5 @@ export default {
     width: 325px;
     height: 100px;
   }
-}
-.carousel-3d-slide {
-  cursor: pointer;
-  background-color: #2d265f;
-}
-.carousel-3d-slide img {
-  position: relative;
-}
-.carrossel-botoes {
-  display: flex;
-  position: relative;
-  top: -80px;
-}
-.carrossel-botoes .botao {
-  background: #5f4cb4;
-  width: 20px;
-  height: 20px;
-  margin: 10px;
-  border-radius: 100%;
-  cursor: pointer;
 }
 </style>
