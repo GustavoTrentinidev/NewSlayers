@@ -85,7 +85,6 @@ export default {
       this.trocarNoticias()
     },
     trocarNoticias(){
-      console.log(this.currentIndex)
       const topicos = [this.noticiasDestaqueTopico1, this.noticiasDestaqueTopico2, this.noticiasDestaqueTopico3]
       this.currentTopico = topicos[this.currentIndex]
     }
@@ -94,9 +93,6 @@ export default {
 </script>
 
 <style scoped>
-html{
-  max-width: 1920px;
-}
 .main {
   position: relative;
   top: 75px;
@@ -155,6 +151,7 @@ html{
   height: 100%;
   display: flex;
   justify-content: space-around;
+  gap:50px;
 }
 .noticia-topico{
   width: 650px;
@@ -186,6 +183,7 @@ html{
   display: block;
   max-width: 300px;
   margin-left: 10px;
+  font-weight: normal;
 }
 .about{
   display: flex;
