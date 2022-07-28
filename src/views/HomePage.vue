@@ -65,14 +65,6 @@ export default {
         ]
     }
   },
-  computed: {
-      currentIndex: {
-        cache: false,
-        get() {
-          return this.$refs.carousel ? this.$refs.carousel.currentPage : 0;
-        }
-      }
-    },
   methods: {
     show(){
       let noticias = document.querySelectorAll('.noticia-topico')
@@ -86,7 +78,7 @@ export default {
     },
     trocarNoticias(){
       const topicos = [this.noticiasDestaqueTopico1, this.noticiasDestaqueTopico2, this.noticiasDestaqueTopico3]
-      this.currentTopico = topicos[this.currentIndex]
+      this.currentTopico = topicos[this.$refs.carousel.currentPage]
     }
   }
 };
