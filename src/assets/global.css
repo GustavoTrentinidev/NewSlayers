@@ -1,9 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC&display=swap'); */
 
 body {
     margin: 0;
     padding: 0;
     font-family: 'Share Tech', sans-serif;
+    /* font-family: 'Playfair Display SC', serif; */
+}
+
+.VueCarousel{
+    position: relative;
+}
+.carrossel .VueCarousel-wrapper{
+    position: absolute;
+    height: 700px;
 }
 
 .VueCarousel .VueCarousel-navigation-prev{
@@ -22,4 +32,9 @@ body {
 .VueCarousel .VueCarousel-pagination{
     position: relative;
     top: -120px;
+}
+
+.carrossel .VueCarousel .VueCarousel-pagination{
+    position: absolute;
+    top: 500px;
   }
