@@ -5,6 +5,7 @@ import Login from '@/views/LoginPage.vue'
 import NoticiasHome from '@/views/NoticiasHome.vue'
 import TopicoView from '@/views/TopicoView.vue'
 import PerfilPage from '@/views/PerfilPage.vue'
+import About from '@/views/SiteAbout.vue'
 
 Vue.use(VueRouter)
 
@@ -32,6 +33,10 @@ const routes = [
         path:'/perfil',
         component: PerfilPage,
       },
+      {
+        path:'/sobre',
+        component: About,
+      }
     ]
   },
   {

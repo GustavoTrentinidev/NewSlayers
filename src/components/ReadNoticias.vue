@@ -65,7 +65,7 @@ export default {
             var index = parseInt(this.$route.path.split('/')[2])
             botoes[index-1].classList.add('paginaAtual')
             botoes[index-1].classList.remove('outrasPaginas')
-        },100)
+        },10)
     },
     methods:{
         passarPagina(index){
@@ -129,6 +129,8 @@ export default {
     font-size: 40px;
     color: #fff;
     text-align: center;
+    cursor: pointer;
+    padding-top: 5px;
 }
 .outrasPaginas{
     background-color: #060126;
