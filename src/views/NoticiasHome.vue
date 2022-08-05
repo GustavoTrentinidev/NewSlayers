@@ -1,22 +1,19 @@
 <template>
     <div class="main">
-        <div class="imagemPrincipal">
-            <div class="trapezioBranco">
-            </div>
-            <img draggable="false" src="@/assets/noticiasJanna.png" alt="">
+        <div class="imagemNoticias">
             <h1 class="texto" >Notícias</h1>
+            <img src="@/assets/logo.png" class="logo" alt="">
         </div>
+        <div class="fade2"></div> 
         <NoticiasContainer/>
-        <MelhoresAutores/>
     </div>
 </template>
 
 <script>
 import NoticiasContainer from "@/components/ReadNoticias.vue"
-import MelhoresAutores from "@/components/MelhoresAutores.vue"
 
 export default {
-    components: {NoticiasContainer, MelhoresAutores}
+    components: {NoticiasContainer}
 }
 </script>
 
@@ -27,44 +24,50 @@ export default {
     display: flex;
     flex-direction: column;
 }
-.imagemPrincipal{
-    width: 90%;
-    height: 300px;
-    background-color: #2D265F;
-    position: relative;
-    margin: 90px auto 0 auto;
+.imagemNoticias{
+    background-image: url('@/assets/noticiasImagem.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 700px;
     display: flex;
-}
-.trapezioBranco{
-    width: 90%;
-    margin: 0 auto;
-    top: -25px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     position: relative;
-    border: 5px solid #fff;
-    height: 110%;
-    transform: skew(-20deg);
 }
-.imagemPrincipal img{
+.logo{
+    width: 5%;
     position: absolute;
-    margin: -90px auto;
-    left: 0;
-    right: 0;
-    height: 130%;
+    top: 400px;
 }
 .texto{
-    position: absolute;
-    align-self: center;
-    font-size: 200px;
+    font-size: 150px;
     font-weight: normal;
-    text-align: center;
+    text-transform: uppercase;
     color: #fff;
-    right: 0;
-    left: 0;
+
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none; 
     -ms-user-select: none; 
     user-select: none; 
+}
+.fade2{
+  height: 85px;
+  width: 100%;
+  background-image: linear-gradient(#020013 50%,rgba(0, 0, 0, 0));
+}
+@media (min-width: 300px) and (max-width: 767px) {
+  .texto{
+    font-size: 70px;
+  }
+  .logo{
+    width: 50%;
+    top: 200px;
+  }
+  .imagemNoticias{
+    height: 500px;
+  }
 }
 </style>

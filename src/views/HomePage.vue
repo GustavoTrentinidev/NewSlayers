@@ -2,44 +2,43 @@
   <div class="main">
     <div class="carrossel">
       <carousel ref="carousel" :perPage="Number(1)" :autoplayTimeout="Number(5000)" @pageChange="show()" :navigationEnabled="true" :navigationClickTargetSize="Number(20)" paginationActiveColor="#fff" :paginationSize="35" paginationColor="#020013" :autoplay="true" :loop="true">
-        <slide>
-          <img src="@/assets/imagensTeste/pyke.jpg" alt="" />
-        </slide>
-        <slide>
-          <img src="@/assets/imagensTeste/gnar.jpg" alt="" />
-        </slide>
-        <slide>
-          <img src="@/assets/imagensTeste/yasuo.jpg" alt="" />
+        <slide v-for="(imagem,index) in imagensTopicos" :key="index">
+          <img :src="imagem" alt="" />
         </slide>
       </carousel>
+      <div class="botao-topico" @click="$router.push({path:'/noticias/'+ currentTopico.topico})">Ver notícias</div>
       <div class="fade"></div>  
     </div>
     <div class="noticias">
       <h1>Notícias em destaque</h1>
       <div class="noticias-block">
-        <div v-for="(noticia, index) in currentTopico" :key="index" class="noticia-topico ">
+        <div v-for="(noticia, index) in currentTopico.noticias" :key="index" class="noticia-topico ">
           <div class="imagem-noticia" :style="`background-image: url('${noticia.img}')`"></div>
           <div class="other-info">
-            <h1>{{noticia.titulo}}</h1>
+            <h1>{{noticia.titulo | truncate(10, '...')}}</h1>
             <h2 style="color: #fff">{{noticia.texto | truncate(100, '...') }}</h2>
           </div>
         </div>
       </div>
     </div>
-    <div class="fade2"></div> 
-    <div class="about">
-      <h1>SOBRE O SITE</h1>
-      <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h4>
+    <div class="button-holder">
+      <button @click="$router.push({path:'/noticias/'+ currentTopico.topico})" class="vermais">Ver mais &#8594;</button>
     </div>
+    <div class="fade2"></div> 
+    <MelhoresAutores/>
+
   </div>
 </template>
 
 <script>
 import { Carousel, Slide } from "vue-carousel";
+import MelhoresAutores from "@/components/MelhoresAutores.vue"
+
 export default {
   components: {
     Carousel,
     Slide,
+    MelhoresAutores
   },
   mounted(){
     this.trocarNoticias()
@@ -47,22 +46,42 @@ export default {
   data(){
     return{
       currentTopico:{},
-      noticiasDestaqueTopico1: [
+      noticiasDestaqueLol: {
+        topico: 'lol',
+        noticias:[
         {img: require('@/assets/melhoresAutoresImg/cinematic1.jpg') ,titulo: 'dolor sit', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
         {img: require('@/assets/melhoresAutoresImg/cinematic2.jpg') ,titulo: 'dolor sit', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
         {img: require('@/assets/melhoresAutoresImg/cinematic3.jpg'),titulo: 'dolor sit', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-      ],
-      noticiasDestaqueTopico2: [
+      ]},
+      noticiasDestaqueValorant: {
+        topico: 'valorant',
+        noticias: [
         {img: require('@/assets/melhoresAutoresImg/cinematic4.jpg'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
         {img: require('@/assets/melhoresAutoresImg/cinematic6.jpg'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
         {img: require('@/assets/melhoresAutoresImg/cinematic7.jpg'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        
-        ],
-      noticiasDestaqueTopico3: [
+        ]},
+      noticiasDestaqueWR: {
+        topico: 'wr',
+        noticias:[
         {img: require('@/assets/melhoresAutoresImg/cinematic8.jpg'),titulo: 'amet, consectetur', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
         {img: require('@/assets/melhoresAutoresImg/cinematic9.jpg'),titulo: 'amet, consectetur', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
         {img: require('@/assets/imagensTeste/wild.jpg'),titulo: 'amet, consectetur', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        ]
+        ]},
+      noticiasDestaqueTFT: {
+        topico: 'tft',
+        noticias:[
+        {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        ]},
+      noticiasDestaqueLor:{
+        topico: 'lor',
+        noticias:[
+        {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+      ]},
+      imagensTopicos: [require('@/assets/carrosselHome/lol-topico.png'), require('@/assets/carrosselHome/valorant-topico.png'), require('@/assets/carrosselHome/wr-topico.png'), require('@/assets/carrosselHome/tft-topico.png'), require('@/assets/carrosselHome/lor-topico.png')] 
     }
   },
   methods: {
@@ -74,10 +93,15 @@ export default {
           noticia.classList.remove('animacao-aparecer')
         }, 500)
       })
+      let botaoTopico = document.querySelector('.botao-topico')
+      botaoTopico.classList.add('animacao-aparecer')
+      setTimeout(()=>{
+          botaoTopico.classList.remove('animacao-aparecer')
+        }, 500)
       this.trocarNoticias()
     },
     trocarNoticias(){
-      const topicos = [this.noticiasDestaqueTopico1, this.noticiasDestaqueTopico2, this.noticiasDestaqueTopico3]
+      const topicos = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant, this.noticiasDestaqueWR, this.noticiasDestaqueTFT, this.noticiasDestaqueLor]
       this.currentTopico = topicos[this.$refs.carousel.currentPage]
     }
   }
@@ -95,6 +119,24 @@ export default {
   position: relative;
   height: 700px;
 }
+.botao-topico{
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #020013;
+  font-weight: normal;
+  color: #fff;
+  position: absolute;
+  border-radius: 10px;
+  z-index: 100;
+  width: 220px;
+  height: 60px;
+  right: 260px;
+  bottom: 140px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
 .VueCarousel{
   height: 700px;
 }
@@ -103,7 +145,6 @@ export default {
   width: 1920px;
   height: 100%;
   position: relative;
-  top: -200px;
 }
 
 .VueCarousel button {
@@ -118,6 +159,27 @@ export default {
   top: 600px;
   position: absolute;
 }
+
+.button-holder{
+  position: relative;
+  background-color: #0D0641;
+  height: 50px;
+}
+
+.vermais{
+  position: absolute;
+  font-size: 20px;
+  width: 130px;
+  right: 150px;
+  border: 0;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: 'Share Tech', sans-serif;
+  color: #0D0641;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
 .fade2{
   height: 100px;
   width: 100%;
@@ -177,21 +239,7 @@ export default {
   margin-left: 10px;
   font-weight: normal;
 }
-.about{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.about h1{
-  font-size: 100px;
-  text-align: center;
-}
-.about h4{
-  font-size: 40px;
-  font-weight: normal;
-  text-align: center;
-  max-width: 1200px;
-}
+
 @keyframes appear {
   from {
     opacity: 0;
@@ -201,12 +249,10 @@ export default {
   }
 }
 
-/* @media (min-width: 300px) and (max-width: 767px) {
-  .carrossel {
-    margin: 55px auto;
-    width: 250px;
-    height: 100px;
-    background-color: #14112c;
+@media (min-width: 300px) and (max-width: 767px) {
+  .noticias-block {
+    display: flex;
+    flex-direction: column;
   }
-} */
+}
 </style>

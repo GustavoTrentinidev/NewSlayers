@@ -3,6 +3,9 @@
         <div class="container">
             <div v-for="(noticia, index) in noticias" :key="index" class="noticia">
                 <img draggable="false" :src="noticia.img" alt="">
+                <div class="titulo-holder">
+                    <div class="titulo">Lorem Ipsum</div>
+                </div>
             </div>
             
         </div>  
@@ -55,7 +58,6 @@ export default {
                     noticia.style.display = 'block'
                 }
             }
-            
         }
     }
 }
@@ -75,13 +77,30 @@ export default {
 .noticia{
     width: 550px;
     height: 300px;
+    position: relative;
 }
-
+.titulo-holder{
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    width: calc(100% - 10px);
+    height: 150px;
+    color: #fff;
+    font-size: 35px;
+    font-weight: 200;
+    background-image: linear-gradient(transparent, black);
+}
+.titulo{
+    position: absolute;
+    bottom: 0;
+    margin: 0 0 10px 20px;
+}
 .noticia img{
     width: 100%;
     height: 100%;
     border: 5px solid #fff;
     box-sizing: border-box;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 }
 .showHide{
     width: 50px;
@@ -91,7 +110,7 @@ export default {
     cursor: pointer;
 }
 .flecha{
-    background: #fff;
+    background: #000;
     width: 25px;
     height: 5px;
     position: absolute;

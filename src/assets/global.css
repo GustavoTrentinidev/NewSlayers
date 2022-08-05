@@ -38,3 +38,15 @@ body {
     position: absolute;
     top: 500px;
   }
+
+  .autores .VueCarousel .VueCarousel-dot-container{
+    display: flex;
+    flex-direction: column;
+    right: 0;
+    position: absolute;
+    bottom: 5px;
+    margin: 0;
+}
+.autores .VueCarousel .VueCarousel-dot-container .VueCarousel-dot{
+    margin-bottom: -30px;
+}

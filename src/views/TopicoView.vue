@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div class="topico-imagem" :style="'background-image:' + 'url(' + require(`@/assets/${$route.params.topico}topico.jpg`) + ')'">
+    <div class="topico-imagem" :style="'background-image:' + 'url(' + require(`@/assets/carrosselHome/${$route.params.topico}-topico.png`) + ')'">
     </div>
     <div class="noticias-topico">
       <div class="noticia" :key="index" v-for="(noticia,index) in noticiasTopico">
@@ -27,8 +27,8 @@
 export default {
   data(){
     return{
-      possibleTopicos: ['leagueoflegends', 'valorant', 'wildrift'],
-      imagemPrincipal: require(`@/assets/${this.$route.params.topico}topico.jpg`),
+      possibleTopicos: ['lol', 'valorant', 'wr', 'tft', 'lor'],
+      imagemPrincipal: require(`@/assets/carrosselHome/${this.$route.params.topico}-topico.png`),
       noticiasTopico: [
         {titulo: 'Lorem ipsum', date: '20/09/04', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
         {titulo: 'dolor sit', date: '03/08/04', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
@@ -37,8 +37,7 @@ export default {
     }
   },
   mounted(){
-    console.log(this.possibleTopicos)
-    if(!(this.possibleTopicos.indexOf(this.$route.params.topico) != -1)){
+    if((this.possibleTopicos == undefined)){
       this.$router.push({path:'/noticias'})
     }else{
       console.log(this.$route.params.topico)
