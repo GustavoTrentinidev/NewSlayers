@@ -6,7 +6,7 @@
           <img :src="imagem" alt="" />
         </slide>
       </carousel>
-      <div class="botao-topico" @click="$router.push({path:'/noticias/'+ currentTopico.topico})">Ver notícias</div>
+      <div class="botao-topico" @click="$router.push({path:'/topicos/'+ currentTopico.topico})">Ver notícias</div>
       <div class="fade"></div>  
     </div>
     <div class="noticias">
@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="button-holder">
-      <button @click="$router.push({path:'/noticias/'+ currentTopico.topico})" class="vermais">Ver mais &#8594;</button>
+      <button @click="$router.push({path:'/topicos/'+ currentTopico.topico})" class="vermais">Ver mais &#8594;</button>
     </div>
     <div class="fade2"></div> 
     <MelhoresAutores/>

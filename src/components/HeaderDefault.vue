@@ -2,7 +2,7 @@
   <div class="header">
     <router-link to="/"><img class="logo" draggable="false" src="@/assets/logo.png" alt=""></router-link>
     <div class="nav">
-      <router-link to="/noticias"><h1 class="logo-name">NewSlayers</h1></router-link>
+      <router-link to="/noticias/1"><h1 class="logo-name">NewSlayers</h1></router-link>
       <label for="noticias"><h1 class="label-noticias">Noticias</h1></label>
       <label for="noticias" class="triangulo"></label>
       <select class="select-noticias" id="noticias" name="noticias">

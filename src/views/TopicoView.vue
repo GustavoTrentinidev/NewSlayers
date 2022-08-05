@@ -38,7 +38,7 @@ export default {
   },
   mounted(){
     if((this.possibleTopicos == undefined)){
-      this.$router.push({path:'/noticias'})
+      this.$router.push({path:'/'})
     }else{
       console.log(this.$route.params.topico)
     }

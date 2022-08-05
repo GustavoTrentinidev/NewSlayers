@@ -19,11 +19,12 @@ const routes = [
         component: Home
       },
       {
-        path:'/noticias',
-        component: NoticiasHome
+        path:'/noticias/:pagina',
+        component: NoticiasHome,
+        props: true
       },
       {
-        path:`/noticias/:topico`,
+        path:`/topicos/:topico`,
         component: TopicoView,
         props: true
       },
