@@ -2,6 +2,7 @@
   <div class="main">
     <div class="topico-imagem" :style="'background-image:' + 'url(' + require(`@/assets/carrosselHome/${$route.params.topico}-topico.png`) + ')'">
     </div>
+    <div class="fade2"></div> 
     <div class="noticias-topico">
       <div class="noticia" :key="index" v-for="(noticia,index) in noticiasTopico">
         <div class="img-noticia" :style="'background-image:' + 'url(' + require('@/assets/melhoresAutoresImg/gragustavo.jpg') + ')'">
@@ -55,12 +56,14 @@ export default {
     flex-direction: column;
 }
 .topico-imagem{
-  width: 1750px;
-  height: 450px;
+  width: 100%;
+  height: 700px;
   background-size: cover;
-  background-position: -50px;
-  margin: 50px auto;
-  border: 5px solid #fff;
+}
+.fade2{
+  height: 85px;
+  width: 100%;
+  background-image: linear-gradient(#020013 50%,rgba(0, 0, 0, 0));
 }
 .noticia{
   width: 1450px;

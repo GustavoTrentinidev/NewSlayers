@@ -1,9 +1,6 @@
 <template>
     <div class="main">
-        <div class="imagemNoticias">
-            <h1 class="texto" >Notícias</h1>
-            <img src="@/assets/logo.png" class="logo" alt="">
-        </div>
+        <div class="imagemNoticias"></div>
         <div class="fade2"></div> 
         <NoticiasContainer/>
     </div>
@@ -25,33 +22,15 @@ export default {
     flex-direction: column;
 }
 .imagemNoticias{
-    background-image: url('@/assets/noticiasImagem.jpg');
-    background-size: cover;
-    background-position: center;
+    background-image: url('@/assets/noticiasImagem.png');
+    background-size:  cover;
+    background-position: top;
     height: 700px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     position: relative;
-}
-.logo{
-    width: 5%;
-    position: absolute;
-    top: 400px;
-}
-.texto{
-    font-size: 150px;
-    font-weight: normal;
-    text-transform: uppercase;
-    color: #fff;
-
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none; 
-    -ms-user-select: none; 
-    user-select: none; 
 }
 .fade2{
   height: 85px;
