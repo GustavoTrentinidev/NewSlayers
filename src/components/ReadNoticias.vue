@@ -189,7 +189,13 @@ export default {
     text-align: center;
     cursor: pointer;
     padding-top: 5px;
+    transition: transform 200ms ease-in-out;
 }
+.numero:hover{
+    transform: scale(1.1);
+    background-color: #3a326a;
+}
+
 .outrasPaginas{
     background-color: #060126;
 }

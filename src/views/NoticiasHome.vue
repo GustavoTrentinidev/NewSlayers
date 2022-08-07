@@ -1,16 +1,17 @@
 <template>
     <div class="main">
         <div class="imagemNoticias"></div>
-        <div class="fade2"></div> 
+        <NoticiasDestaque/>
         <NoticiasContainer/>
     </div>
 </template>
 
 <script>
 import NoticiasContainer from "@/components/ReadNoticias.vue"
+import NoticiasDestaque from "@/components/NoticiasDestaque.vue"
 
 export default {
-    components: {NoticiasContainer}
+    components: {NoticiasContainer, NoticiasDestaque}
 }
 </script>
 
@@ -31,11 +32,6 @@ export default {
     justify-content: center;
     flex-direction: column;
     position: relative;
-}
-.fade2{
-  height: 85px;
-  width: 100%;
-  background-image: linear-gradient(#020013 50%,rgba(0, 0, 0, 0));
 }
 @media (min-width: 300px) and (max-width: 767px) {
   .texto{
