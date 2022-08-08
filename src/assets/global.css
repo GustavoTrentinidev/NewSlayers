@@ -50,3 +50,7 @@ body {
 .autores .VueCarousel .VueCarousel-dot-container .VueCarousel-dot{
     margin-bottom: -30px;
 }
+
+.noticia{
+    cursor: pointer;
+}

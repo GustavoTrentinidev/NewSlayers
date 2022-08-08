@@ -110,8 +110,6 @@ export default {
 
 <style scoped>
 .main {
-  position: relative;
-  top: 75px;
   display: flex;
   flex-direction: column;
 }
@@ -142,7 +140,7 @@ export default {
 }
 
 .VueCarousel img {
-  width: 1920px;
+  width: 100%;
   height: 100%;
   position: relative;
 }
@@ -215,6 +213,7 @@ export default {
   border-left: 2px solid#fff;
   border-bottom: 2px solid #fff;
   display: flex;
+  cursor: pointer;
 }
 .animacao-aparecer{
   animation: appear ease-in-out 600ms;

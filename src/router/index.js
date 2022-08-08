@@ -4,8 +4,8 @@ import Home from '@/views/HomePage.vue'
 import Login from '@/views/LoginPage.vue'
 import NoticiasHome from '@/views/NoticiasHome.vue'
 import TopicoView from '@/views/TopicoView.vue'
-import PerfilPage from '@/views/PerfilPage.vue'
 import About from '@/views/SiteAbout.vue'
+import PerfilPage from '@/views/PerfilPage.vue'
 
 Vue.use(VueRouter)
 
@@ -30,14 +30,19 @@ const routes = [
         props: true
       },
       {
-        path:'/perfil',
-        component: PerfilPage,
-      },
-      {
         path:'/sobre',
         component: About,
       }
     ]
+  },
+  {
+    path: '/perfil',
+    component: () => import("@/layouts/AreaPerfil.vue"),
+    children: [
+      {path: '/',
+      component: PerfilPage,
+    }
+    ],
   },
   {
     path: '',

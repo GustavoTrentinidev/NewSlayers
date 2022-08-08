@@ -159,7 +159,7 @@ export default {
 .linha{
     height: 250px;
     width: 1px;
-    background-color: #000;
+    background-color: #fff;
     margin: 5px auto;
 }
 .estilo-editores{

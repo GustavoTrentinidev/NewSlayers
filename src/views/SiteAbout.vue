@@ -35,10 +35,9 @@ export default {
 
 <style>
 .main{
-    position: relative;
-    top: 75px;
     display: flex;
     flex-direction: column;
+    color: #fff;
 }
 .about{
     margin-top: 50px;

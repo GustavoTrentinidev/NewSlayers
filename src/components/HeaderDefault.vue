@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header sem-opacidade">
     <router-link to="/"><img class="logo" draggable="false" src="@/assets/logo.png" alt=""></router-link>
     <div class="nav">
       <router-link to="/noticias/1" class="logo-name"><h1>NewSlayers</h1></router-link>
@@ -19,20 +19,37 @@
 
 <script>
 export default {
-  props: ['nome', 'tipo']
+  props: ['nome', 'tipo'],
+  mounted(){
+    window.addEventListener('scroll', function(){
+      let header = document.querySelector('.header')
+      if(this.scrollY >= 700){
+        header.classList.add('opacidade') 
+        header.classList.remove('sem-opacidade') 
+      }else {
+        header.classList.remove('opacidade') 
+        header.classList.add('sem-opacidade') 
+      }})
+  }  
 }
 </script>
 
 <style scoped>
+.opacidade{
+  background-color: rgba(20, 17, 44, 1);
+}
+.sem-opacidade{
+  background-color: rgba(20, 17, 44, 0.6);
+}
 .header{
   position: fixed;
   z-index: 100;
   height: 75px;
-  background-color: #14112C;
   width: 100%;
   display: flex;
   color: #fff;
   top: 0;  
+  transition: background-color 500ms ease-in-out;
 }
 .logo{
   position: relative;

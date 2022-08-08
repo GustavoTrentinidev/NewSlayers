@@ -17,8 +17,6 @@ export default {
 
 <style scoped>
 .main{
-    position: relative;
-    top: 75px;
     display: flex;
     flex-direction: column;
 }
