@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Header v-show="!(this.$route.path == '/perfil')"/>
+        <Header/>
         <router-view></router-view>
         <Footer/>
     </div>

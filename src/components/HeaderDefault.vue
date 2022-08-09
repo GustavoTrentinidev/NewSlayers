@@ -22,7 +22,7 @@ export default {
   props: ['nome', 'tipo'],
   mounted(){
     let header = document.querySelector('.header')
-    if(this.$route.path != '/perfil'){
+    if(this.$route.path != '/perfil' && this.$route.path != '/sobre'){
       window.addEventListener('scroll', function(){
         if(this.scrollY >= 700){
           header.classList.add('opacidade') 
@@ -44,7 +44,7 @@ export default {
   background-color: rgba(20, 17, 44, 1);
 }
 .sem-opacidade{
-  background-color: rgba(20, 17, 44, 0.6);
+  background-color: rgba(20, 17, 44, 0);
 }
 .header{
   position: fixed;
