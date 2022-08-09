@@ -5,7 +5,6 @@ import Login from '@/views/LoginPage.vue'
 import NoticiasHome from '@/views/NoticiasHome.vue'
 import TopicoView from '@/views/TopicoView.vue'
 import About from '@/views/SiteAbout.vue'
-import PerfilPage from '@/views/PerfilPage.vue'
 
 Vue.use(VueRouter)
 
@@ -38,11 +37,6 @@ const routes = [
   {
     path: '/perfil',
     component: () => import("@/layouts/AreaPerfil.vue"),
-    children: [
-      {path: '/',
-      component: PerfilPage,
-    }
-    ],
   },
   {
     path: '',

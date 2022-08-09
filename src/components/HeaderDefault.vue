@@ -21,15 +21,20 @@
 export default {
   props: ['nome', 'tipo'],
   mounted(){
-    window.addEventListener('scroll', function(){
-      let header = document.querySelector('.header')
-      if(this.scrollY >= 700){
-        header.classList.add('opacidade') 
-        header.classList.remove('sem-opacidade') 
-      }else {
-        header.classList.remove('opacidade') 
-        header.classList.add('sem-opacidade') 
+    let header = document.querySelector('.header')
+    if(this.$route.path != '/perfil'){
+      window.addEventListener('scroll', function(){
+        if(this.scrollY >= 700){
+          header.classList.add('opacidade') 
+          header.classList.remove('sem-opacidade') 
+        }else {
+          header.classList.remove('opacidade') 
+          header.classList.add('sem-opacidade') 
       }})
+    }else{
+      header.classList.remove('sem-opacidade') 
+      header.classList.add('opacidade') 
+    }
   }  
 }
 </script>
