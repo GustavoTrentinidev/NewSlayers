@@ -10,8 +10,13 @@
         <option class="opcao" value="wild rift">Wild Rift</option>
         <option class="opcao" value="VALORANT">VALORANT</option>
       </select>
-      <h1 class="publicar perfil" v-if="tipo == 1">Publicar notícia</h1>
-      <router-link v-if="!(this.$route.path == '/perfil')" to="/login" class="login"><h1 >Login</h1></router-link>
+      <div class="pesquisa">
+        <img src="@/assets/pesquisa.png" alt="">
+        <input @click="animar($event)" type="text" placeholder="Pesquisar">
+      </div>
+      <router-link v-if="!(this.$route.path == '/perfil')" :to="{name:'paginaLogin', params: {cadastro:'Cadastro'}}" class="cadastro"><h1 >CADASTRE-SE</h1></router-link>
+      <div v-if="!(this.$route.path == '/perfil')"  class="separador"></div>
+      <router-link v-if="!(this.$route.path == '/perfil')" to="/login" class="login"><h1 >LOGIN</h1></router-link>
       <h1 class="login perfil" v-else>{{nome}}</h1>
     </div>
   </div>
@@ -19,10 +24,10 @@
 
 <script>
 export default {
-  props: ['nome', 'tipo'],
+  props: ['nome'],
   mounted(){
     let header = document.querySelector('.header')
-    if(this.$route.path != '/perfil' && this.$route.path != '/sobre'){
+    if(this.$route.path == '/'){
       window.addEventListener('scroll', function(){
         if(this.scrollY >= 700){
           header.classList.add('opacidade') 
@@ -35,7 +40,12 @@ export default {
       header.classList.remove('sem-opacidade') 
       header.classList.add('opacidade') 
     }
-  }  
+  },
+  methods:{
+    animar(e){
+      e.target.classList.add('animado')
+    }
+  }
 }
 </script>
 
@@ -55,6 +65,8 @@ export default {
   color: #fff;
   top: 0;  
   transition: background-color 500ms ease-in-out;
+  font-family: 'Kadwa', serif;
+  font-size: 13px;
 }
 .logo{
   position: relative;
@@ -100,9 +112,78 @@ export default {
   top: -5px;
   left: 2px;
 }
+.pesquisa{
+  margin-left: 20px;
+  display: flex;
+  gap: 10px;
+  flex-direction: row-reverse;
+}
+.pesquisa img{
+  width: 30px;
+  height: 30px;
+  position: relative;
+  align-self: center;
+}
+.pesquisa input{
+  border: 0;
+  outline: 0;
+  width: 100%;
+  max-width: 140px;
+  font-size: 22px;
+  border-bottom: #04B9CC 2px solid;
+  background-color: transparent;
+  color: #fff;
+  padding: 2px;
+  box-sizing: border-box;
+  font-family: 'Kadwa', serif;
+}
+.animado{
+  animation: diminuiInput 0.5s ease-in-out;
+}
+.pesquisa input::placeholder{
+  font-family: 'Kadwa', serif;
+  color: white;
+}
+@keyframes aumentaInput {
+  from{
+    min-width: 140px
+  }
+  to{
+    min-width: 300px;
+  }
+}
+@keyframes diminuiInput {
+  from{
+    min-width: 300px;
+  }
+  to{
+    min-width: 140px
+  }
+}
+.pesquisa input:focus{
+  min-width: 300px;
+  animation: aumentaInput 0.5s ease-in-out;
+}
 .nav:last-child .login{
   position: absolute;
   right: 20px;
+  color: #fff;
+  font-weight: normal;
+  text-decoration: none;
+}
+.cadastro{
+  position: absolute;
+  right: 120px;
+  color: #04B9CC;
+  text-decoration: none;
+  font-weight: normal;
+}
+.separador{
+  height: 50%;
+  background-color: #fff;
+  width: 2px;
+  position: absolute;
+  right: 110px;
 }
 .publicar{
   position: absolute;

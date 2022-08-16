@@ -12,7 +12,7 @@
                         <div class="titulo">{{noticia.titulo | truncate(50, '...')}}</div>
                         <div class="texto-e-botao">
                             {{noticia.texto | truncate(100, '...')}}
-                            <button class="botao">VER NOTÍCIA</button>
+                            <button class="botao" @click="$router.push({path: '/noticia/1'})">VER NOTÍCIA</button>
                         </div>
                     </div>
                     
@@ -159,13 +159,14 @@ export default {
 .linha{
     height: 250px;
     width: 1px;
-    background-color: #fff;
+    background-color: #000;
     margin: 5px auto;
 }
 .estilo-editores{
     z-index: -1;
 }
 .estilo-editores span{
+    color: #000;
     font-size: 30px;
     writing-mode:vertical-lr;
 

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kadwa&display=swap');
 
 body {
     margin: 0;
@@ -16,17 +17,26 @@ body {
     height: 700px;
 }
 
-.VueCarousel .VueCarousel-navigation-prev{
+.VueCarousel .VueCarousel-navigation-button{
+    outline: 0 !important;
     position: absolute;
-    left: 200px;
     color: #fff;
     font-size: 60px;
+    outline: 0;
+    width: 100px;
+    height: 100px;
+    padding: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.VueCarousel .VueCarousel-navigation-prev{
+    left: 200px;
+    background-image: url('@/assets/paginationLeft.png');
 }
 .VueCarousel .VueCarousel-navigation-next{
-    position: absolute;
     right: 200px;
-    color: #fff;
-    font-size: 60px;
+    background-image: url('@/assets/paginationRight.png');
 }
 
 .VueCarousel .VueCarousel-pagination{

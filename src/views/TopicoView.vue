@@ -4,7 +4,7 @@
     </div>
     <div class="fade2"></div> 
     <div class="noticias-topico">
-      <div class="noticia" :key="index" v-for="(noticia,index) in noticias">
+      <div class="noticia" @click="$router.push({path: '/noticia/1'})" :key="index" v-for="(noticia,index) in noticias" >
         <div class="editor-img" :style="'background-image: url(' + noticia.editor.img + ');'"></div>
         <div class="imagem" :style="'background-image: url(' + noticia.img + ');'"></div>
         <div class="noticia-textos">
@@ -72,6 +72,8 @@ export default {
     color: white;
     display: flex;
     flex-direction: column;
+    position: relative;
+    top: 75px;
 }
 .topico-imagem{
   width: 100%;

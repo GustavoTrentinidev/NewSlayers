@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="carrossel">
-      <carousel ref="carousel" :perPage="Number(1)" :autoplayTimeout="Number(5000)" @pageChange="show()" :navigationEnabled="true" :navigationClickTargetSize="Number(20)" paginationActiveColor="#fff" :paginationSize="35" paginationColor="#020013" :autoplay="true" :loop="true">
+      <carousel navigationPrevLabel="" navigationNextLabel="" ref="carousel" :perPage="Number(1)" :autoplayTimeout="Number(5000)" @pageChange="show()" :navigationEnabled="true" :navigationClickTargetSize="Number(20)" paginationActiveColor="#fff" :paginationSize="35" paginationColor="#020013" :autoplay="true" :loop="true">
         <slide v-for="(imagem,index) in imagensTopicos" :key="index">
           <img :src="imagem" alt="" />
         </slide>
@@ -12,7 +12,7 @@
     <div class="noticias">
       <h1>Notícias em destaque</h1>
       <div class="noticias-block">
-        <div v-for="(noticia, index) in currentTopico.noticias" :key="index" class="noticia-topico ">
+        <div v-for="(noticia, index) in currentTopico.noticias" :key="index" class="noticia-topico " @click="$router.push({path: '/noticia/1'})">
           <div class="imagem-noticia" :style="`background-image: url('${noticia.img}')`"></div>
           <div class="other-info">
             <h1>{{noticia.titulo | truncate(10, '...')}}</h1>

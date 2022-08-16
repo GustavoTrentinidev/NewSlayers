@@ -13,7 +13,7 @@
                 </li>
             </ul>
             <div class="noticias-destacadas">
-                <div v-for="(noticia,index) in currentTopico.noticias" :key="index" class="noticia" :style="'background-image: url(' + noticia.img + ');'">
+                <div v-for="(noticia,index) in currentTopico.noticias" :key="index" class="noticia" :style="'background-image: url(' + noticia.img + ');'" @click="$router.push({path: '/noticia/1'})">
                     <div class="editor-holder">
                         <div class="editor-img" :style="'background-image: url(' + noticia.editor.img + ');'"></div>
                         <div class="editor-nome">{{noticia.editor.nome}}</div>

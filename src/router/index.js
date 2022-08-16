@@ -5,6 +5,7 @@ import Login from '@/views/LoginPage.vue'
 import NoticiasHome from '@/views/NoticiasHome.vue'
 import TopicoView from '@/views/TopicoView.vue'
 import About from '@/views/SiteAbout.vue'
+import NoticiaTemplate from '@/views/NoticiaTemplate.vue'
 
 Vue.use(VueRouter)
 
@@ -31,6 +32,10 @@ const routes = [
       {
         path:'/sobre',
         component: About,
+      },
+      {
+        path:'/noticia/:id',
+        component: NoticiaTemplate
       }
     ]
   },
@@ -46,6 +51,8 @@ const routes = [
       {
         path: '/login',
         component: Login,
+        props: true,
+        name: 'paginaLogin'
       }
     ]
   },

@@ -1,0 +1,204 @@
+<template>
+  <div class="informacoes-usuario">
+    <div class="card-usuario">
+        <div class="banner" :style="'background-image: url('+ usuarioVisitado.banner + ')'"></div>
+        <div class="img-usuario" :style="'background-image: url('+ usuarioVisitado.img + ')'"></div>
+        <div class="nome-e-email">
+            <div class="nome">{{usuarioVisitado.nome}}</div>
+            <div class="email">{{usuarioVisitado.email}}</div>
+        </div>
+        <!-- <div v-show="usuarioLogado.id != usuarioVisitado.id"> -->
+            <button v-if="seguindo == false" @click="seguindo = !seguindo" class="seguir">seguir</button>
+            <button v-else class="unfollow" @click="seguindo = !seguindo">deixar de seguir</button>
+        <!-- </div> -->
+    </div>
+    <div class="seguidores">
+        <div class="quantos-seguidores">
+            <span class="length">{{usuarioVisitado.seguidores.length}}</span>
+            <span class="oque">SEGUIDORES</span>
+        </div>
+        <div class="lista-seguidores">
+            <div class="seguidor" v-for="(seguidor,index) in usuarioVisitado.seguidores" :key="index">
+                <div class="img-seguidor" :style="'background-image: url('+ seguidor.img + ')'"></div>
+                <div class="nome-seguidor">{{seguidor.nome}}</div>
+                <div class="tipo-seguidor" v-if="seguidor.tipo == 0">Padrão</div>
+                <div class="tipo-seguidor" v-else>Editor</div>
+            </div>
+        </div>
+    </div>
+    <div class="seguidores">
+        <div class="quantos-seguidores">
+            <span class="length">{{usuarioVisitado.seguindo.length}}</span>
+            <span class="oque">SEGUINDO</span>
+        </div>
+        <div class="lista-seguidores">
+            <div class="seguidor" v-for="(manoSeguido,index) in usuarioVisitado.seguindo" :key="index">
+                <div class="img-seguidor" :style="'background-image: url('+ manoSeguido.img + ')'"></div>
+                <div class="nome-seguidor">{{manoSeguido.nome}}</div>
+                <div class="tipo-seguidor" v-if="manoSeguido.tipo == 0">Padrão</div>
+                <div class="tipo-seguidor" v-else>Editor</div>
+            </div>
+        </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+    props: ['usuarioVisitado', 'usuarioLogado'],
+    data(){
+        return{
+            seguindo: false,
+        }
+    },
+}
+</script>
+
+<style scoped>
+.informacoes-usuario{
+    height: 550px;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 20px;
+    width: fit-content;
+    margin: 0 auto;
+}
+.card-usuario{
+    width: 450px;
+    height: 550px;
+    background-color: #03123D;
+    display: flex;
+    flex-direction: column;
+    align-items:  center;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+.banner{
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}
+.img-usuario{
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    border: 3px solid #0D0641;
+    margin: 0 auto;
+    transform: translateY(-50%);
+}
+.nome-e-email{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    margin: 0 auto;
+}
+.nome{
+    font-size: 50px;
+    font-family: 'Kadwa', serif;
+}
+.email{
+    font-size: 20px;
+    font-family: 'Share Tech', sans-serif;
+}
+.seguir{
+    width: 150px;
+    height: 50px;
+    color: #fff;
+    border: 0;
+    outline: 0;
+    background-color: #04B9CC;
+    font-size: 30px;
+    text-transform: uppercase;
+    font-family: 'Share Tech', sans-serif;
+    border-radius: 10px;
+    margin-top: 50px;
+    padding: 0;
+    cursor: pointer;
+
+}
+.unfollow{
+    width: 190px;
+    height: 50px;
+    color: #fff;
+    border: 0;
+    outline: 0;
+    background-color: red;
+    font-size: 25px;
+    text-transform: uppercase;
+    font-family: 'Share Tech', sans-serif;
+    border-radius: 10px;
+    margin-top: 50px;
+    padding: 0;
+    cursor: pointer;
+}
+.seguidores{
+    align-self: flex-end;
+    width: 350px;
+    height: 450px;
+    background-color: #03123D;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+
+}
+.quantos-seguidores{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+.length{
+    font-size: 30px;
+    color: #2095AE;
+}
+.oque{
+    margin-top: -10px;
+    font-size: 25px;
+    font-family: 'Kadwa', serif;
+    border-bottom: 2px solid #04B9CC;
+}
+.lista-seguidores{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    overflow-y: scroll;
+    flex-wrap: nowrap;
+    height: 320px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    margin-right: 10px;
+}
+.lista-seguidores::-webkit-scrollbar{
+    background-color: #616161;
+    border-radius: 5px;
+    width: 7px;
+}
+.lista-seguidores::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.seguidor{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #060F29;
+}
+.img-seguidor{
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    border: 3px solid #0D0641;
+}
+.nome-seguidor{
+    font-size: 20px;
+}
+.tipo-seguidor{
+    margin-left: auto;
+    margin-right: 10px;
+}
+</style>

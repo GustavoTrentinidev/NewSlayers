@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container">
-            <div v-for="(noticia, index) in noticias" :key="index" class="noticia">
+            <div v-for="(noticia, index) in noticias" :key="index" class="noticia" @click="$router.push({path: '/noticia/1'})">
                 <div class="parte-de-cima">
                     <img draggable="false" :src="noticia.img" alt="">
                     <div class="editor-holder">
@@ -13,7 +13,7 @@
                     <div class="informacoes">
                         <div class="data">{{noticia.data}}</div>
                         <div class="titulo">{{noticia.titulo | truncate(30, '...')}}</div>
-                        <div class="texto">{{noticia.texto | truncate(265, '...')}}</div>
+                        <div class="texto">{{noticia.texto | truncate(225, '...')}}</div>
                         <div class="topico">{{noticia.topico}}</div>
                     </div>
                 </div>
@@ -49,6 +49,7 @@ export default {
                 {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
                 {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
                 {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'ATUALIZAÇÃO NA CONSISTÊNCIA DAS PARTIDAS DO VALORANT – 2', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/noticiaTemplateChamada.png'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
             ]
         }
     },
@@ -82,7 +83,9 @@ export default {
         passarPagina(index){
             let paginaReq = `/noticias/${index}`
             if(paginaReq != this.$route.path){
-                this.$router.push({path: paginaReq})
+                this.$router.push({path: paginaReq}).finally(()=>{
+                    window.scroll({top:1300})
+                })
             }
         }
     }

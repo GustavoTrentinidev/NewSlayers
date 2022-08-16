@@ -19,6 +19,8 @@ export default {
 .main{
     display: flex;
     flex-direction: column;
+    position: relative;
+    top: 75px;
 }
 .imagemNoticias{
     background-image: url('@/assets/noticiasImagem.png');
