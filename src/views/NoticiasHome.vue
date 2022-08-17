@@ -17,21 +17,22 @@ export default {
 
 <style scoped>
 .main{
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    top: 75px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 75px;
+  margin-bottom: 100px;
 }
 .imagemNoticias{
-    background-image: url('@/assets/noticiasImagem.png');
-    background-size:  cover;
-    background-position: top;
-    height: 700px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    position: relative;
+  background-image: url('@/assets/noticiasImagem.png');
+  background-size:  cover;
+  background-position: top;
+  height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
 }
 @media (min-width: 300px) and (max-width: 767px) {
   .texto{

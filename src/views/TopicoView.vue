@@ -1,8 +1,7 @@
 <template>
   <div class="main">
-    <div class="topico-imagem" :style="'background-image:' + 'url(' + require(`@/assets/carrosselHome/${$route.params.topico}-topico.png`) + ')'">
+    <div class="topico-imagem" :style="'background-image:' + 'url(' + imagemPrincipal + ')'">
     </div>
-    <div class="fade2"></div> 
     <div class="noticias-topico">
       <div class="noticia" @click="$router.push({path: '/noticia/1'})" :key="index" v-for="(noticia,index) in noticias" >
         <div class="editor-img" :style="'background-image: url(' + noticia.editor.img + ');'"></div>
@@ -21,7 +20,7 @@ export default {
   data(){
     return{
       possibleTopicos: ['lol', 'valorant', 'wr', 'tft', 'lor'],
-      imagemPrincipal: require(`@/assets/carrosselHome/${this.$route.params.topico}-topico.png`),
+      imagemPrincipal: require(`@/assets/topicos/topico-${this.$route.params.topico}.png`),
       noticias: [
                 {titulo: 'NOTAS DA ATUALIZAÇÃO 12.14', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic1.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
                 {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic2.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
@@ -69,27 +68,28 @@ export default {
 
 <style scoped>
 .main{
-    color: white;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    top: 75px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 75px;
+  background-image: url('@/assets/topicos/background-1.png'),url('@/assets/topicos/background-2.png');
+  background-position: top, bottom;
+  background-repeat: no-repeat,no-repeat;
+  background-size: initial 200px, initial contain;
+  margin-bottom: 50px;
 }
 .topico-imagem{
   width: 100%;
   height: 700px;
   background-size: cover;
 }
-.fade2{
-  height: 85px;
-  width: 100%;
-  background-image: linear-gradient(#020013 50%,rgba(0, 0, 0, 0));
-}
+
 .noticias-topico{
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin: 40px auto;
+  margin: -80px auto 40px auto;
   gap: 20px;
   max-width: 1500px;
 }
@@ -158,5 +158,8 @@ export default {
 }
 .index-0 .titulo, .index-1 .titulo{
   font-size: 40px;
+}
+.footer{
+  margin: 0 !important;
 }
 </style>

@@ -112,6 +112,7 @@ export default {
 .main {
   display: flex;
   flex-direction: column;
+  margin-bottom: 100px;
 }
 .carrossel{
   position: relative;

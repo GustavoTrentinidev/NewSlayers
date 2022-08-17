@@ -74,6 +74,7 @@ export default {
     display: flex;
     flex-direction: column;
     background-color: #Fff;
+    margin-bottom: 100px;
 }
 .img-chamada{
     height: 700px;
@@ -89,6 +90,7 @@ export default {
     height: 300px;
     margin: 25px auto;
     width: 1200px;
+    color: #fff;
 }
 .area-editor{
     display: flex;

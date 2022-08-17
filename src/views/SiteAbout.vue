@@ -33,11 +33,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .main{
     display: flex;
     flex-direction: column;
-    color: #fff;
+    color: #000;
+    margin-bottom: 100px;
 }
 .about{
     margin-top: 50px;
