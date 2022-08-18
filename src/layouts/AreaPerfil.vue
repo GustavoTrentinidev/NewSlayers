@@ -335,6 +335,7 @@ export default {
     background: #fff;
     height: calc(100vh - 75px);
     max-height: calc(100vh - 75px);
+    color: #fff;
 }
 .lateral{
     position: relative;
