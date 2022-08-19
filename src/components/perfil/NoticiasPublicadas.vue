@@ -9,6 +9,7 @@
                     <div class="texto">{{noticia.texto | truncate(225, '...')}}</div>
                 </div>
             <Trash class="icon" style="color:white"/>
+            <DotsVertical class="icon2" style="color:white"/>
             </div>
         </div>
   </div>
@@ -16,8 +17,9 @@
 
 <script>
 import Trash from 'vue-material-design-icons/TrashCan.vue';
+import DotsVertical from 'vue-material-design-icons/DotsVertical.vue';
 export default {
-    components:{Trash},
+    components:{Trash,DotsVertical},
     props: ['noticiasPublicadas'],
 }
 </script>
@@ -91,5 +93,12 @@ export default {
     position: absolute;
     bottom: 0px;
     right: 0px;
+}
+.icon2{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    bottom: 0px;
+    right: 30px;
 }
 </style>
