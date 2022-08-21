@@ -13,6 +13,20 @@
             </div>
         </div>
         <div class="renderizacoes">
+            <div class="noticias">
+                <div class="no-result" v-show="selectedOption == 'Notícias'" v-if="noticiasFiltradas.length == 0">Sem resultados para sua pesquisa.</div>
+                <div class="renderizaNoticias" v-for="noticia,index in noticiasFiltradas" :key="index" v-show="selectedOption == 'Notícias'">
+                    <div class="img-noticia" :style="'background-image: url('+ noticia.img + ')'"></div>
+                    <div class="textos-noticia">
+                        <div class="titulo-noticia">{{noticia.titulo | truncate(280, '...')}}</div>
+                        <div class="texto-noticia">{{noticia.texto | truncate(300, '...')}}</div>
+                    </div>
+                    <div class="editor-noticia">
+                        <div class="editor-img" :style="'background-image: url('+ noticia.editor.img + ')'"></div>
+                        <div class="editor-nome"> {{noticia.editor.nome}}</div>
+                    </div>
+                </div>
+            </div>
             <div class="usuarios">
                 <div class="no-result" v-show="selectedOption == 'Usuários'" v-if="usuariosFiltrados.length == 0">Sem resultados para sua pesquisa.</div>
                 <div class="renderizaUsuarios" v-for="usuario,index in usuariosFiltrados" :key="index" v-show="selectedOption == 'Usuários'">
@@ -50,7 +64,6 @@ export default {
                 {opcao:'Tópicos', icone: require('@/assets/iconsPerfil/comentarios.png')},
             ],
             selectedOption: '',
-            noticias: [],
             topicos: [
                 {nome: 'League of Legends', img: require('@/assets/topicos/topico-lol.png'), path:'/topicos/lol'},
                 {nome: 'VALORANT', img: require('@/assets/topicos/topico-valorant.png'), path:'/topicos/valorant'},
@@ -66,13 +79,34 @@ export default {
                 {nome:'Tropa do calvo',img: require('@/assets/melhoresAutoresImg/wukas.jpg'),id: 4,tipo: 0,}
             ,],
             usuariosFiltrados: [],
+            noticias: [
+                {titulo: 'NOTAS DA ATUALIZAÇÃO 12.14', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic1.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic2.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic3.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic4.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic7.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic6.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic8.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic9.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/wild.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/wild.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/gnar.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/pyke.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
+                {titulo: 'ATUALIZAÇÃO NA CONSISTÊNCIA DAS PARTIDAS DO VALORANT – 2', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/noticiaTemplateChamada.png'), editor :{img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'), nome: 'Gragustavo'}},
+            ],
+            noticiasFiltradas: []
         }
     },
     mounted(){
         this.selectedOption = this.opcoesResultados[0].opcao
-        this.filtrarTopicos()
-        this.filtrarUsuarios()
-        console.log(this.usuariosFiltrados)
+        // this.filtrarTopicos()
+        // this.filtrarUsuarios()
+        //this.filtrar()
+        this.filtrarTudo()
     },
     methods: {
         irParaPaginaBusca(busca){
@@ -94,15 +128,38 @@ export default {
             })
             this.selectedOption = opcoesQuerySelector[[...opcoesQuerySelector].indexOf(target)].textContent
         },
-        filtrarTopicos(){
-            this.topicosFiltrados = this.topicos.filter(topico=>{
-                return topico.nome.toUpperCase().indexOf(this.valorPassado.toUpperCase()) != -1
+        // filtrarTopicos(){
+        //     this.topicosFiltrados = this.topicos.filter(topico=>{
+        //         return topico.nome.toUpperCase().indexOf(this.valorPassado.toUpperCase()) != -1
+        //     })
+        // },
+        // filtrarUsuarios(){
+        //     this.usuariosFiltrados = this.usuarios.filter(usuario=>{
+        //         return usuario.nome.toUpperCase().indexOf(this.valorPassado.toUpperCase()) != -1
+        //     })
+        // },
+        // filtrar(){
+        //     let mustFilter = [this.topicos, this.usuarios, this.noticias]
+        //     let filtered = [this.topicosFiltrados, this.usuariosFiltrados, this.noticiasFiltradas]
+        //     filtered.forEach((lista,index, array)=>{
+        //         array[index] = mustFilter[index].filter(element=>{
+        //             return element.nome.toUpperCase().indexOf(this.valorPassado.toUpperCase()) != -1
+        //         })
+        //         return lista[index] = array[index]
+        //     })
+        // },
+        filtrarTudo(){
+            let mustFilter = [this.topicos, this.usuarios, this.noticias]
+            let filtered = [this.topicosFiltrados, this.usuariosFiltrados, this.noticiasFiltradas]
+            let list = filtered.map((list,index) =>{
+                if(index == 2){
+                    return mustFilter[index].filter(element=>{return element.titulo.toUpperCase().includes(this.valorPassado.toUpperCase()) || element.texto.toUpperCase().includes(this.valorPassado.toUpperCase()) || element.editor.nome.toUpperCase().includes(this.valorPassado.toUpperCase())})
+                }
+                return mustFilter[index].filter(element=>{return element.nome.toUpperCase().indexOf(this.valorPassado.toUpperCase()) != -1})
             })
-        },
-        filtrarUsuarios(){
-            this.usuariosFiltrados = this.usuarios.filter(usuario=>{
-                return usuario.nome.toUpperCase().indexOf(this.valorPassado.toUpperCase()) != -1
-            })
+            this.topicosFiltrados = list[0]
+            this.usuariosFiltrados = list[1]
+            this.noticiasFiltradas = list[2]
         }
     }
 }
@@ -138,6 +195,7 @@ export default {
 }
 .row-input img{
     margin-right: 30px;
+    cursor: pointer;
 }
 .input-pesquisa{
     height: 80px;
@@ -161,6 +219,7 @@ export default {
     gap: 5px;
     padding: 10px 20px;
     box-sizing: border-box;
+    cursor: pointer;
 }
 .icon-opcao{
     width: 60px;
@@ -180,8 +239,11 @@ export default {
 }
 .no-result{
     font-size: 60px;
-    text-align: center;
-    align-self: center;
+    left: 0;
+    right: 0;
+    position: absolute;
+    margin: 0 auto;
+    width: fit-content;
 }
 .topicos{
     display: flex;
@@ -189,13 +251,15 @@ export default {
     gap: 50px;
     margin: 35px auto;
     width: 90%;
+    position: relative;
 }
 .renderizaTopicos{
     display: flex;
     padding-bottom: 40px;    
+    cursor: pointer;
 }
 .renderizaTopicos:not(:last-child){
-    border-bottom: #fff 2px solid;
+    border-bottom: #2094ae9c 2px solid;
 }
 .img-topico{
     width: 475px;
@@ -225,6 +289,7 @@ export default {
     width: 90%;
     margin: 35px auto;
     gap: 30px;
+    position: relative;
 }
 .renderizaUsuarios{
     display: flex;
@@ -233,6 +298,7 @@ export default {
     padding: 20px;
     box-sizing: border-box;
     gap: 20px;
+    cursor: pointer;
 }
 .nome-usuario{
     color: #2095AE;
@@ -240,5 +306,64 @@ export default {
 }
 .tipo-usuario{
     font-size: 20px;
+}
+.noticias{
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    margin: 35px auto;
+    width: 90%;
+}
+.renderizaNoticias{
+    display: flex;
+    gap: 20px;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+    position: relative;
+    cursor: pointer;
+}
+.renderizaNoticias:not(:last-child){
+    border-bottom: #fff 2px solid;
+}
+.img-noticia{
+    max-width: 475px;
+    min-height: 300px;
+    max-height: 300px;
+    background-size: cover;
+    background-position: center;
+    flex:1;
+}
+.textos-noticia{
+    width: 960px;
+}
+.titulo-noticia{
+    font-family: 'Playfair Display SC', sans-serif;
+    font-size: 38px;
+    color: #2095AE;
+    font-weight: bold;
+    word-break: break-word;
+}
+.texto-noticia{
+    font-size: 30px;
+    color: #C5C5C5;
+    word-break: break-word;
+}
+.editor-noticia{
+    position: absolute;
+    bottom: 50px;
+    left: 475px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.editor-img{
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+}
+.editor-nome{
+    font-size:30px;
 }
 </style>
