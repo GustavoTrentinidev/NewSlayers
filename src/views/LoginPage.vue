@@ -111,6 +111,7 @@ export default {
 
 <style scoped>
 .main {
+  color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
