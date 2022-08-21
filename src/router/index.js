@@ -6,6 +6,7 @@ import NoticiasHome from '@/views/NoticiasHome.vue'
 import TopicoView from '@/views/TopicoView.vue'
 import About from '@/views/SiteAbout.vue'
 import NoticiaTemplate from '@/views/NoticiaTemplate.vue'
+import ResultadoBusca from '@/views/ResultadoBusca.vue'
 
 Vue.use(VueRouter)
 
@@ -36,6 +37,12 @@ const routes = [
       {
         path:'/noticia/:id',
         component: NoticiaTemplate
+      },
+      {
+        name: 'Busca',
+        path:'/busca/:valorPassado',
+        component: ResultadoBusca,
+        props: true
       }
     ]
   },

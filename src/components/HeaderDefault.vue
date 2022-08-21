@@ -11,8 +11,8 @@
         <option class="opcao" value="VALORANT">VALORANT</option>
       </select>
       <div class="pesquisa">
-        <img src="@/assets/pesquisa.png" alt="">
-        <input @click="animar($event)" type="text" placeholder="Pesquisar">
+        <img src="@/assets/pesquisa.png" alt="" @click="irParaPaginaBusca(busca)">
+        <input @click="animar($event)" type="text" placeholder="Pesquisar" v-model="busca" @keydown.enter="irParaPaginaBusca(busca)">
       </div>
       <router-link v-if="!(this.$route.path == '/perfil')" :to="{name:'paginaLogin', params: {cadastro:'Cadastro'}}" class="cadastro"><h1 >CADASTRE-SE</h1></router-link>
       <div v-if="!(this.$route.path == '/perfil')"  class="separador"></div>
@@ -24,6 +24,11 @@
 
 <script>
 export default {
+  data(){
+    return{
+      busca: '',
+    }
+  },
   props: ['nome'],
   mounted(){
     let header = document.querySelector('.header')
@@ -44,6 +49,14 @@ export default {
   methods:{
     animar(e){
       e.target.classList.add('animado')
+    },
+    irParaPaginaBusca(busca){
+      if(busca){
+        // if(busca.split(' ')[busca.split(' ').lenght-1] == ' ') {
+        //   busca = busca.replace(busca[busca.length-1],'')
+        // } Pedir ajuda pro ericao
+        this.$router.push({name:'Busca', params:{valorPassado: busca}})
+      }
     }
   }
 }
