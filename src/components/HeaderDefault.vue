@@ -3,13 +3,16 @@
     <router-link to="/"><img class="logo" draggable="false" src="@/assets/logo.png" alt=""></router-link>
     <div class="nav">
       <router-link to="/noticias/1" class="logo-name"><h1>NewSlayers</h1></router-link>
-      <label for="noticias"><h1 class="label-noticias">Noticias</h1></label>
-      <label for="noticias" class="triangulo"></label>
-      <select class="select-noticias" id="noticias" name="noticias">
-        <option class="opcao" value="league of legends">League of Legends</option>
-        <option class="opcao" value="wild rift">Wild Rift</option>
-        <option class="opcao" value="VALORANT">VALORANT</option>
-      </select>
+      <h1 class="label-noticias" @click="clicado = !clicado">Notícias</h1>
+      <ul class="ul-noticias" id="noticias" :class="clicado ? 'aparecendo' : ''" name="noticias">
+        <li class="item-dropdown"> <router-link class="item-text" to="/noticias/1">Todas as notícias</router-link></li>
+        <li class="item-dropdown"><router-link class="item-text" to="/topicos/lol">League of Legends</router-link></li>
+        <li class="item-dropdown"><router-link class="item-text" to="/topicos/valorant">VALORANT</router-link></li>
+        <li class="item-dropdown"><router-link class="item-text" to="/topicos/tft">TeamfightTatics</router-link></li>
+        <li class="item-dropdown"><router-link class="item-text" to="/topicos/tft">Wild Rift</router-link></li>
+        <li class="item-dropdown"><router-link class="item-text" to="/topicos/lor">Runeterra</router-link></li>
+      </ul>
+      <label for="noticias" class="triangulo" :class="{rotate : clicado}"></label>
       <div class="pesquisa">
         <img src="@/assets/pesquisa.png" alt="" @click="irParaPaginaBusca(busca)">
         <input @click="animar($event)" type="text" placeholder="Pesquisar" v-model="busca" @keydown.enter="irParaPaginaBusca(busca)">
@@ -27,6 +30,7 @@ export default {
   data(){
     return{
       busca: '',
+      clicado: false
     }
   },
   props: ['nome'],
@@ -80,6 +84,7 @@ export default {
   transition: background-color 500ms ease-in-out;
   font-family: 'Kadwa', serif;
   font-size: 13px;
+  z-index: 1;
 }
 .logo{
   position: relative;
@@ -100,17 +105,47 @@ export default {
   text-decoration: none;
   color: #fff;
 }
-.select-noticias{
-  width: 125px;
-  position: absolute;
-  left: 250px;
-  background-color: transparent;
-  outline: 0;
-  color: transparent;
-  border: none;
+.ul-noticias{
   height: 30px;
-  border: 0;
+  align-items: center;
+  position: absolute;
+  outline: 0;
   cursor: pointer;
+  padding: 0;
+  list-style: none;
+  top: calc(75px - 30px);
+  font-family: 'Share Tech', sans-serif;
+  margin: 0;
+  display: flex;
+  gap: 20px;
+  background-color: #04B9CC;
+  width: 90%;
+  margin: 0 auto;
+  justify-content: center;
+  border-radius: 0 0 10px 10px;
+  transition: 0.3s;
+  opacity: 0;
+}
+.label-noticias{
+  cursor: pointer;
+}
+.aparecendo{
+  top: 75px;
+  opacity: 1 !important;
+}
+
+.item-dropdown{
+  font-size: 20px;
+  margin: 0;
+  width: fit-content;
+  color: #fff;
+}
+.item-dropdown .item-text{
+  text-decoration: none;
+  color: #fff;
+}
+.rotate{
+  transform: rotate(180deg) translateY(-10px);
 }
 .opcao{
   color: #fff;
@@ -136,6 +171,7 @@ export default {
   height: 30px;
   position: relative;
   align-self: center;
+  cursor: pointer;
 }
 .pesquisa input{
   border: 0;
@@ -218,7 +254,7 @@ export default {
    .triangulo{
      left: 20px;
    }
-   .select-noticias{
+   .ul-noticias{
      left: 70px;
    }
 }
