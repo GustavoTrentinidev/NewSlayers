@@ -84,7 +84,7 @@ export default {
   transition: background-color 500ms ease-in-out;
   font-family: 'Kadwa', serif;
   font-size: 13px;
-  z-index: 1;
+  z-index: 2;
 }
 .logo{
   position: relative;

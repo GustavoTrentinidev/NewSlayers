@@ -116,7 +116,6 @@ export default {
     margin-top: 100px;
     display: flex;
     justify-content: center;
-    z-index: 1;
 }
 .info-noticia{
     position: absolute;
