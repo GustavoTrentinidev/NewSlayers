@@ -2,17 +2,17 @@
   <div class="header sem-opacidade">
     <router-link to="/"><img class="logo" draggable="false" src="@/assets/logo.png" alt=""></router-link>
     <div class="nav">
-      <router-link to="/noticias/1" class="logo-name"><h1>NewSlayers</h1></router-link>
+      <router-link to="/" class="logo-name"><h1>NewSlayers</h1></router-link>
       <h1 class="label-noticias" @click="clicado = !clicado">Notícias</h1>
       <ul class="ul-noticias" id="noticias" :class="clicado ? 'aparecendo' : ''" name="noticias">
         <li class="item-dropdown"> <router-link class="item-text" to="/noticias/1">Todas as notícias</router-link></li>
         <li class="item-dropdown"><router-link class="item-text" to="/topicos/lol">League of Legends</router-link></li>
         <li class="item-dropdown"><router-link class="item-text" to="/topicos/valorant">VALORANT</router-link></li>
         <li class="item-dropdown"><router-link class="item-text" to="/topicos/tft">TeamfightTatics</router-link></li>
-        <li class="item-dropdown"><router-link class="item-text" to="/topicos/tft">Wild Rift</router-link></li>
+        <li class="item-dropdown"><router-link class="item-text" to="/topicos/wr">Wild Rift</router-link></li>
         <li class="item-dropdown"><router-link class="item-text" to="/topicos/lor">Runeterra</router-link></li>
       </ul>
-      <label for="noticias" class="triangulo" :class="{rotate : clicado}"></label>
+      <label for="noticias" class="triangulo" @click="clicado = !clicado" :class="{rotate : clicado}"></label>
       <div class="pesquisa">
         <img src="@/assets/pesquisa.png" alt="" @click="irParaPaginaBusca(busca)">
         <input @click="animar($event)" type="text" placeholder="Pesquisar" v-model="busca" @keydown.enter="irParaPaginaBusca(busca)">
@@ -115,13 +115,12 @@ export default {
   list-style: none;
   top: calc(75px - 30px);
   font-family: 'Share Tech', sans-serif;
-  margin: 0;
   display: flex;
   gap: 20px;
   background-color: #04B9CC;
   width: 90%;
-  margin: 0 auto;
   justify-content: center;
+  margin: 0 auto;
   border-radius: 0 0 10px 10px;
   transition: 0.3s;
   opacity: 0;
