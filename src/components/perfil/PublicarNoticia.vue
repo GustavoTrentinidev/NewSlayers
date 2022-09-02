@@ -17,10 +17,7 @@
         </div>
     </div>
     <div class="row2">
-        <div class="textareazada">
-            <label for="texto">Texto da notícia</label>
-            <textarea name="texto" id=""  placeholder="Escreva o texto da notícia"></textarea>
-        </div>
+        <TextArea/>
         <div class="imagemzada">
             <label for="imagem">Imagem para a notícia</label>
             <input type="file" id="input-file" aria-hidden="true">
@@ -36,7 +33,9 @@
 </template>
 
 <script>
+import TextArea from '@/components/perfil/TextArea.vue'
 export default {
+    components:{TextArea},
     methods:{
         enviarArquivo(){
             document.getElementById('input-file').click()
@@ -99,22 +98,7 @@ export default {
     font-size: 15px;
     width: 50px;
 }
-.textareazada{
-    font-size: 30px;
-    display: flex;
-    flex-direction: column;
-}
-.textareazada textarea{
-    resize: none;
-    outline: 0;
-    border: 0;
-    font-size: 30px;
-    font-family: 'Share Tech', sans-serif;
-    width: 800px;
-    height: 450px;
-    box-sizing: border-box;
-    padding: 20px;
-}
+
 .imagemzada input{
     display: none;
 }
