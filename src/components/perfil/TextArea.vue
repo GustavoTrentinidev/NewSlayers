@@ -1,12 +1,16 @@
 <template>
     <div>
         <div class="textareazada">
-            <label for="texto">Texto da notícia</label>
+            <div class="acoes">
+                <label for="texto">Texto da notícia</label>
+                <button class="negrito" @click="formatar('*')">B</button>
+                <span class="tutorial">- Subtítulo</span>
+                <button @click="enviar()">Send</button>
+                </div>
+                <span class="tutorial">Para inserir o local das imagens utilize &lt;img&gt;</span>
             <textarea name="texto" ref="textarea" @select="select($event)" placeholder="Escreva o texto da notícia">
             </textarea>
         </div>
-        <button @click="formatar('*')">Negrito</button>
-        <button @click="enviar()">Enviar teste</button>
     </div>
 </template>
 
@@ -55,7 +59,7 @@ export default {
                         i = "<h1>"
                     }
                     tituloAberto = !tituloAberto
-                    textasso = textasso.substring(0, textasso.indexOf(iAntigo)-1) + i + textasso.substring(textasso.indexOf(iAntigo)+1,textasso.length) 
+                    textasso = textasso.substring(0, textasso.indexOf(iAntigo)) + i + textasso.substring(textasso.indexOf(iAntigo)+1,textasso.length) 
                 }
             }
             console.log(textasso)
@@ -80,5 +84,26 @@ export default {
     height: 450px;
     box-sizing: border-box;
     padding: 20px;
+}
+.acoes{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+    justify-content: flex-start;
+    align-items: center;
+}
+.acoes button{
+    width: 35px;
+    height: 35px;
+    border-radius: 0;
+    outline: 0;
+}
+.negrito{
+    font-weight: bold;
+    font-size: 20px;
+}
+.tutorial{
+    color: rgb(112, 112, 112);
+    font-size: 25px;
 }
 </style>
