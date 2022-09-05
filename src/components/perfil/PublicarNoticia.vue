@@ -20,7 +20,7 @@
         <TextArea/>
         <div class="imagemzada">
             <label for="imagem">Imagem para a notícia</label>
-            <input type="file" id="input-file" aria-hidden="true">
+            <input type="file" id="input-file" @change="Convert64()" aria-hidden="true">
             <div class="imagem" @click="enviarArquivo">
                 <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
             </div>
@@ -39,9 +39,19 @@ export default {
     methods:{
         enviarArquivo(){
             document.getElementById('input-file').click()
+        },
+        Convert64(){
+            let file = document.querySelector('#input-file').files[0]
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                console.log(reader.result);
+            };
         }
-    }
+
+    }   
 }
+
 </script>
 
 <style>
