@@ -1,70 +1,49 @@
 <template>
     <div class="main">
-        <div class="imagemPrincipal">
-            <div class="trapezioBranco">
-            </div>
-            <img draggable="false" src="@/assets/noticiasJanna.png" alt="">
-            <h1 class="texto" >Notícias</h1>
-        </div>
+        <div class="imagemNoticias"></div>
+        <NoticiasDestaque/>
         <NoticiasContainer/>
-        <MelhoresAutores/>
     </div>
 </template>
 
 <script>
 import NoticiasContainer from "@/components/ReadNoticias.vue"
-import MelhoresAutores from "@/components/MelhoresAutores.vue"
+import NoticiasDestaque from "@/components/NoticiasDestaque.vue"
 
 export default {
-    components: {NoticiasContainer, MelhoresAutores}
+    components: {NoticiasContainer, NoticiasDestaque}
 }
 </script>
 
 <style scoped>
 .main{
-    position: relative;
-    top: 75px;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 75px;
+  margin-bottom: 100px;
 }
-.imagemPrincipal{
-    width: 90%;
-    height: 300px;
-    background-color: #2D265F;
-    position: relative;
-    margin: 90px auto 0 auto;
-    display: flex;
+.imagemNoticias{
+  background-image: url('@/assets/noticiasImagem.png');
+  background-size:  cover;
+  background-position: top;
+  height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
 }
-.trapezioBranco{
-    width: 90%;
-    margin: 0 auto;
-    top: -25px;
-    position: relative;
-    border: 5px solid #fff;
-    height: 110%;
-    transform: skew(-20deg);
-}
-.imagemPrincipal img{
-    position: absolute;
-    margin: -90px auto;
-    left: 0;
-    right: 0;
-    height: 130%;
-}
-.texto{
-    position: absolute;
-    align-self: center;
-    font-size: 200px;
-    font-weight: normal;
-    text-align: center;
-    color: #fff;
-    right: 0;
-    left: 0;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none; 
-    -ms-user-select: none; 
-    user-select: none; 
+@media (min-width: 300px) and (max-width: 767px) {
+  .texto{
+    font-size: 70px;
+  }
+  .logo{
+    width: 50%;
+    top: 200px;
+  }
+  .imagemNoticias{
+    height: 500px;
+  }
 }
 </style>

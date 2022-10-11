@@ -4,7 +4,9 @@ import Home from '@/views/HomePage.vue'
 import Login from '@/views/LoginPage.vue'
 import NoticiasHome from '@/views/NoticiasHome.vue'
 import TopicoView from '@/views/TopicoView.vue'
-import PerfilPage from '@/views/PerfilPage.vue'
+import About from '@/views/SiteAbout.vue'
+import NoticiaTemplate from '@/views/NoticiaTemplate.vue'
+import ResultadoBusca from '@/views/ResultadoBusca.vue'
 
 Vue.use(VueRouter)
 
@@ -19,19 +21,34 @@ const routes = [
         component: Home
       },
       {
-        path:'/noticias',
-        component: NoticiasHome
+        path:'/noticias/:pagina',
+        component: NoticiasHome,
+        props: true
       },
       {
-        path:`/noticias/:topico`,
+        path:`/topicos/:topico`,
         component: TopicoView,
         props: true
       },
       {
-        path:'/perfil',
-        component: PerfilPage,
+        path:'/sobre',
+        component: About,
       },
+      {
+        path:'/noticia/:id',
+        component: NoticiaTemplate
+      },
+      {
+        name: 'Busca',
+        path:'/busca/:valorPassado',
+        component: ResultadoBusca,
+        props: true
+      }
     ]
+  },
+  {
+    path: '/perfil',
+    component: () => import("@/layouts/AreaPerfil.vue"),
   },
   {
     path: '',
@@ -41,6 +58,8 @@ const routes = [
       {
         path: '/login',
         component: Login,
+        props: true,
+        name: 'paginaLogin'
       }
     ]
   },

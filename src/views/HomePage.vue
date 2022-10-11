@@ -1,227 +1,259 @@
 <template>
   <div class="main">
     <div class="carrossel">
-      <carousel-3d
-        @before-slide-change="verificaCor"
-        @after-slide-change="verificaCor"
-        ref="mycarousel"
-        :controls-visible="true"
-        perspective="0"
-        width="660"
-        height="300"
-        :controls-prev-html="'&#10096; '"
-        :controls-next-html="'&#10097;'"
-        :autoplay="true"
-        :autoplayTimeout="4000"
-        :autoplayHoverPause="true"
-      >
-        <slide class="index0" :index="0">
-          <img src="@/assets/imagensTeste/pyke.jpg" alt="" />
+      <carousel navigationPrevLabel="" navigationNextLabel="" ref="carousel" :perPage="Number(1)" :autoplayTimeout="Number(5000)" @pageChange="show()" :navigationEnabled="true" :navigationClickTargetSize="Number(20)" paginationActiveColor="#fff" :paginationSize="35" paginationColor="#020013" :autoplay="true" :loop="true">
+        <slide v-for="(imagem,index) in imagensTopicos" :key="index">
+          <img :src="imagem" alt="" />
         </slide>
-        <slide class="index1" :index="1">
-          <img src="@/assets/imagensTeste/gnar.jpg" alt="" />
-        </slide>
-        <slide class="index2" :index="2">
-          <img src="@/assets/imagensTeste/yasuo.jpg" alt="" />
-        </slide>
-      </carousel-3d>
-      <div class="carrossel-botoes">
-        <div class="botao" @click="goToSlide(0)"></div>
-        <div class="botao" @click="goToSlide(1)"></div>
-        <div class="botao" @click="goToSlide(2)"></div>
-      </div>
+      </carousel>
+      <div class="botao-topico" @click="$router.push({path:'/topicos/'+ currentTopico.topico})">Ver notícias</div>
+      <div class="fade"></div>  
     </div>
-    <div class="topico">
-      <div class="topico-box" @click="$router.push({path:'/noticias/valorant'})">
-        <div class="valorant">
-          <img src="@/assets/logoValorant.png" alt="" />
-        </div>
-      </div>
-      <div class="noticias-topico">
-        <div class="noticia-exemplo direita">
-          <h1 class="texto-noticia-exemplo">TÍTULO NOTÍCIA</h1>
-          <img
-            class="imagem-noticia-exemplo"
-            src="@/assets/imagensTeste/valorantnoticia.jpg"
-            alt=""
-          />
-        </div>
-        <div class="noticia-exemplo esquerda">
-          <h1 class="texto-noticia-exemplo">TÍTULO NOTÍCIA</h1>
-          <img
-            class="imagem-noticia-exemplo"
-            src="@/assets/imagensTeste/valorantnoticia.jpg"
-            alt=""
-          />
+    <div class="noticias">
+      <h1>Notícias em destaque</h1>
+      <div class="noticias-block">
+        <div v-for="(noticia, index) in currentTopico.noticias" :key="index" class="noticia-topico " @click="$router.push({path: '/noticia/1'})">
+          <div class="imagem-noticia" :style="`background-image: url('${noticia.img}')`"></div>
+          <div class="other-info">
+            <h1>{{noticia.titulo | truncate(10, '...')}}</h1>
+            <h2 style="color: #fff">{{noticia.texto | truncate(100, '...') }}</h2>
+          </div>
         </div>
       </div>
     </div>
-    <div class="topico topico-lol">
-      <div class="topico-box" @click="$router.push({path:'/noticias/leagueoflegends'})">
-        <div class="league"></div>
-      </div>
-      <div class="noticias-topico">
-        <div class="noticia-exemplo direita">
-          <h1 class="texto-noticia-exemplo">TÍTULO NOTÍCIA</h1>
-          <img
-            class="imagem-noticia-exemplo"
-            src="@/assets/imagensTeste/valorantnoticia.jpg"
-            alt=""
-          />
-        </div>
-        <div class="noticia-exemplo esquerda">
-          <h1 class="texto-noticia-exemplo">TÍTULO NOTÍCIA</h1>
-          <img
-            class="imagem-noticia-exemplo"
-            src="@/assets/imagensTeste/valorantnoticia.jpg"
-            alt=""
-          />
-        </div>
-      </div>
+    <div class="button-holder">
+      <button @click="$router.push({path:'/topicos/'+ currentTopico.topico})" class="vermais">Ver mais &#8594;</button>
     </div>
+    <div class="fade2"></div> 
+    <MelhoresAutores/>
+
   </div>
 </template>
 
 <script>
-import { Carousel3d, Slide } from "vue-carousel-3d";
+import { Carousel, Slide } from "vue-carousel";
+import MelhoresAutores from "@/components/MelhoresAutores.vue"
+
 export default {
   components: {
-    Carousel3d,
+    Carousel,
     Slide,
+    MelhoresAutores
   },
-  mounted() {
-    this.verificaCor();
+  mounted(){
+    this.trocarNoticias()
+  },
+  data(){
+    return{
+      currentTopico:{},
+      noticiasDestaqueLol: {
+        topico: 'lol',
+        noticias:[
+        {img: require('@/assets/melhoresAutoresImg/cinematic1.jpg') ,titulo: 'dolor sit', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/melhoresAutoresImg/cinematic2.jpg') ,titulo: 'dolor sit', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/melhoresAutoresImg/cinematic3.jpg'),titulo: 'dolor sit', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+      ]},
+      noticiasDestaqueValorant: {
+        topico: 'valorant',
+        noticias: [
+        {img: require('@/assets/melhoresAutoresImg/cinematic4.jpg'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/melhoresAutoresImg/cinematic6.jpg'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/melhoresAutoresImg/cinematic7.jpg'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        ]},
+      noticiasDestaqueWR: {
+        topico: 'wr',
+        noticias:[
+        {img: require('@/assets/melhoresAutoresImg/cinematic8.jpg'),titulo: 'amet, consectetur', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/melhoresAutoresImg/cinematic9.jpg'),titulo: 'amet, consectetur', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/imagensTeste/wild.jpg'),titulo: 'amet, consectetur', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        ]},
+      noticiasDestaqueTFT: {
+        topico: 'tft',
+        noticias:[
+        {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        ]},
+      noticiasDestaqueLor:{
+        topico: 'lor',
+        noticias:[
+        {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+        {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
+      ]},
+      imagensTopicos: [require('@/assets/carrosselHome/lol-topico.png'), require('@/assets/carrosselHome/valorant-topico.png'), require('@/assets/carrosselHome/wr-topico.png'), require('@/assets/carrosselHome/tft-topico.png'), require('@/assets/carrosselHome/lor-topico.png')] 
+    }
   },
   methods: {
-    goToSlide(index) {
-      this.$refs.mycarousel.goSlide(index);
+    show(){
+      let noticias = document.querySelectorAll('.noticia-topico')
+      noticias.forEach( noticia =>{
+        noticia.classList.add('animacao-aparecer')
+        setTimeout(()=>{
+          noticia.classList.remove('animacao-aparecer')
+        }, 500)
+      })
+      let botaoTopico = document.querySelector('.botao-topico')
+      botaoTopico.classList.add('animacao-aparecer')
+      setTimeout(()=>{
+          botaoTopico.classList.remove('animacao-aparecer')
+        }, 500)
+      this.trocarNoticias()
     },
-    verificaCor() {
-      let botoes = document.querySelectorAll(".carrossel-botoes .botao");
-      let currentIndex = this.$refs.mycarousel.currentIndex;
-      botoes.forEach((botao) => {
-        this.mudaCor(botao);
-      });
-      this.mudaCor(botoes[currentIndex], "#fff");
-    },
-    mudaCor(el, cor = "#5F4CB4") {
-      el.style.backgroundColor = cor;
-    },
-  },
+    trocarNoticias(){
+      const topicos = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant, this.noticiasDestaqueWR, this.noticiasDestaqueTFT, this.noticiasDestaqueLor]
+      this.currentTopico = topicos[this.$refs.carousel.currentPage]
+    }
+  }
 };
 </script>
 
 <style scoped>
 .main {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 100px;
+}
+.carrossel{
   position: relative;
-  top: 75px;
-  display: flex;
-  flex-direction: column;
+  height: 700px;
 }
-.carrossel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 55px auto;
-  width: 1500px;
-  height: 400px;
-}
-
-.topico-box {
-  margin: 0 auto;
-  position: relative;
-  height: 300px;
-  margin: 0 55px 64px 55px;
-  padding: 20px;
-  border: 5px solid #fff;
-  background-color: #14112c;
-}
-.topico-box .valorant,
-.league {
-  background-image: url("@/assets/valoranttopico.jpg");
-  background-position: 50% 33%;
-  background-repeat: no-repeat;
-  position: absolute;
-  height: 300px;
-  left: -55px;
-  right: -55px;
-}
-.topico-box .league {
-  background-image: url("@/assets/leagueoflegendstopico.jpg") !important;
-  background-position: center;
-  background-size: cover;
-}
-
-.valorant img,
-.league img {
-  display: block;
-  margin: -30px auto;
-  max-width: 70%;
-}
-
-.noticias-topico {
-  display: flex;
-  flex-direction: column;
-}
-
-.noticia-exemplo {
-  width: 1200px;
-  height: 330px;
-  background-color: #2d265f;
-  margin: 0px 100px 50px 100px;
+.botao-topico{
+  font-size: 30px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-}
-
-.direita {
-  align-self: flex-end;
-}
-.esquerda {
-  align-self: flex-start;
-  flex-direction: row-reverse;
-}
-
-.texto-noticia-exemplo {
+  justify-content: center;
+  background-color: #020013;
+  font-weight: normal;
   color: #fff;
-  font-size: 80px;
-  font-weight: 100;
+  position: absolute;
+  border-radius: 10px;
+  z-index: 100;
+  width: 220px;
+  height: 60px;
+  right: 260px;
+  bottom: 140px;
+  text-transform: uppercase;
+  cursor: pointer;
 }
-.imagem-noticia-exemplo {
-  max-width: 500px;
+.VueCarousel{
+  height: 700px;
+}
+
+.VueCarousel img {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin: auto 0;
+}
+
+.VueCarousel button {
+  position: absolute;
+  right: 200px;
+}
+
+.fade{
+  height: 100px;
+  width: 100%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0), #0D0641);
+  top: 600px;
+  position: absolute;
+}
+
+.button-holder{
+  position: relative;
+  background-color: #0D0641;
+  height: 50px;
+}
+
+.vermais{
+  position: absolute;
+  font-size: 20px;
+  width: 130px;
+  right: 150px;
+  border: 0;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: 'Share Tech', sans-serif;
+  color: #0D0641;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.fade2{
+  height: 100px;
+  width: 100%;
+  background-image: linear-gradient(#0D0641,rgba(0, 0, 0, 0));
+}
+.noticias{
+  width: 100%;
+  background-color: #0D0641;
+  display: flex;
+  flex-direction: column;
+  padding: 0 80px 30px 80px;
+  box-sizing: border-box;
+}
+
+.noticias h1{
+  color: #fff;
+  text-align: center;
+  font-weight: normal;
+}
+.noticias-block{
+  border-top: 1px solid#fff;
+  border-bottom: 1px solid #fff;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  gap:50px;
+}
+.noticia-topico{
+  width: 650px;
+  height: 300px;
+  background-color: #020013;
+  margin: 100px auto 100px auto;
+  border-left: 2px solid#fff;
+  border-bottom: 2px solid #fff;
+  display: flex;
+  cursor: pointer;
+}
+.animacao-aparecer{
+  animation: appear ease-in-out 600ms;
+}
+.imagem-noticia{
+  width: 300px;
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+}
+.other-info{
+  font-size: 15px;
+}
+.other-info h1{
+  font-weight: bold;
+  text-align: initial;
+  margin-left: 20px;
+}
+.other-info h2{
+  display: block;
+  max-width: 300px;
+  margin-left: 10px;
+  font-weight: normal;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
 }
 
 @media (min-width: 300px) and (max-width: 767px) {
-  .carrossel {
-    margin: 55px auto;
-    width: 250px;
-    height: 100px;
-    background-color: #14112c;
+  .noticias-block {
+    display: flex;
+    flex-direction: column;
   }
-  .valorant,
-  .league {
-    background-position: 50% 33%;
-    position: absolute;
-    width: 325px;
-    height: 100px;
-  }
-}
-.carousel-3d-slide {
-  cursor: pointer;
-  background-color: #2d265f;
-}
-.carousel-3d-slide img {
-  position: relative;
-}
-.carrossel-botoes {
-  display: flex;
-}
-.carrossel-botoes .botao {
-  background: #5f4cb4;
-  width: 20px;
-  height: 20px;
-  margin: 10px;
-  border-radius: 100%;
-  cursor: pointer;
 }
 </style>

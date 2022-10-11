@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Header v-show="!(this.$route.path == '/perfil')"/>
+        <Header/>
         <router-view></router-view>
         <Footer/>
     </div>
@@ -17,7 +17,7 @@ export default {
 
 <style>
 body{
-    background-image: linear-gradient(black, #00164b);
+    /* background-image: linear-gradient(black, #00164b); */
     /* background-image: url("@/assets/backGround.png"); */
 }
 </style>

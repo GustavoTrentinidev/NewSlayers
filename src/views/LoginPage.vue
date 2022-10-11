@@ -1,152 +1,230 @@
 <template>
   <div class="main">
-      <div class="esquerda">
-        <div class="logo">
-            <img src="@/assets/logo.png" alt="" draggable="false">
-            <h1 class="textoLogo">NewSlayers</h1>
+    <div class="container-login" v-show="actualContainer == 'Login'">
+        <div class="logo-login">
+            <img class="logo" src="@/assets/logo.png" alt="">
+            <div class="logo-text">NewSlayers</div>
         </div>
-      </div>
-      <div class="direita">
-            <div class="border">
-                <div class="conteudo">
-                    <div class="forms">
-                        <label for="login">Login</label>
-                        <input class="input" placeholder="Login" name="login" type="text">
-                            <label for="login">Senha</label>
-                        <input class="input" placeholder="Senha" name="senha" type="text">
-                        <button class="login" @click="$router.push(path='/')">Entrar</button>
-                        <span class="forget">Esqueceu a senha?</span>
-                        <hr class="divider">
-                        <button class="login">Criar nova conta</button>
-                    </div>
-                </div>
-            </div>
-      </div>
+        <div class="forms">
+            <span>Login</span>
+            <form>
+                <input required type="text" placeholder="Usuário">
+                <input required type="text" placeholder="Senha">
+                <button type="submit" @click="$router.push({path:'/'})">Entrar</button>
+            </form>
+        </div>
+        <div class="opcoes">
+            <div @click="actualContainer = 'Cadastro'">Criar conta</div>
+            <div @click="actualContainer = 'Recuperar'">Esqueceu a senha?</div>
+        </div>
+    </div>
+    <!-- Cadastro -->
+    <div class="container-cadastro" v-show="actualContainer == 'Cadastro'">
+        <div class="logo-login">
+            <img class="logo" src="@/assets/logo.png" alt="">
+            <div class="logo-text">NewSlayers</div>
+        </div>
+        <div class="forms">
+            <span>Cadastro</span>
+            <form>
+                <input required type="text" placeholder="Usuário">
+                <input required type="email" placeholder="Email">
+                <input required type="text" placeholder="Senha">
+                <input required type="text" placeholder="Confirmar Senha">
+                <button type="submit">Cadastrar</button>
+            </form>
+        </div>
+        <div class="opcoes">
+            <div @click="actualContainer = 'Login'">Voltar para a tela de login &#8594;</div>
+        </div>
+    </div>
+    <!-- Container esqueceu a senha senha -->
+    <div class="container-rec-senha" v-show="actualContainer == 'Recuperar'">
+        <div class="logo-login">
+            <img class="logo" src="@/assets/logo.png" alt="">
+            <div class="logo-text">NewSlayers</div>
+        </div>
+        <div class="forms">
+            <span>Recuperação de conta</span>
+            <form>
+                <input required type="email" placeholder="Email">
+                <button type="submit" @click="actualContainer = 'Código'">Enviar</button>
+            </form>
+        </div>
+        <div class="opcoes">
+            <div @click="actualContainer = 'Login'">Voltar para a tela de login &#8594;</div>
+        </div>
+    </div>
+    <!-- Container código rec -->
+    <div class="container-rec-senha" v-show="actualContainer == 'Código'">
+        <div class="logo-login">
+            <img class="logo" src="@/assets/logo.png" alt="">
+            <div class="logo-text">NewSlayers</div>
+        </div>
+        <div class="forms">
+            <span>Código</span>
+            <form>
+                <input required type="text" placeholder="XXXXX">
+                <button type="submit" @click="actualContainer = 'Senha'">Confirmar</button>
+            </form>
+        </div>
+        <div class="opcoes">
+            <div @click="actualContainer = 'Login'">Voltar para a tela de login &#8594;</div>
+        </div>
+    </div>
+    <!-- Container nova senha -->
+    <div class="container-nova-senha" v-show="actualContainer == 'Senha'">
+        <div class="logo-login">
+            <img class="logo" src="@/assets/logo.png" alt="">
+            <div class="logo-text">NewSlayers</div>
+        </div>
+        <div class="forms">
+            <span>Nova senha</span>
+            <form>
+                <input required type="text" placeholder="Nova senha">
+                <input required type="text" placeholder="Confirmar senha">
+                <button type="submit" @click="actualContainer = 'Login'">Salvar</button>
+            </form>
+        </div>
+        <div class="opcoes">
+            <div @click="actualContainer = 'Login'">Voltar para a tela de login &#8594;</div>
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-
+    props: ['cadastro'],
+    mounted(){
+        if(this.cadastro != undefined){
+            this.actualContainer = this.cadastro
+        }
+    },
+    data(){
+        return{
+            actualContainer: 'Login',
+        }
+    }
 }
 </script>
 
 <style scoped>
 .main {
+  color: #fff;
   display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
-  background-image: url('@/assets/background-login.jpg');
+  background-image: url('@/assets/noticiasImagem.png');
   background-repeat: no-repeat;
   background-size: cover;
 }
-.esquerda{
-    width: 60%;
+.container-login{
+    width: 635px;
+    height: 630px;
+    background-color: #020013;
+    position: relative;
+}
+.logo-login{
+    height: 70px;
     display: flex;
-    align-items: center;
+    margin: 20px 30px;
+    position: relative;
 }
 .logo{
-    width: 900px;
-    height: 600px;
+    position: absolute;
+    width: 70px;
+    top: -35px;
+}
+.logo-text{
+    position: absolute;
+    top: -5px;
+    left: 80px;
+    font-size: 50px;
+    font-weight: bold;
+    font-family: 'Playfair Display SC', serif;
+}
+.forms span{
+    font-size: 30px;
+    margin-left: 35px;
+    font-family: 'Playfair Display SC', serif;
+    font-weight: bold;
+}
+.forms form{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    position: relative;
-    top:-35px;
+    margin-top: 35px;
 }
-.logo img{
-    width: 520px;
-    height: 460px;
-    object-fit: cover;
-}
-.textoLogo{
-    font-size: 200px;
-    font-weight: normal;
-    color: #fff;
-    margin: -50px 0 0 0;
-    -webkit-user-select: none; 
-    -moz-user-select: none;     
-    -ms-user-select: none;      
-     user-select: none;          
-}
-
-.direita{
-    width: 40%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.border{
-    width: 700px;
-    height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #14112C;
-    border: 5px solid #fff;
-    
-}
-.conteudo{
-    display: flex;
-    flex-direction: column;
-    width: 600px;
-    height: 500px;
-    background-color: #2D265F;
-    border-radius: 10px;
-}
-.forms{
-    position:relative;
-    margin: 0 auto;
-    top: 70px;
-    display: flex;
-    flex-direction: column;
-}
-.forms input{
-    width: 520px;
+.forms form input {
     height: 75px;
+    border-radius: 4px;
     outline: 0;
-    border-radius: 8px;
-    border: 0;
-    background-color: #14112C;
-    color: #fff;
+    border: 1px solid black;
+    background-color: #D8D8D8;
     font-size: 30px;
-    padding: 0px 10px 0 10px;
+    font-family: 'Share Tech', serif;
+    margin: 0 35px 35px 35px;
+    padding: 15px;
+    box-sizing: border-box;
 }
-.forms label{
-    font-size: 30px;
-    color: rgb(206, 203, 203);
+.forms form input::placeholder{
+    color: rgba(0, 0, 0, 0.8);
 }
-.login{
-    background-color: #14112C;
-    color: #fff;
-    margin: 15px auto 0 auto;
-    width: 250px;
+.forms form button{
+    width: 200px;
     height: 50px;
+    border-radius: 10px;
+    background-color: #2095AE;
+    outline: 0;
     border: 0;
     font-size: 30px;
-    font-family: 'Share Tech', sans-serif;
-    border-radius: 8px;
-    transition: 100ms ease-in-out;
-    cursor: pointer;
-}
-.login:hover{
-    transform: scale(1.05);
-}
-.forget{
+    font-family: 'Share Tech', serif;
     color: #fff;
-    font-size: 17px;
-    margin: 15px auto;
-}
-.forget:hover{
-    text-decoration: underline;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    margin: 0 auto;
     cursor: pointer;
+    transition: 200ms ease-in-out;
 }
-.divider{
-    width: 480px;
-    height: 2px;
-    border: 0;
-    background-color: #fff;
+.forms form button:hover{
+    transform: scale(1.03);
+}
+.opcoes{
+    font-size: 25px;
+    color: rgba(255, 255, 255, 0.6);
+    position: absolute;
+    bottom: 25px;
+    left: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.opcoes div{
+    cursor: pointer;
 }
 
+/* Início do componente de cadastro */
+.container-cadastro{
+    width: 635px;
+    height: 740px;
+    background-color: #020013;
+    position: relative;
+}
+
+/* Início do componente de recuperação de senha */
+
+.container-rec-senha{
+    height: 400px;
+    width: 635px;
+    background-color: #020013;
+    position: relative;
+}
+/* Início do nova senha */
+.container-nova-senha{
+    height: 515px;
+    width: 635px;
+    background-color: #020013;
+    position: relative;
+}
 </style>

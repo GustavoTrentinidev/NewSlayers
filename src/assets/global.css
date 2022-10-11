@@ -1,17 +1,66 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kadwa&display=swap');
 
 body {
     margin: 0;
     padding: 0;
     font-family: 'Share Tech', sans-serif;
+    /* font-family: 'Playfair Display SC', serif; */
 }
 
-.carousel-3d-controls .prev {
-    color: #fff;
-    left: 100px;
+.VueCarousel{
+    position: relative;
+}
+.carrossel .VueCarousel-wrapper{
+    position: absolute;
+    height: 700px;
 }
 
-.carousel-3d-controls .next {
+.VueCarousel .VueCarousel-navigation-button{
+    outline: 0 !important;
+    position: absolute;
     color: #fff;
-    right: 100px;
+    font-size: 60px;
+    outline: 0;
+    width: 100px;
+    height: 100px;
+    padding: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.VueCarousel .VueCarousel-navigation-prev{
+    left: 200px;
+    background-image: url('@/assets/paginationLeft.png');
+}
+.VueCarousel .VueCarousel-navigation-next{
+    right: 200px;
+    background-image: url('@/assets/paginationRight.png');
+}
+
+.VueCarousel .VueCarousel-pagination{
+    position: relative;
+    top: -120px;
+}
+
+.carrossel .VueCarousel .VueCarousel-pagination{
+    position: absolute;
+    top: 500px;
+  }
+
+  .autores .VueCarousel .VueCarousel-dot-container{
+    display: flex;
+    flex-direction: column;
+    right: 0;
+    position: absolute;
+    bottom: 5px;
+    margin: 0;
+}
+.autores .VueCarousel .VueCarousel-dot-container .VueCarousel-dot{
+    margin-bottom: -30px;
+}
+
+.noticia{
+    cursor: pointer;
 }
