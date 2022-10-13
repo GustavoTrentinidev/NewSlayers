@@ -9,7 +9,7 @@
                         <span>{{item.item}}</span>
                     </li>
                 </ul>
-                <div class="logout">
+                <div class="logout" @click="makeLogout">
                     <img class="icon" :src="require('@/assets/iconsPerfil/logout.png')" alt="">
                     <span>Sair</span>
                 </div>
@@ -39,6 +39,8 @@ import PublicarNoticia from "@/components/perfil/PublicarNoticia.vue"
 import PerfilInicial from '@/components/perfil/PerfilInicial.vue'
 import NoticiasCurtidas from '@/components/perfil/NoticiasCurtidas.vue'
 import NoticiasPublicadas from '@/components/perfil/NoticiasPublicadas.vue'
+import {mapActions} from "vuex"
+
 export default {
     components: {Header, EditarPerfil, PublicarNoticia, PerfilInicial, NoticiasCurtidas, NoticiasPublicadas},
     data(){
@@ -322,6 +324,10 @@ export default {
                 e.target.parentNode.classList.add('selected')
             }
         },
+        ...mapActions('auth', ["logout"]),
+        makeLogout(){
+            this.logout()
+        }
     }
 }
 </script>

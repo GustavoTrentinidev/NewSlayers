@@ -7,6 +7,7 @@ import TopicoView from '@/views/TopicoView.vue'
 import About from '@/views/SiteAbout.vue'
 import NoticiaTemplate from '@/views/NoticiaTemplate.vue'
 import ResultadoBusca from '@/views/ResultadoBusca.vue'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -71,6 +72,20 @@ const router = new VueRouter({
   routes,
   scrollBehavior () {
     return { x: 0, y: 0 }
+  }
+})
+
+router.beforeEach((to, from, next)=>{
+  if (to.matched.some(record => record.meta.auth)){
+    if(!store.state.auth.loggedIn){
+      next({
+        name: "Login"
+      })
+    }else{
+      next()
+    }
+  }else{
+    next()
   }
 })
 

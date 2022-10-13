@@ -8,9 +8,10 @@
         <div class="forms">
             <span>Login</span>
             <form>
-                <input required type="text" placeholder="Usuário">
-                <input required type="text" placeholder="Senha">
-                <button type="submit" @click="$router.push({path:'/'})">Entrar</button>
+                <input required type="text" v-model="usuario.username" placeholder="Usuário">
+                <input required type="text" v-model="usuario.password" placeholder="Senha">
+                <div class="error" v-show="error">{{errorMessage}}</div>
+                <button type="submit" @click.stop.prevent="submitLogin">Entrar</button>
             </form>
         </div>
         <div class="opcoes">
@@ -94,16 +95,33 @@
 </template>
 
 <script>
+import {mapActions} from "vuex"
 export default {
     props: ['cadastro'],
     mounted(){
         if(this.cadastro != undefined){
             this.actualContainer = this.cadastro
         }
+        this.logout()
     },
     data(){
         return{
             actualContainer: 'Login',
+            usuario: {},
+            error: false,
+            errorMessage: ''
+        }
+    },
+    methods: {
+        ...mapActions('auth',['login','logout']),
+        async submitLogin(){
+            try{
+                await this.login(this.usuario)
+                this.$router.push({path: '/'})
+            } catch (e){
+                this.error = true
+                this.errorMessage = e.response.data.detail
+            }
         }
     }
 }
@@ -167,6 +185,11 @@ export default {
     margin: 0 35px 35px 35px;
     padding: 15px;
     box-sizing: border-box;
+}
+.error{
+    font-size: 20px;
+    margin: -30px 0 0 35px;
+    color: #FC575E;
 }
 .forms form input::placeholder{
     color: rgba(0, 0, 0, 0.8);

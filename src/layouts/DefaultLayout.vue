@@ -1,6 +1,7 @@
 <template>
     <div>
         <Header/>
+        <div style="font-size: 45px; margin-top:75px">Logado - {{loggedIn}}</div>
         <router-view></router-view>
         <Footer/>
     </div>
@@ -9,8 +10,12 @@
 <script>
 import Header from '../components/HeaderDefault.vue'
 import Footer from '../components/FooterDefault.vue'
+import {mapState} from "vuex"
 
 export default {
+    computed: {
+        ...mapState('auth', ['loggedIn', 'user'])
+    },
     components: {Header, Footer}
 }
 </script>
