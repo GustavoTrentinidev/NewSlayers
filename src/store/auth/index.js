@@ -19,11 +19,12 @@ export const auth = {
         }
     },
     actions: {
-        async login({commit}, user){
+        async login({commit, dispatch}, user){
             try {
                 const userInfo = await authService.login(user)
                 commit('setLoginInfo', userInfo)
                 tokenChange(userInfo.access)
+                dispatch('usuario/getDadosUsuarioLogado', {}, {root:true})
                 return Promise.resolve(userInfo)
             } catch (e){
                 commit('setLogout')
