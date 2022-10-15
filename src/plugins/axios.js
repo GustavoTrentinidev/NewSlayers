@@ -2,7 +2,7 @@ import axios from "axios"
 import store from "@/store"
 
 
-axios.defaults.baseURL = "https://newslayers.herokuapp.com/"
+axios.defaults.baseURL = "https://backend-newslayers-production.up.railway.app/"
 
 const tokenChange = (token = store.state.auth.user.access) => {
     if (token){

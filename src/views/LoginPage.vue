@@ -28,11 +28,12 @@
         <div class="forms">
             <span>Cadastro</span>
             <form>
-                <input required type="text" placeholder="Usuário">
-                <input required type="email" placeholder="Email">
-                <input required type="text" placeholder="Senha">
-                <input required type="text" placeholder="Confirmar Senha">
-                <button type="submit">Cadastrar</button>
+                <input required type="text" placeholder="Usuário" v-model="novoUsuario.username">
+                <input required type="email" placeholder="Email" v-model="novoUsuario.email">
+                <input required type="text" placeholder="Senha" v-model="novoUsuario.password">
+                <input required type="text" placeholder="Confirmar Senha" v-model="conf">
+                <div class="error" v-show="error">{{errorMessage}}</div>
+                <button @click.stop.prevent="submitRegister">Cadastrar</button>
             </form>
         </div>
         <div class="opcoes">
@@ -96,6 +97,7 @@
 
 <script>
 import {mapActions} from "vuex"
+import axios from "axios"
 export default {
     props: ['cadastro'],
     mounted(){
@@ -109,7 +111,15 @@ export default {
             actualContainer: 'Login',
             usuario: {},
             error: false,
-            errorMessage: ''
+            errorMessage: '',
+            novoUsuario: {},
+            conf: ''
+        }
+    },
+    watch: {
+        actualContainer(){
+            this.error = false
+            this.errorMessage = ''
         }
     },
     methods: {
@@ -121,6 +131,30 @@ export default {
             } catch (e){
                 this.error = true
                 this.errorMessage = e.response.data.detail
+            }
+        },
+        async register(){
+            if(this.conf != this.novoUsuario.password){
+                this.error = true
+                this.errorMessage = 'As senhas não coincidem'
+            }else{
+                try {
+                    await axios.post('/usuarios/', this.novoUsuario)
+                }catch(e){
+                    this.error = true
+                    this.errorMessage = e.response.data["username"][0]
+                    return e
+                }
+            }
+        },
+        async submitRegister(){
+            let err = await this.register()
+            if(!err){
+                const {username, password} = this.novoUsuario
+                await this.login({username, password})
+                this.$router.push({path: '/'})
+            }else{
+                console.log(err)
             }
         }
     }

@@ -327,6 +327,7 @@ export default {
         ...mapActions('auth', ["logout"]),
         makeLogout(){
             this.logout()
+            this.$router.push({path: '/'})
         }
     }
 }
