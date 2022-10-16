@@ -1,10 +1,12 @@
 <template>
   <div class="informacoes-usuario">
     <div class="card-usuario">
-        <div class="banner" :style="'background-image: url('+ usuarioVisitado.banner + ')'"></div>
-        <div class="img-usuario" :style="'background-image: url('+ usuarioVisitado.img + ')'"></div>
+        <div class="banner" v-if="usuarioVisitado.midia && usuarioVisitado.midia.midiabannerpath" :style="'background-image: url('+ usuarioVisitado.midia.midiabannerpath + ')'"></div>
+        <div class="banner" v-else style="background-color: #67339b"></div>
+        <div class="img-usuario" v-if="usuarioVisitado.midia && usuarioVisitado.midia.midiaprofilepath" :style="'background-image: url('+ usuarioVisitado.midia.midiaprofilepath + ')'"></div>
+        <div class="img-usuario" v-else :style="'background-image: url('+ imgUserDefault + ')'"></div>
         <div class="nome-e-email">
-            <div class="nome">{{usuarioVisitado.nome}}</div>
+            <div class="nome">{{usuarioVisitado.username}}</div>
             <div class="email">{{usuarioVisitado.email}}</div>
         </div>
         <!-- <div v-show="usuarioLogado.id != usuarioVisitado.id"> -->
@@ -18,9 +20,10 @@
             <span class="oque">SEGUIDORES</span>
         </div>
         <div class="lista-seguidores">
-            <div class="seguidor" v-for="(seguidor,index) in usuarioVisitado.seguidores" :key="index">
-                <div class="img-seguidor" :style="'background-image: url('+ seguidor.img + ')'"></div>
-                <div class="nome-seguidor">{{seguidor.nome}}</div>
+            <div class="seguidor" @click="$router.push({name: 'Perfil', params:{id: seguidor.id}})" v-for="(seguidor,index) in usuarioVisitado.seguidores" :key="index">
+                <div class="img-seguidor" v-if="seguidor.midia && seguidor.midia.midiaprofilepath" :style="'background-image: url('+ seguidor.midia.midiaprofilepath + ')'"></div>
+                <div class="img-seguidor" v-else :style="'background-image: url('+ imgUserDefault + ')'"></div>
+                <div class="nome-seguidor">{{seguidor.username}}</div>
                 <div class="tipo-seguidor" v-if="seguidor.tipo == 0">Padrão</div>
                 <div class="tipo-seguidor" v-else>Editor</div>
             </div>
@@ -32,9 +35,10 @@
             <span class="oque">SEGUINDO</span>
         </div>
         <div class="lista-seguidores">
-            <div class="seguidor" v-for="(manoSeguido,index) in usuarioVisitado.seguindo" :key="index">
-                <div class="img-seguidor" :style="'background-image: url('+ manoSeguido.img + ')'"></div>
-                <div class="nome-seguidor">{{manoSeguido.nome}}</div>
+            <div class="seguidor" @click="$router.push({name: 'Perfil', params:{id: manoSeguido.id}})" v-for="(manoSeguido,index) in usuarioVisitado.seguindo" :key="index">
+                <div class="img-seguidor" v-if="manoSeguido.midia && manoSeguido.midia.midiaprofilepath" :style="'background-image: url('+ manoSeguido.midia.midiaprofilepath + ')'"></div>
+                <div class="img-seguidor" v-else :style="'background-image: url('+ imgUserDefault + ')'"></div>
+                <div class="nome-seguidor">{{manoSeguido.username}}</div>
                 <div class="tipo-seguidor" v-if="manoSeguido.tipo == 0">Padrão</div>
                 <div class="tipo-seguidor" v-else>Editor</div>
             </div>
@@ -49,6 +53,7 @@ export default {
     data(){
         return{
             seguindo: false,
+            imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png')
         }
     },
 }
@@ -185,6 +190,7 @@ export default {
     align-items: center;
     gap: 10px;
     background-color: #060F29;
+    cursor: pointer;
 }
 .img-seguidor{
     width: 30px;

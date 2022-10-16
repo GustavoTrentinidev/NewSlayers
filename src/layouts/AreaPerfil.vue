@@ -16,13 +16,14 @@
             </div>
             <div class="area-componente">
                 <div class="overlay">
-                    <div class="banner" :style="'background-image: url('+ usuarioVisitado.banner + ')'"></div>
+                    <div class="banner" v-if="usuarioVisitado1.midia" :style="'background-image: url('+ usuarioVisitado1.midia.midiabannerpath + ')'"></div>
+                    <div class="banner" v-else style="background-color: #67339b"></div>
                     <div class="qualUsuario" v-show="componenteMostrado == 'Notícias Curtidas' || componenteMostrado == 'Notícias Publicadas' ">
                         <div class="foto-usuario" :style="'background-image: url('+ usuarioVisitado.img + ')'"></div>
                         <div class="nome-usuario">{{usuarioVisitado.nome}}</div>
                     </div> 
                 </div>
-                <PerfilInicial v-show="componenteMostrado == 'Perfil'" :usuarioVisitado="usuarioVisitado" :usuarioLogado="usuarioLogado"/>
+                <PerfilInicial v-show="componenteMostrado == 'Perfil'" :usuarioVisitado="usuarioVisitado1" :usuarioLogado="usuarioLogado"/>
                 <EditarPerfil v-show="componenteMostrado == 'Editar Perfil'" :usuario="usuarioLogado"/>
                 <PublicarNoticia v-show="componenteMostrado == 'Publicar Notícia'"/>
                 <NoticiasCurtidas v-show="componenteMostrado == 'Notícias Curtidas'" :noticiasCurtidas="usuarioVisitado.noticiasCurtidas"/>
@@ -40,6 +41,7 @@ import PerfilInicial from '@/components/perfil/PerfilInicial.vue'
 import NoticiasCurtidas from '@/components/perfil/NoticiasCurtidas.vue'
 import NoticiasPublicadas from '@/components/perfil/NoticiasPublicadas.vue'
 import {mapActions} from "vuex"
+import axios from "axios"
 
 export default {
     components: {Header, EditarPerfil, PublicarNoticia, PerfilInicial, NoticiasCurtidas, NoticiasPublicadas},
@@ -304,15 +306,22 @@ export default {
                 {icon: require('@/assets/iconsPerfil/editar.png'), item: 'Editar Perfil'},
                 {icon: require('@/assets/iconsPerfil/noticias.png'), item: 'Notícias Publicadas'},
                 {icon: require('@/assets/iconsPerfil/publicar.png'), item: 'Publicar Notícia'}
-            ]
+            ],
+            usuarioVisitado1: {}
         }
     },
     mounted(){
         if(this.usuarioLogado.id != this.usuarioVisitado.id){
             this.listaItens.splice(2,1)
         }
+        this.getUsuarioVisitado()
     },
     methods: {
+        async getUsuarioVisitado(){
+            const {data} = await axios.get(`/usuarios/${this.$route.params.id}`)
+            this.usuarioVisitado1 = data
+            console.log(this.usuarioVisitado1)
+        },
         trocarComponente(e){
             var itens = document.querySelectorAll('.item')
             itens.forEach(item=>{

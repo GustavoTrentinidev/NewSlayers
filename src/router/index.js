@@ -48,8 +48,10 @@ const routes = [
     ]
   },
   {
-    path: '/perfil',
+    name: "Perfil",
+    path: '/perfil/:id',
     component: () => import("@/layouts/AreaPerfil.vue"),
+    props:true,
   },
   {
     path: '',

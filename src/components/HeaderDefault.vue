@@ -17,23 +17,32 @@
         <img src="@/assets/pesquisa.png" alt="" @click="irParaPaginaBusca(busca)">
         <input @click="animar($event)" type="text" placeholder="Pesquisar" v-model="busca" @keydown.enter="irParaPaginaBusca(busca)">
       </div>
-      <router-link v-if="!(this.$route.path == '/perfil')" :to="{name:'paginaLogin', params: {cadastro:'Cadastro'}}" class="cadastro"><h1 >CADASTRE-SE</h1></router-link>
-      <div v-if="!(this.$route.path == '/perfil')"  class="separador"></div>
-      <router-link v-if="!(this.$route.path == '/perfil')" to="/login" class="login"><h1 >LOGIN</h1></router-link>
-      <h1 class="login perfil" v-else>{{nome}}</h1>
+      <div v-if="!this.loggedIn" class="auth-actions">
+        <router-link :to="{name:'paginaLogin', params: {cadastro:'Cadastro'}}" class="cadastro"><h1 >CADASTRE-SE</h1></router-link>
+        <div class="separador"></div>
+        <router-link to="/login" class="login"><h1 >LOGIN</h1></router-link>
+      </div>
+      <div v-else>
+        <div @click="irParaPerfil" class="login"><h1 >MEU PERFIL</h1></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import {mapState} from "vuex"
+
 export default {
+  computed: {
+    ...mapState('usuario',['usuario']),
+    ...mapState('auth',['loggedIn'])
+  },
   data(){
     return{
       busca: '',
       clicado: false
     }
   },
-  props: ['nome'],
   mounted(){
     let header = document.querySelector('.header')
     if(this.$route.path == '/'){
@@ -51,6 +60,9 @@ export default {
     }
   },
   methods:{
+    irParaPerfil(){
+      this.$router.push({name: 'Perfil', params:{id:this.usuario.id}})
+    },
     animar(e){
       e.target.classList.add('animado')
     },
@@ -218,6 +230,8 @@ export default {
   color: #fff;
   font-weight: normal;
   text-decoration: none;
+  top: -5px;
+  cursor: pointer;
 }
 .cadastro{
   position: absolute;
@@ -225,6 +239,7 @@ export default {
   color: #04B9CC;
   text-decoration: none;
   font-weight: normal;
+  top: -5px;
 }
 .separador{
   height: 50%;
@@ -232,6 +247,7 @@ export default {
   width: 2px;
   position: absolute;
   right: 110px;
+  top: 20px;
 }
 .publicar{
   position: absolute;
