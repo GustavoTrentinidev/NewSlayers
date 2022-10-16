@@ -3,7 +3,9 @@ import Vuex from "vuex"
 import VuexPersistence from "vuex-persist"
 
 import {auth} from "./auth"
-import {usuario} from "@/store/usuario.js"
+import {usuario} from "@/store/usuarios/usuario.js"
+import {usuariovisitado} from "@/store/usuarios/usuariovisitado.js"
+import {noticia} from "@/store/noticia.js"
 Vue.use(Vuex)
 
 const vuexLocal = new VuexPersistence({
@@ -13,7 +15,9 @@ const vuexLocal = new VuexPersistence({
 
 const modules = {
     auth,
-    usuario
+    usuario,
+    usuariovisitado,
+    noticia
 }
 
 export default new Vuex.Store({

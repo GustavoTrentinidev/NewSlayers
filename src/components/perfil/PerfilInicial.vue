@@ -48,8 +48,14 @@
 </template>
 
 <script>
+import {mapState} from "vuex"
+
+
 export default {
-    props: ['usuarioVisitado', 'usuarioLogado'],
+    computed: {
+        ...mapState('usuario', {usuarioLogado: 'usuario'}),
+        ...mapState('usuariovisitado', {usuarioVisitado: 'usuariovisitado'})
+    },
     data(){
         return{
             seguindo: false,

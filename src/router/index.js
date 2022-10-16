@@ -36,8 +36,10 @@ const routes = [
         component: About,
       },
       {
+        name: 'Noticia',
         path:'/noticia/:id',
-        component: NoticiaTemplate
+        component: NoticiaTemplate,
+        props: true
       },
       {
         name: 'Busca',

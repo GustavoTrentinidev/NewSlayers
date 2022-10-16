@@ -1,17 +1,17 @@
 <template>
   <div class="main">
-    <div class="img-chamada" :style="'background-image: url(' + noticia.img + ')'"></div>
+    <div class="img-chamada" :style="'background-image: url(' + midiaprincipal.midiapath + ')'"></div>
     <div class="chamada">
         <div class="container-chamada">
             <div class="area-editor">
-                <div class="img-editor" :style="'background-image: url(' + noticia.editor.img + ')'"></div>
-                <div class="nome-editor">{{noticia.editor.nome}}</div>
+                <div class="img-editor" :style="'background-image: url(' + noticia.user_iduser.midia.midiaprofilepath + ')'"></div>
+                <div class="nome-editor">{{noticia.user_iduser.username}}</div>
             </div>
             <div class="titulo-e-data">
                 <div class="titulo">
-                    {{noticia.titulo}} 
+                    {{noticia.noticiatitulo}} 
                     <div class="data">
-                        {{noticia.data}}
+                        {{noticia.noticiadatacadastro.split('-').reverse().join('/')}}
                     </div>
                 </div>
             </div>
@@ -32,37 +32,53 @@
 import CardsHeart from 'vue-material-design-icons/CardsHeart.vue';
 import Link from 'vue-material-design-icons/Link.vue';
 import ConteudoComentarios from '@/components/ConteudoComentarios.vue'
+import {mapActions} from "vuex"
+import {mapState} from "vuex"
+
+
 export default {
     components: {CardsHeart,Link,ConteudoComentarios},
+    computed:{
+        ...mapState('noticia', ['noticia'])
+    },
     data(){
         return{
             coracao: 'white',
-            noticia: {titulo: 'ATUALIZAÇÃO NA CONSISTÊNCIA DAS PARTIDAS DO VALORANT – 2', 
-            texto: '<h1> ANNIE MUITO SHOW BALA FERA SHOW DE BOLA SHOWS LEGALS </h1> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. <br> <img> <h1> ATUALIZAÇÃO NA CONSISTÊNCIA DAS PARTIDAS DO VALORANT – 2 </h1> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-            data: '05/08/2022',
-            topico: 'League of Legends',
-            img: require('@/assets/noticiaTemplateChamada.png'),
-            midia:[require('@/assets/noticiaTemplateTexto.png')],
-            editor: {img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
             comentarios: [
                 {texto:'Muito show mano!! Notícia top !!! Qualidade do site insana tbm...  Os devs e designers mandaram muitooo. Em relação à notícia, eu discordo. Pois acho que as mudanças na annie são nocivas ao meio ambiente e causam um impacto paia...', usuario:{img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'),nome:'Gragustavo'}, data: '22/08/22'},
                 {texto:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullam co laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia ', usuario:{img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'),nome:'Gragustavo'}, data: '22/08/22'},
                 {texto:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullam co laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia ', usuario:{img: require('@/assets/melhoresAutoresImg/amanda.jpg'),nome:'Stanlety'}, data: '22/08/22'},
                 {texto:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullam co laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia ', usuario:{img: require('@/assets/melhoresAutoresImg/wukas.jpg'),nome:'Tropa do calvo'}, data: '22/08/22'},
                 {texto:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullam co laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia ', usuario:{img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'),nome:'Gragustavo'}, data: '22/08/22'},
-            ]
+            ],
+            //Dados reais
+            midiaprincipal: '',
+            midiasrestantes: [],
         }
     },
     methods:{
+        ...mapActions('noticia',['getNoticia']),
         atualizaComentarios(comentariosAtualizados){
             this.comentarios = comentariosAtualizados
+        },
+        separarMidiaPrincipal(){
+            this.midiaprincipal = this.noticia.midia[0]
+            this.midiasrestantes = this.noticia.midia.splice(1,this.noticia.midia.length) 
+        },
+        colocarMidiasNoTexto(){
+            for(let midia of this.midiasrestantes){
+                if((this.noticia.texto.split('<img>').length -1) != 0){
+                    this.noticia.texto = this.noticia.texto.replace("<img>", `<div class="img-texto" style="margin:50px 0; background-position:center; background-size:cover; height:600px; width:1200px; background-image: url(${midia.midiapath})"></div>`)
+                }        
+            }
         }
     },
     mounted(){
-        // console.log(this.noticia.texto.split('<img>').length -1)
-        if((this.noticia.texto.split('<img>').length -1) != 0){
-            this.noticia.texto = this.noticia.texto.replace("<img>", `<div class="img-texto" style="margin:50px 0; background-position:center; background-size:cover; height:600px; width:1200px; background-image: url(${this.noticia.midia[0]})"></div>`)
-        }
+        this.getNoticia(this.$route.params.id).then(()=>{
+            this.separarMidiaPrincipal()
+            this.colocarMidiasNoTexto()
+            console.log(this.midiasrestantes)
+        })
     },
 }
 </script>

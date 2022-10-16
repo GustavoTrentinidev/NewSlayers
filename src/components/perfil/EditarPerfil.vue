@@ -1,6 +1,6 @@
 <template>
   <div class="editar-perfil">
-    <div class="banner" v-if="usuario.midida && usuario.midia.midiabannerpath" :style="'background-image: url(' + usuario.midia.midiabannerpath + ')'">
+    <div class="banner" v-if="usuario.midia && usuario.midia.midiabannerpath" :style="'background-image: url(' + usuario.midia.midiabannerpath + ')'">
       <div class="overlay">
         <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
       </div>
@@ -35,8 +35,11 @@
 </template>
 
 <script>
+import {mapState} from "vuex"
 export default {
-  props: ['usuario'],
+  computed:{
+    ...mapState('usuario', ['usuario'])
+  },
   data(){
     return{
       imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png')

@@ -24,11 +24,11 @@
                         <div class="nome-usuario">{{usuarioVisitado1.username}}</div>
                     </div> 
                 </div>
-                <PerfilInicial v-show="componenteMostrado == 'Perfil'" :usuarioVisitado="usuarioVisitado1" :usuarioLogado="usuarioLogado"/>
-                <EditarPerfil v-show="componenteMostrado == 'Editar Perfil'" :usuario="usuarioLogado1"/>
-                <PublicarNoticia v-show="componenteMostrado == 'Publicar Notícia'"/>
-                <NoticiasCurtidas v-show="componenteMostrado == 'Notícias Curtidas'" :noticiasCurtidas="usuarioVisitado.noticiasCurtidas"/>
-                <NoticiasPublicadas v-show="componenteMostrado == 'Notícias Publicadas'" :noticiasPublicadas="usuarioVisitado.noticiasPublicadas"/>
+                <PerfilInicial v-if="componenteMostrado == 'Perfil'"/>
+                <EditarPerfil v-if="componenteMostrado == 'Editar Perfil'"/>
+                <PublicarNoticia v-if="componenteMostrado == 'Publicar Notícia'"/>
+                <NoticiasCurtidas v-if="componenteMostrado == 'Notícias Curtidas'"/>
+                <NoticiasPublicadas v-if="componenteMostrado == 'Notícias Publicadas'" :noticiasPublicadas="usuarioVisitado.noticiasPublicadas"/>
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@ import NoticiasCurtidas from '@/components/perfil/NoticiasCurtidas.vue'
 import NoticiasPublicadas from '@/components/perfil/NoticiasPublicadas.vue'
 import {mapActions} from "vuex"
 import {mapState} from "vuex"
-import axios from "axios"
+
 
 export default {
     components: {Header, EditarPerfil, PublicarNoticia, PerfilInicial, NoticiasCurtidas, NoticiasPublicadas},
@@ -306,29 +306,27 @@ export default {
                 {icon: require('@/assets/iconsPerfil/perfil.png'), item: 'Perfil'},
                 {icon: require('@/assets/iconsPerfil/curtidas.png'), item: 'Notícias Curtidas'},
                 {icon: require('@/assets/iconsPerfil/noticias.png'), item: 'Notícias Publicadas'},
-                {icon: require('@/assets/iconsPerfil/publicar.png'), item: 'Publicar Notícia'}
+                
             ],
-            usuarioVisitado1: {},
             imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png')
         }
     },
     computed: {
-        ...mapState('usuario',{'usuarioLogado1':'usuario'})
+        ...mapState('usuario',{'usuarioLogado1':'usuario'}),
+        ...mapState('usuariovisitado',{'usuarioVisitado1': 'usuariovisitado'})
     },
     created(){
-        this.getUsuarioVisitado().then(()=>{
+        this.getUsuariovisitado(this.$route.params.id).then(()=>{
             if(this.usuarioLogado1.id == this.usuarioVisitado1.id){
                 this.listaItens.push({icon: require('@/assets/iconsPerfil/editar.png'), item: 'Editar Perfil'})
+                if(this.usuarioLogado1.groups[0] == 2){
+                    this.listaItens.push({icon: require('@/assets/iconsPerfil/publicar.png'), item: 'Publicar Notícia'})
+                }
             }
         })
-        console.log(this.usuarioLogado1)
     },
     methods: {
-        async getUsuarioVisitado(){
-            const {data} = await axios.get(`/usuarios/${this.$route.params.id}`)
-            this.usuarioVisitado1 = data
-            console.log(this.usuarioVisitado1)
-        },
+        ...mapActions('usuariovisitado',['getUsuariovisitado']),
         trocarComponente(e){
             var itens = document.querySelectorAll('.item')
             itens.forEach(item=>{
