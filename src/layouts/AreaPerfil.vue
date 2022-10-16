@@ -17,14 +17,15 @@
             <div class="area-componente">
                 <div class="overlay">
                     <div class="banner" v-if="usuarioVisitado1.midia" :style="'background-image: url('+ usuarioVisitado1.midia.midiabannerpath + ')'"></div>
-                    <div class="banner" v-else style="background-color: #67339b"></div>
+                    <div class="banner" v-else :style="'background-image: url('+ require('@/assets/noticiasImagem.png') + ')'"></div>
                     <div class="qualUsuario" v-show="componenteMostrado == 'Notícias Curtidas' || componenteMostrado == 'Notícias Publicadas' ">
-                        <div class="foto-usuario" :style="'background-image: url('+ usuarioVisitado.img + ')'"></div>
-                        <div class="nome-usuario">{{usuarioVisitado.nome}}</div>
+                        <div class="foto-usuario" v-if="usuarioVisitado1.midia && usuarioVisitado1.midia.midiaprofilepath" :style="'background-image: url('+ usuarioVisitado1.midia.midiaprofilepath + ')'"></div>
+                        <div class="foto-usuario" v-else :style="'background-image: url('+ imgUserDefault + ')'"></div>
+                        <div class="nome-usuario">{{usuarioVisitado1.username}}</div>
                     </div> 
                 </div>
                 <PerfilInicial v-show="componenteMostrado == 'Perfil'" :usuarioVisitado="usuarioVisitado1" :usuarioLogado="usuarioLogado"/>
-                <EditarPerfil v-show="componenteMostrado == 'Editar Perfil'" :usuario="usuarioLogado"/>
+                <EditarPerfil v-show="componenteMostrado == 'Editar Perfil'" :usuario="usuarioLogado1"/>
                 <PublicarNoticia v-show="componenteMostrado == 'Publicar Notícia'"/>
                 <NoticiasCurtidas v-show="componenteMostrado == 'Notícias Curtidas'" :noticiasCurtidas="usuarioVisitado.noticiasCurtidas"/>
                 <NoticiasPublicadas v-show="componenteMostrado == 'Notícias Publicadas'" :noticiasPublicadas="usuarioVisitado.noticiasPublicadas"/>
@@ -41,6 +42,7 @@ import PerfilInicial from '@/components/perfil/PerfilInicial.vue'
 import NoticiasCurtidas from '@/components/perfil/NoticiasCurtidas.vue'
 import NoticiasPublicadas from '@/components/perfil/NoticiasPublicadas.vue'
 import {mapActions} from "vuex"
+import {mapState} from "vuex"
 import axios from "axios"
 
 export default {
@@ -303,18 +305,23 @@ export default {
             listaItens: [
                 {icon: require('@/assets/iconsPerfil/perfil.png'), item: 'Perfil'},
                 {icon: require('@/assets/iconsPerfil/curtidas.png'), item: 'Notícias Curtidas'},
-                {icon: require('@/assets/iconsPerfil/editar.png'), item: 'Editar Perfil'},
                 {icon: require('@/assets/iconsPerfil/noticias.png'), item: 'Notícias Publicadas'},
                 {icon: require('@/assets/iconsPerfil/publicar.png'), item: 'Publicar Notícia'}
             ],
-            usuarioVisitado1: {}
+            usuarioVisitado1: {},
+            imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png')
         }
     },
-    mounted(){
-        if(this.usuarioLogado.id != this.usuarioVisitado.id){
-            this.listaItens.splice(2,1)
-        }
-        this.getUsuarioVisitado()
+    computed: {
+        ...mapState('usuario',{'usuarioLogado1':'usuario'})
+    },
+    created(){
+        this.getUsuarioVisitado().then(()=>{
+            if(this.usuarioLogado1.id == this.usuarioVisitado1.id){
+                this.listaItens.push({icon: require('@/assets/iconsPerfil/editar.png'), item: 'Editar Perfil'})
+            }
+        })
+        console.log(this.usuarioLogado1)
     },
     methods: {
         async getUsuarioVisitado(){
@@ -434,6 +441,7 @@ export default {
     align-items: center;
 }
 .foto-usuario{
+    background-color: #fff;
     width: 100px;
     height: 100px;
     background-position: center;

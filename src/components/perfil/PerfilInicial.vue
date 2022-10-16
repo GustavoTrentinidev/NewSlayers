@@ -2,7 +2,7 @@
   <div class="informacoes-usuario">
     <div class="card-usuario">
         <div class="banner" v-if="usuarioVisitado.midia && usuarioVisitado.midia.midiabannerpath" :style="'background-image: url('+ usuarioVisitado.midia.midiabannerpath + ')'"></div>
-        <div class="banner" v-else style="background-color: #67339b"></div>
+        <div class="banner" v-else :style="'background-image: url('+ require('@/assets/noticiasImagem.png') + ')'"></div>
         <div class="img-usuario" v-if="usuarioVisitado.midia && usuarioVisitado.midia.midiaprofilepath" :style="'background-image: url('+ usuarioVisitado.midia.midiaprofilepath + ')'"></div>
         <div class="img-usuario" v-else :style="'background-image: url('+ imgUserDefault + ')'"></div>
         <div class="nome-e-email">
@@ -16,7 +16,7 @@
     </div>
     <div class="seguidores">
         <div class="quantos-seguidores">
-            <span class="length">{{usuarioVisitado.seguidores.length}}</span>
+            <span v-if="usuarioVisitado.seguidores" class="length">{{usuarioVisitado.seguidores.length}}</span>
             <span class="oque">SEGUIDORES</span>
         </div>
         <div class="lista-seguidores">
@@ -24,14 +24,14 @@
                 <div class="img-seguidor" v-if="seguidor.midia && seguidor.midia.midiaprofilepath" :style="'background-image: url('+ seguidor.midia.midiaprofilepath + ')'"></div>
                 <div class="img-seguidor" v-else :style="'background-image: url('+ imgUserDefault + ')'"></div>
                 <div class="nome-seguidor">{{seguidor.username}}</div>
-                <div class="tipo-seguidor" v-if="seguidor.tipo == 0">Padrão</div>
+                <div class="tipo-seguidor" v-if="seguidor.tipo == 1">Leitor</div>
                 <div class="tipo-seguidor" v-else>Editor</div>
             </div>
         </div>
     </div>
     <div class="seguidores">
         <div class="quantos-seguidores">
-            <span class="length">{{usuarioVisitado.seguindo.length}}</span>
+            <span v-if="usuarioVisitado.seguindo" class="length">{{usuarioVisitado.seguindo.length}}</span>
             <span class="oque">SEGUINDO</span>
         </div>
         <div class="lista-seguidores">
@@ -84,6 +84,7 @@ export default {
     background-position: center;
 }
 .img-usuario{
+    background: #fff;
     width: 100px;
     height: 100px;
     background-size: cover;
@@ -193,6 +194,7 @@ export default {
     cursor: pointer;
 }
 .img-seguidor{
+    background-color: #fff;
     width: 30px;
     height: 30px;
     background-size: cover;

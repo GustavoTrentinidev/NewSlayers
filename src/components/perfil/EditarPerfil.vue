@@ -1,18 +1,28 @@
 <template>
   <div class="editar-perfil">
-    <div class="banner" :style="'background-image: url(' + usuario.banner + ')'">
+    <div class="banner" v-if="usuario.midida && usuario.midia.midiabannerpath" :style="'background-image: url(' + usuario.midia.midiabannerpath + ')'">
       <div class="overlay">
         <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
       </div>
     </div>
-    <div class="img-user" :style="'background-image: url(' + usuario.img + ')'">
+    <div class="banner" v-else :style="'background-image: url('+ require('@/assets/noticiasImagem.png') + ')'">
+      <div class="overlay">
+          <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
+      </div>
+    </div>
+    <div class="img-user" v-if="usuario.midia && usuario.midia.midiaprofilepath" :style="'background-image: url(' + usuario.midia.midiaprofilepath + ')'">
+      <div class="overlay">
+        <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
+      </div>
+    </div>
+    <div class="img-user" v-else :style="'background-image: url(' + imgUserDefault + ')'">
       <div class="overlay">
         <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
       </div>
     </div>
     <div class="forms">
       <label for="nome">Nome:</label>
-      <input name="nome" type="text" :value="usuario.nome">
+      <input name="nome" type="text" :value="usuario.username">
       <label for="nome">Email:</label>
       <input name="email" type="email" :value="usuario.email">
       <label for="senha">Senha:</label>
@@ -27,8 +37,10 @@
 <script>
 export default {
   props: ['usuario'],
-  mounted(){
-    console.log(this.usuario)
+  data(){
+    return{
+      imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png')
+    }
   }
 }
 </script>
@@ -66,7 +78,7 @@ export default {
   cursor: pointer;
   width: 100px;
   height: 100px;
-  background-color: blanchedalmond;
+  background-color: #fff;
   border: 3px solid black;
   border-radius: 50%;
   transform: translateY(-50%);
