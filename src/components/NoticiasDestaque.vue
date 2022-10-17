@@ -12,7 +12,10 @@
                     {{topico}}
                 </li>
             </ul>
-            <div class="noticias-destacadas">
+            <div class="box-loading" v-if="loading">
+                <img class="loading" src="@/assets/loading.gif" alt="">
+            </div>
+            <div v-else class="noticias-destacadas" >
                 <div v-for="(noticia,index) in currentTopico.noticias" :key="index" class="noticia" :style="'background-image: url(' + noticia.midia[0].midiapath + ');'" @click="$router.push({path: `/noticia/${noticia.id}`})">
                     <div class="editor-holder">
                         <div class="editor-img" :style="'background-image: url(' + noticia.user_iduser.midia.midiaprofilepath + ');'"></div>
@@ -37,8 +40,12 @@ import axios from 'axios'
 export default {
     watch:{
         currentTopico(){
+            this.loading = true
             this.getNoticiasTopico(this.currentTopico["id"]).then((data)=>{
+                this.loading = false
                 return this.currentTopico["noticias"] = data    
+            }).catch(()=>{
+                this.loading = false
             })
         }
     },
@@ -65,12 +72,12 @@ export default {
         async getNoticiasTopico(idtopico){
             const {data} = await axios.get(`/noticias/?idtopico=${idtopico}`)
             let threeNews = data.reverse().splice(0,3)
-            console.log(threeNews[0].midia[0])
             return threeNews
         }
     },
     data(){
         return{
+            loading: false,
             currentTopico:{},
             topicos: ['League of Legends', 'Valorant', 'TeamfightTatics', 'Wild Rift', 'Runeterra'],
             noticiasDestaqueLol: {
@@ -104,6 +111,19 @@ export default {
 </script>
 
 <style scoped>
+.box-loading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 415px;   
+}
+.loading{
+    width: 100px;
+    display: flex;
+    margin-right: 200px;
+}
 .destaque{
     height: 650px;
     background-color: #060126;
@@ -217,7 +237,7 @@ export default {
     transition: color 1.2s ease-out; */
 }
 .noticia:hover .texto-noticia{
-    transform: translateY(-150%);
+    transform: translateY(-100%);
 }
 .noticia:hover .info-noticia{
     max-height: 400px;
