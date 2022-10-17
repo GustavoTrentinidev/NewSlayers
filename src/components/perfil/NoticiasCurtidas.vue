@@ -56,7 +56,7 @@ export default {
     flex-wrap: nowrap;
     overflow-x: auto;
     gap: 15px;
-    padding: 15px 20px 15px 50px;
+    padding: 15px 20px 5px 50px;
     box-sizing: border-box;
 }
 .noticiasCurtidas::-webkit-scrollbar{
@@ -78,8 +78,8 @@ export default {
 }
 .noticia{
     box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-    max-height: 410px;
-    min-width: 330px;
+    max-height: 380px;
+    min-width: 370px;
     margin: 0;
     background-color: #03123D;
     position: relative;
@@ -90,7 +90,7 @@ export default {
     background-position: center;
 }
 .textos{
-    margin: 20px;
+    margin: 10px 20px 20px 20px;
 }
 .titulo{
     font-family: 'Playfair Display SC', sans-serif;
