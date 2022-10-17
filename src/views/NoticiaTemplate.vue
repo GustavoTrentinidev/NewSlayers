@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="inteiracoes">
-                <div class="curtir" @click="mudarCurtida">CURTIR<CardsHeart class="icon" :size="30" :style="'color: ' + coracao"/></div>
+                <div class="curtir" @click="mudarCurtida">CURTIR<CardsHeart class="icon" :size="30" :class="curtiu ? 'curtido' : 'nao-curtido'"/></div>
                 <div class="compartilhar">COMPARTILHAR<Link class="icon" :size="30"/></div>
             </div>
         </div>
@@ -42,9 +42,6 @@ export default {
     computed:{
         ...mapState('noticia', ['noticia']),
         ...mapState('usuario', ['usuario']),
-        coracao(){
-            return this.curtiu ? 'red' : 'white'
-        }
     },
     data(){
         return{
@@ -122,6 +119,12 @@ export default {
 </script>
 
 <style scoped>
+.curtido{
+    color: red;
+}
+.nao-curtido{
+    color:white;
+}
 .main{
     position: relative;
     top: 75px;
