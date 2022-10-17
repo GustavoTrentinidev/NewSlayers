@@ -23,7 +23,7 @@
                             <div class="data"> {{noticia.noticiadatacadastro.split('-').reverse().join('/')}}</div>
                             <div class="titulo">{{noticia.noticiatitulo | truncate(30, '...')}}</div>
                         </div>
-                        <div class="texto-noticia-texto">{{noticia.texto | truncate(280, ('...'))}}</div>
+                        <div class="texto-noticia-texto">{{noticia.texto | truncate(130, ('...'))}}</div>
                     </div>
                 </div>
             </div>
@@ -37,11 +37,13 @@ import axios from 'axios'
 export default {
     watch:{
         currentTopico(){
-            return this.currentTopico.noticias = this.getNoticiasTopico(this.currentTopico.id) 
+            this.getNoticiasTopico(this.currentTopico["id"]).then((data)=>{
+                return this.currentTopico["noticias"] = data    
+            })
         }
     },
     created(){
-        this.currentTopico = this.noticiasDestaqueLol 
+        this.currentTopico = this.noticiasDestaqueLol
     },
     methods:{
         mudarParaTopico(topico,e){
@@ -215,7 +217,7 @@ export default {
     transition: color 1.2s ease-out; */
 }
 .noticia:hover .texto-noticia{
-    transform: translateY(-300%);
+    transform: translateY(-150%);
 }
 .noticia:hover .info-noticia{
     max-height: 400px;
