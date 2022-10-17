@@ -11,11 +11,19 @@
     </div>
     <div class="noticias">
       <h1>Notícias em destaque</h1>
-      <div class="noticias-block">
-        <div v-for="(noticia, index) in currentTopico.noticias" :key="index" class="noticia-topico " @click="$router.push({path: '/noticia/1'})">
-          <div class="imagem-noticia" :style="`background-image: url('${noticia.img}')`"></div>
+      <div class="noticias-block box-loading" v-if="loading">
+        <div class="loading-block" >
+          <img class="loading" src="@/assets/loading.gif" alt="">
+        </div>
+      </div>
+      <div v-else class="noticias-block">
+        <div class="error" v-if="error">
+          Este tópico ainda não possue notícias cadastradas...
+        </div>
+        <div v-for="(noticia, index) in currentTopico.noticias" :key="index" class="noticia-topico " @click="$router.push({path: `/noticia/${noticia.id}`})">
+          <div class="imagem-noticia" :style="`background-image: url('${noticia.midia[0].midiapath}')`"></div>
           <div class="other-info">
-            <h1>{{noticia.titulo | truncate(10, '...')}}</h1>
+            <h1>{{noticia.noticiatitulo | truncate(20, '...')}}</h1>
             <h2 style="color: #fff">{{noticia.texto | truncate(100, '...') }}</h2>
           </div>
         </div>
@@ -33,6 +41,7 @@
 <script>
 import { Carousel, Slide } from "vue-carousel";
 import MelhoresAutores from "@/components/MelhoresAutores.vue"
+import axios from "axios"
 
 export default {
   components: {
@@ -45,42 +54,29 @@ export default {
   },
   data(){
     return{
+      loading: false,
+      error: false,
       currentTopico:{},
       noticiasDestaqueLol: {
         topico: 'lol',
-        noticias:[
-        {img: require('@/assets/melhoresAutoresImg/cinematic1.jpg') ,titulo: 'dolor sit', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/melhoresAutoresImg/cinematic2.jpg') ,titulo: 'dolor sit', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/melhoresAutoresImg/cinematic3.jpg'),titulo: 'dolor sit', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-      ]},
+        noticias:[]
+      },
       noticiasDestaqueValorant: {
         topico: 'valorant',
-        noticias: [
-        {img: require('@/assets/melhoresAutoresImg/cinematic4.jpg'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/melhoresAutoresImg/cinematic6.jpg'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/melhoresAutoresImg/cinematic7.jpg'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        ]},
+        noticias: []
+      },
       noticiasDestaqueWR: {
         topico: 'wr',
-        noticias:[
-        {img: require('@/assets/melhoresAutoresImg/cinematic8.jpg'),titulo: 'amet, consectetur', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/melhoresAutoresImg/cinematic9.jpg'),titulo: 'amet, consectetur', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/imagensTeste/wild.jpg'),titulo: 'amet, consectetur', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        ]},
+        noticias:[]
+      },
       noticiasDestaqueTFT: {
         topico: 'tft',
-        noticias:[
-        {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        ]},
+        noticias:[]
+      },
       noticiasDestaqueLor:{
         topico: 'lor',
-        noticias:[
-        {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-      ]},
+        noticias:[]
+    },
       imagensTopicos: [require('@/assets/carrosselHome/lol-topico.png'), require('@/assets/carrosselHome/valorant-topico.png'), require('@/assets/carrosselHome/wr-topico.png'), require('@/assets/carrosselHome/tft-topico.png'), require('@/assets/carrosselHome/lor-topico.png')] 
     }
   },
@@ -103,12 +99,44 @@ export default {
     trocarNoticias(){
       const topicos = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant, this.noticiasDestaqueWR, this.noticiasDestaqueTFT, this.noticiasDestaqueLor]
       this.currentTopico = topicos[this.$refs.carousel.currentPage]
+      this.loading = true
+      this.getNoticiasTopico(this.$refs.carousel.currentPage + 1).then((data)=>{
+        this.loading = false
+        this.currentTopico.noticias = data
+        console.log(data.length)
+        this.error = false
+        if(data.length == 0){
+          this.error = true
+        }
+      })
+    },
+    async getNoticiasTopico(idtopico){
+        const {data} = await axios.get(`/noticias/?idtopico=${idtopico}`)
+        let threeNews = data.reverse().splice(0,3)
+        return threeNews
     }
   }
 };
 </script>
 
 <style scoped>
+.error{
+  color:white;
+  font-size: 30px;
+  margin: auto 0;
+}
+.box-loading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 415px;   
+}
+.loading{
+    width: 100px;
+    display: flex;
+}
 .main {
   display: flex;
   flex-direction: column;
@@ -202,7 +230,7 @@ export default {
 .noticias-block{
   border-top: 1px solid#fff;
   border-bottom: 1px solid #fff;
-  height: 100%;
+  height: 500px;
   display: flex;
   justify-content: space-around;
   gap:50px;
