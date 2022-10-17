@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="inteiracoes">
-                <div class="curtir" @click="coracao == 'white' ? coracao = 'red' : coracao = 'white'" >CURTIR<CardsHeart class="icon" :size="30" :style="'color: ' + coracao"/></div>
+                <div class="curtir" @click="mudarCurtida">CURTIR<CardsHeart class="icon" :size="30" :style="'color: ' + coracao"/></div>
                 <div class="compartilhar">COMPARTILHAR<Link class="icon" :size="30"/></div>
             </div>
         </div>
@@ -34,16 +34,20 @@ import Link from 'vue-material-design-icons/Link.vue';
 import ConteudoComentarios from '@/components/ConteudoComentarios.vue'
 import {mapActions} from "vuex"
 import {mapState} from "vuex"
-
+import axios from 'axios';
+// import CurtidasCreateDelete from "@/api/curtidas.js"
 
 export default {
     components: {CardsHeart,Link,ConteudoComentarios},
     computed:{
-        ...mapState('noticia', ['noticia'])
+        ...mapState('noticia', ['noticia']),
+        ...mapState('usuario', ['usuario']),
+        coracao(){
+            return this.curtiu ? 'red' : 'white'
+        }
     },
     data(){
         return{
-            coracao: 'white',
             comentarios: [
                 {texto:'Muito show mano!! Notícia top !!! Qualidade do site insana tbm...  Os devs e designers mandaram muitooo. Em relação à notícia, eu discordo. Pois acho que as mudanças na annie são nocivas ao meio ambiente e causam um impacto paia...', usuario:{img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'),nome:'Gragustavo'}, data: '22/08/22'},
                 {texto:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullam co laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia ', usuario:{img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'),nome:'Gragustavo'}, data: '22/08/22'},
@@ -54,6 +58,7 @@ export default {
             //Dados reais
             midiaprincipal: '',
             midiasrestantes: [],
+            curtiu: false
         }
     },
     methods:{
@@ -71,13 +76,46 @@ export default {
                     this.noticia.texto = this.noticia.texto.replace("<img>", `<div class="img-texto" style="margin:50px 0; background-position:center; background-size:cover; height:600px; width:1200px; background-image: url(${midia.midiapath})"></div>`)
                 }        
             }
+        },
+        verificaUsuarioNasCurtidas(){
+            for(let user of this.noticia.curtidas){
+                if(this.usuario.id == user.iduser){
+                    this.curtiu = true
+                }
+            }
+            console.log(this.curtiu)
+        },
+        mudarCurtida(){
+            if(this.curtiu){
+                this.descurtir()
+            }else{
+                this.curtir()
+            }
+        },
+        async curtir(){
+            const data = await axios.post('/curtidas/', {idnoticia: this.noticia.id})
+            console.log(data)
+            this.getNoticia(this.noticia.id)
+            this.verificaUsuarioNasCurtidas()
+        },
+        async descurtir(){
+            const {data} = await axios.get(`/curtidas/?idnoticia=${this.noticia.id}`)
+            for(let curtida of data){
+                console.log(curtida)
+                if(curtida.iduser == this.usuario.username){
+                    await axios.delete(`/curtidas/${curtida.id}`)
+                }
+            }
+            this.getNoticia(this.noticia.id)
+            this.verificaUsuarioNasCurtidas()
         }
     },
     mounted(){
         this.getNoticia(this.$route.params.id).then(()=>{
             this.separarMidiaPrincipal()
             this.colocarMidiasNoTexto()
-            console.log(this.midiasrestantes)
+            console.log(this.noticia)
+            this.verificaUsuarioNasCurtidas()
         })
     },
 }
