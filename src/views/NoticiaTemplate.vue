@@ -75,6 +75,7 @@ export default {
             }
         },
         verificaUsuarioNasCurtidas(){
+            this.curtiu = false
             for(let user of this.noticia.curtidas){
                 if(this.usuario.id == user.iduser){
                     this.curtiu = true
@@ -90,28 +91,31 @@ export default {
             }
         },
         async curtir(){
+            this.noticia.curtidas.push({iduser: this.usuario.id})
+            this.verificaUsuarioNasCurtidas()
             const data = await axios.post('/curtidas/', {idnoticia: this.noticia.id})
             console.log(data)
             this.getNoticia(this.noticia.id)
-            this.verificaUsuarioNasCurtidas()
         },
         async descurtir(){
+            let id = this.noticia.curtidas.find((curtida)=>{
+                return curtida.iduser == this.usuario.id
+            })
+            this.noticia.curtidas.splice(this.noticia.curtidas.indexOf(id),1)
+            this.verificaUsuarioNasCurtidas()
             const {data} = await axios.get(`/curtidas/?idnoticia=${this.noticia.id}`)
             for(let curtida of data){
-                console.log(curtida)
                 if(curtida.iduser == this.usuario.username){
                     await axios.delete(`/curtidas/${curtida.id}`)
                 }
             }
             this.getNoticia(this.noticia.id)
-            this.verificaUsuarioNasCurtidas()
         }
     },
     mounted(){
         this.getNoticia(this.$route.params.id).then(()=>{
             this.separarMidiaPrincipal()
             this.colocarMidiasNoTexto()
-            console.log(this.noticia)
             this.verificaUsuarioNasCurtidas()
         })
     },
