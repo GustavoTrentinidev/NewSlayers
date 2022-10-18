@@ -3,7 +3,7 @@
     <div class="img-chamada" :style="'background-image: url(' + midiaprincipal.midiapath + ')'"></div>
     <div class="chamada">
         <div class="container-chamada">
-            <div class="area-editor">
+            <div class="area-editor" @click="$router.push({name: 'Perfil', params:{id:noticia.user_iduser.id}})">
                 <div class="img-editor" :style="'background-image: url(' + noticia.user_iduser.midia.midiaprofilepath + ')'"></div>
                 <div class="nome-editor">{{noticia.user_iduser.username}}</div>
             </div>
@@ -153,6 +153,8 @@ export default {
     display: flex;
     align-items: center;
     gap: 20px;
+    cursor: pointer;
+    width: fit-content;
 }
 .img-editor{
     width: 70px;

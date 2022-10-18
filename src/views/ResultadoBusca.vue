@@ -15,25 +15,26 @@
         <div class="renderizacoes">
             <div class="noticias">
                 <div class="no-result" v-show="selectedOption == 'Notícias'" v-if="noticiasFiltradas.length == 0">Sem resultados para sua pesquisa.</div>
-                <div class="renderizaNoticias" v-for="noticia,index in noticiasFiltradas" :key="index" v-show="selectedOption == 'Notícias'">
-                    <div class="img-noticia" :style="'background-image: url('+ noticia.img + ')'"></div>
+                <div class="renderizaNoticias" v-for="noticia,index in noticiasFiltradas" :key="index" v-show="selectedOption == 'Notícias'" @click="$router.push({name: 'Noticia', params:{id:noticia.id}})">
+                    <div class="img-noticia" :style="'background-image: url('+ noticia.midia[0].midiapath + ')'"></div>
                     <div class="textos-noticia">
-                        <div class="titulo-noticia">{{noticia.titulo | truncate(280, '...')}}</div>
+                        <div class="titulo-noticia">{{noticia.noticiatitulo | truncate(280, '...')}}</div>
                         <div class="texto-noticia">{{noticia.texto | truncate(300, '...')}}</div>
                     </div>
                     <div class="editor-noticia">
-                        <div class="editor-img" :style="'background-image: url('+ noticia.editor.img + ')'"></div>
-                        <div class="editor-nome"> {{noticia.editor.nome}}</div>
+                        <div class="editor-img" :style="'background-image: url('+ noticia.user_iduser.midia.midiaprofilepath + ')'"></div>
+                        <div class="editor-nome"> {{noticia.user_iduser.username}}</div>
                     </div>
                 </div>
             </div>
             <div class="usuarios">
                 <div class="no-result" v-show="selectedOption == 'Usuários'" v-if="usuariosFiltrados.length == 0">Sem resultados para sua pesquisa.</div>
-                <div class="renderizaUsuarios" v-for="usuario,index in usuariosFiltrados" :key="index" v-show="selectedOption == 'Usuários'">
-                    <div class="img-usuario" :style="'background-image: url('+ usuario.img + ')'"></div>
+                <div class="renderizaUsuarios" v-for="usuario,index in usuariosFiltrados" :key="index" v-show="selectedOption == 'Usuários'" @click="$router.push({name: 'Perfil', params:{id:usuario.id}})">
+                    <div class="img-usuario" v-if="usuario.midia && usuario.midia.midiaprofilepath" :style="'background-image: url('+ usuario.midia.midiaprofilepath + ')'"></div>
+                    <div class="img-usuario" v-else :style="'background-image: url('+ '@/assets/iconsPerfil/imgdefault.png' + ')'"></div>
                     <div class="info-usuario">
-                        <div class="nome-usuario">{{usuario.nome}}</div>
-                        <div class="tipo-usuario" v-if="usuario.tipo == 1">Editor</div>
+                        <div class="nome-usuario">{{usuario.username}}</div>
+                        <div class="tipo-usuario" v-if="usuario.groups[0] == 2">Editor</div>
                         <div class="tipo-usuario" v-else>Padrão</div>
                     </div>
                 </div>
@@ -53,6 +54,7 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
     props:['valorPassado'],
     data(){
@@ -72,32 +74,8 @@ export default {
                 {nome: 'Wild Rift', img: require('@/assets/topicos/topico-wr.png'), path:'/topicos/wr'},
             ],
             topicosFiltrados: [],
-            usuarios: [
-                {nome:'yK1ngz',img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), id:1, tipo: 1,},
-                {nome:'Gragustavo',img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'), id:2, tipo: 1,},
-                {nome:'Stanlety',img: require('@/assets/melhoresAutoresImg/amanda.jpg'),id: 3,tipo: 1,},
-                {nome:'Tropa do calvo',img: require('@/assets/melhoresAutoresImg/wukas.jpg'),id: 4,tipo: 0,}
-            ,],
             usuariosFiltrados: [],
-            noticias: [
-                {titulo: 'NOTAS DA ATUALIZAÇÃO 12.14', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic1.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic2.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic3.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic4.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic7.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic6.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic8.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic9.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/wild.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/wild.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/gnar.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/pyke.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'ATUALIZAÇÃO NA CONSISTÊNCIA DAS PARTIDAS DO VALORANT – 2', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/noticiaTemplateChamada.png'), editor :{img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'), nome: 'Gragustavo'}},
-            ],
+            noticias: [],
             noticiasFiltradas: []
         }
     },
@@ -106,9 +84,21 @@ export default {
         // this.filtrarTopicos()
         // this.filtrarUsuarios()
         //this.filtrar()
-        this.filtrarTudo()
+        this.getNoticias().then(()=>{
+            this.getUsuarios().then(()=>{
+                this.filtrarTudo()
+            })
+        })
     },
     methods: {
+        async getNoticias(){
+            const {data} = await axios.get('/noticias/')
+            this.noticias = data
+        },
+        async getUsuarios(){
+            const {data} = await axios.get('/usuarios/')
+            this.usuarios = data
+        },
         irParaPaginaBusca(busca){
             if(busca){
                 this.$router.push({name:'Busca', params:{valorPassado: busca}})
@@ -153,13 +143,19 @@ export default {
             let filtered = [this.topicosFiltrados, this.usuariosFiltrados, this.noticiasFiltradas]
             let list = filtered.map((list,index) =>{
                 if(index == 2){
-                    return mustFilter[index].filter(element=>{return element.titulo.toUpperCase().includes(this.valorPassado.toUpperCase()) || element.texto.toUpperCase().includes(this.valorPassado.toUpperCase()) || element.editor.nome.toUpperCase().includes(this.valorPassado.toUpperCase())})
+                    return mustFilter[index].filter(element=>{return element.noticiatitulo.toUpperCase().includes(this.valorPassado.toUpperCase()) || element.texto.toUpperCase().includes(this.valorPassado.toUpperCase()) || element.user_iduser.username.toUpperCase().includes(this.valorPassado.toUpperCase())})
                 }
-                return mustFilter[index].filter(element=>{return element.nome.toUpperCase().indexOf(this.valorPassado.toUpperCase()) != -1})
+                if(index == 0){
+                    return mustFilter[index].filter(element=>{return element.nome.toUpperCase().indexOf(this.valorPassado.toUpperCase()) != -1})
+                }
+                return mustFilter[index].filter(element=>{return element.username.toUpperCase().indexOf(this.valorPassado.toUpperCase()) != -1})
             })
             this.topicosFiltrados = list[0]
             this.usuariosFiltrados = list[1]
             this.noticiasFiltradas = list[2]
+            console.log(this.topicosFiltrados)
+            console.log(this.usuariosFiltrados)
+            console.log(this.noticiasFiltradas)
         }
     }
 }

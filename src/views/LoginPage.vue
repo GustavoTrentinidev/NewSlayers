@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="container-login" v-show="actualContainer == 'Login'">
-        <div class="logo-login">
+        <div class="logo-login" @click="$router.push({path:'/'})">
             <img class="logo" src="@/assets/logo.png" alt="">
             <div class="logo-text">NewSlayers</div>
         </div>
@@ -21,7 +21,7 @@
     </div>
     <!-- Cadastro -->
     <div class="container-cadastro" v-show="actualContainer == 'Cadastro'">
-        <div class="logo-login">
+        <div class="logo-login" @click="$router.push({path:'/'})">
             <img class="logo" src="@/assets/logo.png" alt="">
             <div class="logo-text">NewSlayers</div>
         </div>
@@ -42,7 +42,7 @@
     </div>
     <!-- Container esqueceu a senha senha -->
     <div class="container-rec-senha" v-show="actualContainer == 'Recuperar'">
-        <div class="logo-login">
+        <div class="logo-login" @click="$router.push({path:'/'})">
             <img class="logo" src="@/assets/logo.png" alt="">
             <div class="logo-text">NewSlayers</div>
         </div>
@@ -59,7 +59,7 @@
     </div>
     <!-- Container código rec -->
     <div class="container-rec-senha" v-show="actualContainer == 'Código'">
-        <div class="logo-login">
+        <div class="logo-login" @click="$router.push({path:'/'})">
             <img class="logo" src="@/assets/logo.png" alt="">
             <div class="logo-text">NewSlayers</div>
         </div>
@@ -76,7 +76,7 @@
     </div>
     <!-- Container nova senha -->
     <div class="container-nova-senha" v-show="actualContainer == 'Senha'">
-        <div class="logo-login">
+        <div class="logo-login" @click="$router.push({path:'/'})">
             <img class="logo" src="@/assets/logo.png" alt="">
             <div class="logo-text">NewSlayers</div>
         </div>
@@ -183,6 +183,7 @@ export default {
     display: flex;
     margin: 20px 30px;
     position: relative;
+    cursor: pointer;
 }
 .logo{
     position: absolute;
