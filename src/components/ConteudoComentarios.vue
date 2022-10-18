@@ -10,14 +10,14 @@
     </div>
     <div class="conteudoRelacionado" v-show="mostrar == opcoes[0]">
         <div class="noticias">
-            <div class="noticia" v-for="noticia,index in noticiasRelacionadas" :key="index" :style="'background-image: url(' + noticia.img + ')'">
+            <div class="noticia" @click="$router.push({name:'Noticia', params:{id: noticia.id}})" v-for="noticia,index in noticiasRelacionadas" :key="index" :style="'background-image: url(' + noticia.midia[0].midiapath + ')'">
                 <div class="info-editor">
-                    <div class="img-editor" :style="'background-image: url('+ noticia.editor.img + ')'"></div>
-                    <div class="nome-editor">{{noticia.editor.nome}}</div>
+                    <div class="img-editor" :style="'background-image: url('+ noticia.user_iduser.midia.midiaprofilepath + ')'"></div>
+                    <div class="nome-editor">{{noticia.user_iduser.username}}</div>
                 </div>
                 <div class="info-noticia">
-                    <div class="data">{{noticia.data}}</div>
-                    <div class="titulo">{{noticia.titulo | truncate(30, ('...'))}}</div>
+                    <div class="data">{{noticia.noticiadatacadastro.split('-').reverse().join('/')}}</div>
+                    <div class="titulo">{{noticia.noticiatitulo | truncate(30, ('...'))}}</div>
                 </div>
             </div>
         </div>
@@ -45,23 +45,25 @@
 </template>
 
 <script>
+import axios from "axios"
+import {mapState} from "vuex"
 export default {
     props:['comentarios'],
+    computed:{
+        ...mapState('noticia',['noticia'])
+    },
+    watch:{
+        noticia(){
+            this.getNoticiasRelacionadas()
+        }
+    },
     data(){
         return{
             comentar: '',
             comentariosAtualizados: [],
             opcoes: ['Conteúdo Relacionado', 'Comentários'],
             mostrar: 'Conteúdo Relacionado',
-            noticiasRelacionadas: [
-                {img: require('@/assets/melhoresAutoresImg/cinematic4.jpg'),titulo: 'ATUALIZAÇÃO NA CONSISTÊNCIA DAS PARTIDAS DO VALORANT – 2', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/melhoresAutoresImg/cinematic6.jpg'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/melhoresAutoresImg/cinematic7.jpg'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/melhoresAutoresImg/cinematic1.jpg'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/melhoresAutoresImg/cinematic2.jpg'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/melhoresAutoresImg/cinematic5.jpg'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/melhoresAutoresImg/cinematic9.jpg'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-            ]
+            noticiasRelacionadas: []
         }
     },
     methods:{
@@ -78,10 +80,19 @@ export default {
             this.comentariosAtualizados.unshift(comentario)
             this.$emit('updateComentarios', this.comentariosAtualizados)
             this.comentar = ''
+        },
+        async getNoticiasRelacionadas(){
+            const {data} = await axios.get(`/noticias/?idtopico=${this.noticia.topico_idtopico.id}`)
+            const noticia = data.find((noticia)=>{
+                return noticia.id == this.noticia.id
+            })
+            data.splice(data.indexOf(noticia),1)
+            this.noticiasRelacionadas = data.reverse().splice(0,5) //Limita as notícias, para não ficar um scroll infinito caso existam muitas notícias
         }
     },
     mounted(){
         this.comentariosAtualizados = this.comentarios
+        this.getNoticiasRelacionadas()
     }
 }
 </script>

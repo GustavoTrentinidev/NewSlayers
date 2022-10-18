@@ -17,7 +17,11 @@
             </div>
             <div class="inteiracoes">
                 <div class="curtir" @click="mudarCurtida">CURTIR<CardsHeart class="icon" :size="30" :class="curtiu ? 'curtido' : 'nao-curtido'"/></div>
-                <div class="compartilhar">COMPARTILHAR<Link class="icon" :size="30"/></div>
+                <div class="compartilhar" @click="compartilhar">COMPARTILHAR<Link class="icon" :size="30"/></div>
+            </div>
+            <div class="snackbar">
+                <div class="quadrado"></div>
+                Link copiado!
             </div>
         </div>
     </div>
@@ -81,13 +85,16 @@ export default {
                     this.curtiu = true
                 }
             }
-            console.log(this.curtiu)
         },
         mudarCurtida(){
-            if(this.curtiu){
-                this.descurtir()
+            if(!this.usuario.id){
+                this.$router.push({path: '/login'})
             }else{
-                this.curtir()
+                if(this.curtiu){
+                    this.descurtir()
+                }else{
+                    this.curtir()
+                }
             }
         },
         async curtir(){
@@ -110,6 +117,11 @@ export default {
                 }
             }
             this.getNoticia(this.noticia.id)
+        },
+        compartilhar(){
+            const link = window.location.href
+            navigator.clipboard.writeText(link)
+
         }
     },
     mounted(){
@@ -200,6 +212,27 @@ export default {
 }
 .compartilhar{
     width: 220px;
+    cursor: pointer;
+}
+.snackbar{
+    position: relative;
+    left: 215px;
+    background-color: #04B9CC;
+    margin-top: 30px;
+    width: 120px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.quadrado{
+    position: absolute;
+    top: -15%;
+    width: 10px;
+    height: 10px;
+    background-color: #04B9CC;
+    transform: rotate(45deg);
 }
 .material-design-icon{
     width: fit-content;
