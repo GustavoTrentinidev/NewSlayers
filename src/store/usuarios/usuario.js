@@ -17,6 +17,9 @@ export const usuario = {
             const {data} = await axios.get('/detail/')
             const [usuario] = data 
             commit('setUsuario', usuario)
+        },
+        async limparDadosUsuario({commit}){
+            commit('setUsuario', {})
         }
     }
 }

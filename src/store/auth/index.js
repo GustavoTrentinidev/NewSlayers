@@ -32,8 +32,9 @@ export const auth = {
                 return Promise.reject(e)
             }
         },
-        logout({commit}){
+        logout({commit, dispatch}){
             commit('setLogout')
+            dispatch('usuario/limparDadosUsuario', {}, {root:true})
             cleanToken()
         }
     }
