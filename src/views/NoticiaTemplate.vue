@@ -19,7 +19,7 @@
                 <div class="curtir" @click="mudarCurtida">CURTIR<CardsHeart class="icon" :size="30" :class="curtiu ? 'curtido' : 'nao-curtido'"/></div>
                 <div class="compartilhar" @click="compartilhar">COMPARTILHAR<Link class="icon" :size="30"/></div>
             </div>
-            <div class="snackbar">
+            <div class="snackbar" id="snackbar">
                 <div class="quadrado"></div>
                 Link copiado!
             </div>
@@ -121,7 +121,11 @@ export default {
         compartilhar(){
             const link = window.location.href
             navigator.clipboard.writeText(link)
-
+            let snackbar = document.getElementById('snackbar')
+            snackbar.classList.add('show')
+            setTimeout(()=>{
+                snackbar.classList.remove('show')
+            },3000)
         }
     },
     mounted(){
@@ -215,6 +219,7 @@ export default {
     cursor: pointer;
 }
 .snackbar{
+    opacity: 0;
     position: relative;
     left: 215px;
     background-color: #04B9CC;
@@ -226,6 +231,27 @@ export default {
     justify-content: center;
     flex-direction: column;
 }
+.show{
+    opacity: 1;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    /* -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; */
+}
+@keyframes fadein {
+  from {bottom: 30px; opacity: 0;}
+  to {bottom: 0; opacity: 1;}
+}
+@keyframes fadeout {
+  from {bottom: 0; opacity: 1;}
+  to {bottom: 30px; opacity: 0;}
+}
+/* @-webkit-keyframes fadein {
+  from {bottom: 30px; opacity: 0;}
+  to {bottom: 0; opacity: 1;}
+}
+@-webkit-keyframes fadeout {
+  from {bottom: 0; opacity: 1;}
+  to {bottom: 30px; opacity: 0;}
+} */
 .quadrado{
     position: absolute;
     top: -15%;
