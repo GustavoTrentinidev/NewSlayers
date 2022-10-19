@@ -31,7 +31,7 @@
                 <div class="no-result" v-show="selectedOption == 'Usuários'" v-if="usuariosFiltrados.length == 0">Sem resultados para sua pesquisa.</div>
                 <div class="renderizaUsuarios" v-for="usuario,index in usuariosFiltrados" :key="index" v-show="selectedOption == 'Usuários'" @click="$router.push({name: 'Perfil', params:{id:usuario.id}})">
                     <div class="img-usuario" v-if="usuario.midia && usuario.midia.midiaprofilepath" :style="'background-image: url('+ usuario.midia.midiaprofilepath + ')'"></div>
-                    <div class="img-usuario" v-else :style="'background-image: url('+ '@/assets/iconsPerfil/imgdefault.png' + ')'"></div>
+                    <div class="img-usuario" v-else :style="'background-image: url('+ imgUserDefault + ')'"></div>
                     <div class="info-usuario">
                         <div class="nome-usuario">{{usuario.username}}</div>
                         <div class="tipo-usuario" v-if="usuario.groups[0] == 2">Editor</div>
@@ -62,9 +62,10 @@ export default {
             busca: '',
             opcoesResultados: [
                 {opcao:'Notícias', icone: require('@/assets/pesquisa.png')},
+                {opcao:'Tópicos', icone: require('@/assets/iconsPerfil/topicos.png')},
                 {opcao:'Usuários', icone: require('@/assets/iconsPerfil/perfil.png')},
-                {opcao:'Tópicos', icone: require('@/assets/iconsPerfil/comentarios.png')},
             ],
+            imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png'),
             selectedOption: '',
             topicos: [
                 {nome: 'League of Legends', img: require('@/assets/topicos/topico-lol.png'), path:'/topicos/lol'},
@@ -153,9 +154,6 @@ export default {
             this.topicosFiltrados = list[0]
             this.usuariosFiltrados = list[1]
             this.noticiasFiltradas = list[2]
-            console.log(this.topicosFiltrados)
-            console.log(this.usuariosFiltrados)
-            console.log(this.noticiasFiltradas)
         }
     }
 }
@@ -277,6 +275,7 @@ export default {
     background-size: cover;
     background-position: center;
     border-radius: 50%;
+    background-color: #fff;
 }
 .usuarios{
     display: flex;
