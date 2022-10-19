@@ -305,7 +305,6 @@ export default {
             listaItens: [
                 {icon: require('@/assets/iconsPerfil/perfil.png'), item: 'Perfil'},
                 {icon: require('@/assets/iconsPerfil/curtidas.png'), item: 'Notícias Curtidas'},
-                {icon: require('@/assets/iconsPerfil/noticias.png'), item: 'Notícias Publicadas'},
                 
             ],
             imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png')
@@ -322,6 +321,9 @@ export default {
                 if(this.usuarioLogado1.groups[0] == 2){
                     this.listaItens.push({icon: require('@/assets/iconsPerfil/publicar.png'), item: 'Publicar Notícia'})
                 }
+            }
+            if(this.usuarioVisitado1.groups[0] == 2){
+                this.listaItens.push({icon: require('@/assets/iconsPerfil/noticias.png'), item: 'Notícias Publicadas'})
             }
         })
     },
