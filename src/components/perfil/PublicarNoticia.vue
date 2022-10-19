@@ -54,7 +54,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 .container-publicar{
     width: 1280px;
     height: 720px;
