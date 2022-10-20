@@ -26,19 +26,25 @@
         <div class="comentarios">
             <div class="comentario" v-for="(comentario,index) in comentarios" :key="index">
                 <div class="row">
-                    <div class="usuario">
-                        <div class="img-usuario img-editor" :style="'background-image: url('+ comentario.usuario.img + ')'"></div>
-                        <div class="nome-usuario nome-editor">{{comentario.usuario.nome}}</div>
+                    <div class="usuario" @click="$router.push({name: 'Perfil', params:{id: comentario.user_iduser.id}})">
+                        <div class="img-usuario img-editor" :style="'background-image: url('+ comentario.user_iduser.midia.midiaprofilepath + ')'"></div>
+                        <div class="nome-usuario nome-editor">{{comentario.user_iduser.username}}</div>
                     </div>
-                    <div class="data">{{comentario.data}}</div>
+                    <div class="data">{{comentario.datacomentario.split('-').reverse().join('/')}}</div>
                 </div>
-                <div class="texto">{{comentario.texto}}</div>
+                <div class="texto">{{comentario.textocomentario}}</div>
+                <div class="icons" v-if="usuario.id == comentario.user_iduser.id">
+                    <Trash class="icon" style="color:white" @click="deleteComentario(comentario.id)"/>
+                </div>
             </div>
         </div>
         <div class="enviar-comentario">
             <label for="comentarInput">Escreva um comentário</label>
             <input type="text" v-model="comentar" @keydown.enter="enviarComentario" name="comentarInput" placeholder="Digite o comentário">
-            <button class="enviar" @click="enviarComentario">Publicar comentário</button>
+            <div class="row2">
+                <button class="enviar" @click="enviarComentario">Publicar comentário</button>
+                <div class="error" v-if="error">{{errorText}}</div>
+            </div>
         </div>
     </div>
   </div>
@@ -47,23 +53,29 @@
 <script>
 import axios from "axios"
 import {mapState} from "vuex"
+import Trash from 'vue-material-design-icons/TrashCan.vue';
 export default {
-    props:['comentarios'],
+    components: {Trash},
     computed:{
-        ...mapState('noticia',['noticia'])
+        ...mapState('noticia',['noticia']),
+        ...mapState('usuario',['usuario'])
     },
     watch:{
         noticia(){
             this.getNoticiasRelacionadas()
+            this.comentarios = []
+            this.getComentarios()
         }
     },
     data(){
         return{
+            comentarios: [],
             comentar: '',
-            comentariosAtualizados: [],
             opcoes: ['Conteúdo Relacionado', 'Comentários'],
             mostrar: 'Conteúdo Relacionado',
-            noticiasRelacionadas: []
+            noticiasRelacionadas: [],
+            error: false,
+            errorText: '',
         }
     },
     methods:{
@@ -76,10 +88,15 @@ export default {
             this.mostrar = this.opcoes[e.target.parentNode.value]
         },
         enviarComentario(){
-            let comentario = {texto: this.comentar, usuario:{img: require('@/assets/melhoresAutoresImg/wukas.jpg'),nome:'Tropa do calvo'}, data: '22/08/22'}
-            this.comentariosAtualizados.unshift(comentario)
-            this.$emit('updateComentarios', this.comentariosAtualizados)
-            this.comentar = ''
+            this.enviarComentarioBack().then(()=>{
+                let comentario = {textocomentario: this.comentar, user_iduser: this.usuario, datacomentario: this.getDateNow()}
+                this.comentarios.unshift(comentario)
+                this.comentar = ''
+                this.getComentarios()
+            }).catch((e)=>{
+                this.error = true
+                this.errorText = e.response.data.detail
+            })
         },
         async getNoticiasRelacionadas(){
             const {data} = await axios.get(`/noticias/?idtopico=${this.noticia.topico_idtopico.id}`)
@@ -88,11 +105,41 @@ export default {
             })
             data.splice(data.indexOf(noticia),1)
             this.noticiasRelacionadas = data.reverse().splice(0,5) //Limita as notícias, para não ficar um scroll infinito caso existam muitas notícias
+        },
+        async getComentarios(){
+            const {data} = await axios.get(`/comentarios/?idnoticia=${this.noticia.id}`)
+            this.comentarios = []
+            this.comentarios.push(...data.reverse())
+        },
+        async enviarComentarioBack(){
+            await axios.post('/comentarios/', {
+                textocomentario: this.comentar,
+                noticia_idnoticia: this.noticia.id
+            })
+        },
+        getDateNow(){
+            var data = new Date(),
+                dia  = data.getDate().toString(),
+                diaF = (dia.length == 1) ? '0'+dia : dia,
+                mes  = (data.getMonth()+1).toString(),
+                mesF = (mes.length == 1) ? '0'+mes : mes,
+                anoF = data.getFullYear();
+            return diaF+"/"+mesF+"/"+anoF;
+        },
+        async deleteComentario(id){
+            for(let comentario of this.comentarios){
+                console.log(comentario, id)
+                if(comentario.id == id){
+                    this.comentarios.splice(this.comentarios.indexOf(comentario),1)
+                }
+            }
+            await axios.delete(`/comentarios/${id}`)
+            this.getComentarios()
         }
     },
     mounted(){
-        this.comentariosAtualizados = this.comentarios
         this.getNoticiasRelacionadas()
+        this.getComentarios()
     }
 }
 </script>
@@ -201,6 +248,7 @@ export default {
     box-sizing: border-box;
     padding: 10px;
     margin-right: 20px;
+    position: relative;
 }
 .row{
     display: flex;
@@ -210,6 +258,7 @@ export default {
     font-size: 20px;
 }
 .usuario{
+    cursor: pointer;
     display: flex;
     gap: 10px;
     align-items: center;
@@ -271,5 +320,21 @@ export default {
     cursor: pointer;
     background-color: #2095AE;
     color: #fff;
+}
+.row2{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.error{
+    color: red;
+}
+.icons{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+.icon{
+    cursor: pointer;
 }
 </style>

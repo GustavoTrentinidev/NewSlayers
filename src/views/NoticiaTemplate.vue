@@ -28,7 +28,7 @@
     <div class="texto-container">
         <div class="texto" v-html="noticia.texto"></div>
     </div>
-    <ConteudoComentarios :comentarios="comentarios" @updateComentarios="atualizaComentarios"/>
+    <ConteudoComentarios/>
   </div>
 </template>
 
@@ -49,14 +49,6 @@ export default {
     },
     data(){
         return{
-            comentarios: [
-                {texto:'Muito show mano!! Notícia top !!! Qualidade do site insana tbm...  Os devs e designers mandaram muitooo. Em relação à notícia, eu discordo. Pois acho que as mudanças na annie são nocivas ao meio ambiente e causam um impacto paia...', usuario:{img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'),nome:'Gragustavo'}, data: '22/08/22'},
-                {texto:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullam co laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia ', usuario:{img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'),nome:'Gragustavo'}, data: '22/08/22'},
-                {texto:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullam co laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia ', usuario:{img: require('@/assets/melhoresAutoresImg/amanda.jpg'),nome:'Stanlety'}, data: '22/08/22'},
-                {texto:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullam co laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia ', usuario:{img: require('@/assets/melhoresAutoresImg/wukas.jpg'),nome:'Tropa do calvo'}, data: '22/08/22'},
-                {texto:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullam co laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia ', usuario:{img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'),nome:'Gragustavo'}, data: '22/08/22'},
-            ],
-            //Dados reais
             midiaprincipal: '',
             midiasrestantes: [],
             curtiu: false
@@ -100,8 +92,7 @@ export default {
         async curtir(){
             this.noticia.curtidas.push({iduser: this.usuario.id})
             this.verificaUsuarioNasCurtidas()
-            const data = await axios.post('/curtidas/', {idnoticia: this.noticia.id})
-            console.log(data)
+            await axios.post('/curtidas/', {idnoticia: this.noticia.id})
             this.getNoticia(this.noticia.id)
         },
         async descurtir(){
@@ -133,6 +124,7 @@ export default {
             this.separarMidiaPrincipal()
             this.colocarMidiasNoTexto()
             this.verificaUsuarioNasCurtidas()
+            this.comentarios = this.noticia.comentarios
         })
     },
 }
