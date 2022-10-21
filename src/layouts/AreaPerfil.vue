@@ -16,12 +16,12 @@
             </div>
             <div class="area-componente">
                 <div class="overlay">
-                    <div class="banner" v-if="usuarioVisitado1.midia" :style="'background-image: url('+ usuarioVisitado1.midia.midiabannerpath + ')'"></div>
+                    <div class="banner" v-if="usuarioVisitado.midia" :style="'background-image: url('+ usuarioVisitado.midia.midiabannerpath + ')'"></div>
                     <div class="banner" v-else :style="'background-image: url('+ require('@/assets/noticiasImagem.png') + ')'"></div>
                     <div class="qualUsuario" v-show="componenteMostrado == 'Notícias Curtidas' || componenteMostrado == 'Notícias Publicadas' ">
-                        <div class="foto-usuario" v-if="usuarioVisitado1.midia && usuarioVisitado1.midia.midiaprofilepath" :style="'background-image: url('+ usuarioVisitado1.midia.midiaprofilepath + ')'"></div>
+                        <div class="foto-usuario" v-if="usuarioVisitado.midia && usuarioVisitado.midia.midiaprofilepath" :style="'background-image: url('+ usuarioVisitado.midia.midiaprofilepath + ')'"></div>
                         <div class="foto-usuario" v-else :style="'background-image: url('+ imgUserDefault + ')'"></div>
-                        <div class="nome-usuario">{{usuarioVisitado1.username}}</div>
+                        <div class="nome-usuario">{{usuarioVisitado.username}}</div>
                     </div> 
                 </div>
                 <PerfilInicial v-if="componenteMostrado == 'Perfil'"/>
@@ -50,258 +50,6 @@ export default {
     data(){
         return{
             componenteMostrado: 'Perfil',
-            usuarioLogado: {
-                nome: 'yK1ngz',
-                email: 'nicolas@gmail.com',
-                senha:'',
-                banner: require('@/assets/noticiasImagem.png'),
-                img: require('@/assets/melhoresAutoresImg/nicolas.jpg'),
-                id: 1,
-                tipo: 1,
-                seguidores: [
-                    {
-                        nome:'Gragustavo',
-                        img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'),
-                        id: 2,
-                        tipo: 1,
-                    },
-                    {
-                        nome:'Stanlety',
-                        img: require('@/assets/melhoresAutoresImg/amanda.jpg'),
-                        id: 3,
-                        tipo: 1,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                ],
-                seguindo: [
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Gragustavo',
-                        img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'),
-                        id: 2,
-                        tipo: 1,
-                    },
-                    {
-                        nome:'Stanlety',
-                        img: require('@/assets/melhoresAutoresImg/amanda.jpg'),
-                        id: 3,
-                        tipo: 1,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                ]
-            },
-            // usuarioLogado: {nome: 'GugasShow', email: 'gustavotrentini@gmail.com', senha:'', banner: require('@/assets/carrosselHome/tft-topico.png'), img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'), id: 52353},
-            usuarioVisitado: {
-                nome: 'yK1ngz',
-                email: 'nicolas@gmail.com',
-                senha:'',
-                banner: require('@/assets/noticiasImagem.png'),
-                img: require('@/assets/melhoresAutoresImg/nicolas.jpg'),
-                id: 1,
-                tipo: 1,
-                seguidores: [
-                    {
-                        nome:'Gragustavo',
-                        img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'),
-                        id: 2,
-                        tipo: 1,
-                    },
-                    {
-                        nome:'Stanlety',
-                        img: require('@/assets/melhoresAutoresImg/amanda.jpg'),
-                        id: 3,
-                        tipo: 1,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                ],
-                seguindo: [
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Gragustavo',
-                        img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'),
-                        id: 2,
-                        tipo: 1,
-                    },
-                    {
-                        nome:'Stanlety',
-                        img: require('@/assets/melhoresAutoresImg/amanda.jpg'),
-                        id: 3,
-                        tipo: 1,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                    {
-                        nome:'Tropa do calvo',
-                        img: require('@/assets/melhoresAutoresImg/wukas.jpg'),
-                        id: 4,
-                        tipo: 0,
-                    },
-                ],
-                noticiasCurtidas:[
-                    {titulo: 'NOTAS DA ATUALIZAÇÃO 12.14', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic1.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic2.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic3.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic4.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic7.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic6.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic8.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic9.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                ],
-                noticiasPublicadas:[
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic2.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'NOTAS DA ATUALIZAÇÃO 12.14', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic1.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic7.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic3.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic6.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic9.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic8.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                    {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic4.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                ],
-            },
-            // usuarioVisitado: {nome: 'GugasShow', email: 'gustavotrentini@gmail.com', senha:'', banner: require('@/assets/carrosselHome/tft-topico.png'), img: require('@/assets/melhoresAutoresImg/gragustavo.jpg'), id: 52353},
             listaItens: [
                 {icon: require('@/assets/iconsPerfil/perfil.png'), item: 'Perfil'},
                 {icon: require('@/assets/iconsPerfil/curtidas.png'), item: 'Notícias Curtidas'},
@@ -311,18 +59,18 @@ export default {
         }
     },
     computed: {
-        ...mapState('usuario',{'usuarioLogado1':'usuario'}),
-        ...mapState('usuariovisitado',{'usuarioVisitado1': 'usuariovisitado'})
+        ...mapState('usuario',{'usuarioLogado':'usuario'}),
+        ...mapState('usuariovisitado',{'usuarioVisitado': 'usuariovisitado'})
     },
     created(){
         this.getUsuariovisitado(this.$route.params.id).then(()=>{
-            if(this.usuarioLogado1.id == this.usuarioVisitado1.id){
+            if(this.usuarioLogado.id == this.usuarioVisitado.id){
                 this.listaItens.push({icon: require('@/assets/iconsPerfil/editar.png'), item: 'Editar Perfil'})
-                if(this.usuarioLogado1.groups[0] == 2){
+                if(this.usuarioLogado.groups[0] == 2){
                     this.listaItens.push({icon: require('@/assets/iconsPerfil/publicar.png'), item: 'Publicar Notícia'})
                 }
             }
-            if(this.usuarioVisitado1.groups[0] == 2){
+            if(this.usuarioVisitado.groups[0] == 2){
                 this.listaItens.push({icon: require('@/assets/iconsPerfil/noticias.png'), item: 'Notícias Publicadas'})
             }
         })

@@ -9,10 +9,10 @@
             <div class="nome">{{usuarioVisitado.username}}</div>
             <div class="email">{{usuarioVisitado.email}}</div>
         </div>
-        <!-- <div v-show="usuarioLogado.id != usuarioVisitado.id"> -->
-            <button v-if="seguindo == false" @click="seguindo = !seguindo" class="seguir">seguir</button>
-            <button v-else class="unfollow" @click="seguindo = !seguindo">deixar de seguir</button>
-        <!-- </div> -->
+        <div v-if="usuarioLogado.id != usuarioVisitado.id">
+            <button v-if="seguindo == false" @click="seguir" class="seguir">seguir</button>
+            <button v-else class="unfollow" @click="seguir">deixar de seguir</button>
+        </div>
     </div>
     <div class="seguidores">
         <div class="quantos-seguidores">
@@ -49,6 +49,8 @@
 
 <script>
 import {mapState} from "vuex"
+import {mapActions} from "vuex"
+import axios from "axios"
 
 
 export default {
@@ -62,6 +64,31 @@ export default {
             imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png')
         }
     },
+    watch:{
+        usuarioVisitado(){
+            this.atualizaSeguindo()
+        }
+    },
+    mounted(){
+        this.atualizaSeguindo()
+    },
+    methods:{
+        atualizaSeguindo(){
+            this.usuarioVisitado.seguidores.forEach((seguidor)=>{
+                if(seguidor.id == this.usuarioLogado.id){
+                    return this.seguindo = true
+                }
+                return this.seguindo = false
+            })
+        },
+        ...mapActions('usuariovisitado', ['getUsuariovisitado']),
+        async seguir(){
+             await axios.get(`/usuarios/${this.usuarioVisitado.id}/seguir/`)
+            this.getUsuariovisitado(this.$route.params.id).then(()=>{
+                this.atualizaSeguindo()
+            })
+        }
+    }
 }
 </script>
 
