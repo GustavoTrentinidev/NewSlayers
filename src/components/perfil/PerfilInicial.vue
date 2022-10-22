@@ -83,7 +83,11 @@ export default {
         },
         ...mapActions('usuariovisitado', ['getUsuariovisitado']),
         async seguir(){
-             await axios.get(`/usuarios/${this.usuarioVisitado.id}/seguir/`)
+            try{
+                await axios.get(`/usuarios/${this.usuarioVisitado.id}/seguir/`)
+            }catch{
+                this.$router.push({path:'/login'})
+            }
             this.getUsuariovisitado(this.$route.params.id).then(()=>{
                 this.atualizaSeguindo()
             })
