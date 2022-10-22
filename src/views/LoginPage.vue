@@ -9,7 +9,13 @@
             <span>Login</span>
             <form>
                 <input required type="text" v-model="usuario.username" placeholder="Usuário">
-                <input required type="text" v-model="usuario.password" placeholder="Senha">
+                <div class="input-icons">
+                    <input required :type="showing ? 'text' : 'password'" v-model="usuario.password" placeholder="Senha">
+                    <div class="eyes">
+                        <Eye style="color: grey;" class="icon" v-show="showing" @click="showing = !showing" :size="40" />
+                        <EyeOff style="color: grey;" class="icon" v-show="!showing" @click="showing = !showing" :size="40" />
+                    </div>
+                </div>
                 <div class="error" v-show="error">{{errorMessage}}</div>
                 <button type="submit" @click.stop.prevent="submitLogin">Entrar</button>
             </form>
@@ -96,9 +102,12 @@
 </template>
 
 <script>
+import Eye from 'vue-material-design-icons/Eye.vue';
+import EyeOff from 'vue-material-design-icons/EyeOff.vue';
 import {mapActions} from "vuex"
 import axios from "axios"
 export default {
+    components:{Eye,EyeOff},
     props: ['cadastro'],
     mounted(){
         if(this.cadastro != undefined){
@@ -108,6 +117,7 @@ export default {
     },
     data(){
         return{
+            showing: false,
             actualContainer: 'Login',
             usuario: {},
             error: false,
@@ -284,5 +294,19 @@ export default {
     width: 635px;
     background-color: #020013;
     position: relative;
+}
+.input-icons{
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+.input-icons input{
+    width: 565px;
+}
+.eyes{
+    top: 20px;
+    right: 50px;
+    position: absolute;
+    cursor: pointer;
 }
 </style>
