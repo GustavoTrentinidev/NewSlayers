@@ -74,11 +74,12 @@ export default {
     },
     methods:{
         atualizaSeguindo(){
+            this.seguindo = false
             this.usuarioVisitado.seguidores.forEach((seguidor)=>{
                 if(seguidor.id == this.usuarioLogado.id){
                     return this.seguindo = true
                 }
-                return this.seguindo = false
+                return this.seguindo
             })
         },
         ...mapActions('usuariovisitado', ['getUsuariovisitado']),
