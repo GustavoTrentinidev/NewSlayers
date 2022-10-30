@@ -31,13 +31,15 @@
       <input name="senha" type="text" placeholder="Alterar senha">
       <label for="senha">Confirmar senha:</label>
       <input type="text" placeholder="Confirmar alteração">
-      <button>Confirmar alterações</button>
+      <button @click="salvar">Confirmar alterações</button>
     </div>
   </div>
 </template>
 
 <script>
 import {mapState} from "vuex"
+import {mapActions} from "vuex"
+import axios from 'axios'
 export default {
   computed:{
     ...mapState('usuario', ['usuario'])
@@ -53,6 +55,7 @@ export default {
     }
   },
   methods:{
+    ...mapActions('usuario',['getDadosUsuarioLogado']),
     enviarBanner(){
       document.getElementById('enviarBanner').click()
     },
@@ -90,7 +93,15 @@ export default {
     },
     getMidia(){
       this.midiaFront = {midiaprofilepath: this.usuario.midia.midiaprofilepath, midiabannerpath: this.usuario.midia.midiabannerpath}
-    }
+    },
+    // async salvar(){
+    //   await axios.patch(
+    //     `/midias-usuarios/${this.usuario.midia.id}/`, 
+    //     {midiabannerpath: this.midiaBack.midiabannerpath
+    //   }).then(()=>{
+    //     this.getDadosUsuarioLogado()
+    //   })
+    // }
   },
 
 }
