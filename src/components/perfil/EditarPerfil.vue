@@ -1,25 +1,27 @@
 <template>
   <div class="editar-perfil">
-    <div class="banner" v-if="usuario.midia && usuario.midia.midiabannerpath" :style="'background-image: url(' + usuario.midia.midiabannerpath + ')'">
+    <div class="banner" @click="enviarBanner" v-if="usuario.midia && usuario.midia.midiabannerpath" :style="'background-image: url(' + midiaFront.midiabannerpath + ')'">
       <div class="overlay">
         <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
       </div>
     </div>
-    <div class="banner" v-else :style="'background-image: url('+ require('@/assets/noticiasImagem.png') + ')'">
+    <div class="banner" @click="enviarBanner" v-else :style="'background-image: url('+ require('@/assets/noticiasImagem.png') + ')'">
       <div class="overlay">
           <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
       </div>
     </div>
-    <div class="img-user" v-if="usuario.midia && usuario.midia.midiaprofilepath" :style="'background-image: url(' + usuario.midia.midiaprofilepath + ')'">
+    <input style="display: none" type="file" id="enviarBanner" @change="convertBanner('#enviarBanner')">
+    <div class="img-user" @click="enviarProfile" v-if="usuario.midia && usuario.midia.midiaprofilepath" :style="'background-image: url(' + midiaFront.midiaprofilepath + ')'">
       <div class="overlay">
         <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
       </div>
     </div>
-    <div class="img-user" v-else :style="'background-image: url(' + imgUserDefault + ')'">
+    <div class="img-user" @click="enviarProfile" v-else :style="'background-image: url(' + imgUserDefault + ')'">
       <div class="overlay">
         <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
       </div>
     </div>
+    <input style="display: none" type="file" id="enviarProfile" @change="convertProfile('#enviarProfile')">
     <div class="forms">
       <label for="nome">Nome:</label>
       <input name="nome" type="text" :value="usuario.username">
@@ -40,11 +42,57 @@ export default {
   computed:{
     ...mapState('usuario', ['usuario'])
   },
+  mounted(){
+    this.getMidia()
+  },
   data(){
     return{
-      imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png')
+      imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png'),
+      midiaFront: {},
+      midiaBack: {},
     }
-  }
+  },
+  methods:{
+    enviarBanner(){
+      document.getElementById('enviarBanner').click()
+    },
+    enviarProfile(){
+      document.getElementById('enviarProfile').click()
+    },
+    Convert64(id){
+      return new Promise((resolve, reject) => {
+        let file = document.querySelector(id).files[0]
+        var reader = new FileReader()
+        reader.onload = function (){
+          resolve(reader.result)
+        }
+        reader.onerror = error => (reject(error))
+        reader.readAsDataURL(file)
+      })
+    },
+    convertBanner(id){
+      let banner 
+      this.Convert64(id).then(data=>{
+        this.midiaFront.midiabannerpath = data
+        banner = data.split(',')[1]
+        this.midiaBack.midiabannerpath = banner
+      })
+      console.log(this.midiaBack)
+    },
+    convertProfile(id){
+      let profile 
+      this.Convert64(id).then(data=>{
+        this.midiaFront.midiaprofilepath = data
+        profile = data.split(',')[1]
+        this.midiaBack.midiaprofilepath = profile
+      })
+      console.log(this.midiaBack)
+    },
+    getMidia(){
+      this.midiaFront = {midiaprofilepath: this.usuario.midia.midiaprofilepath, midiabannerpath: this.usuario.midia.midiabannerpath}
+    }
+  },
+
 }
 </script>
 
