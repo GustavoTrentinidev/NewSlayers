@@ -24,9 +24,9 @@
     <input style="display: none" type="file" id="enviarProfile" @change="convertProfile('#enviarProfile')">
     <div class="forms">
       <label for="nome">Nome:</label>
-      <input name="nome" type="text" :value="usuario.username">
+      <input name="nome" type="text" v-model="usuarioAlterado.username">
       <label for="nome">Email:</label>
-      <input name="email" type="email" :value="usuario.email">
+      <input name="email" type="email" v-model="usuarioAlterado.email">
       <label for="senha">Senha:</label>
       <input name="senha" type="text" placeholder="Alterar senha">
       <label for="senha">Confirmar senha:</label>
@@ -46,12 +46,14 @@ export default {
   },
   mounted(){
     this.getMidia()
+    this.usuarioAlterado = {username: this.usuario.username, email:this.usuario.email}
   },
   data(){
     return{
       imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png'),
       midiaFront: {},
       midiaBack: {},
+      usuarioAlterado: {}
     }
   },
   methods:{
@@ -94,14 +96,12 @@ export default {
     getMidia(){
       this.midiaFront = {midiaprofilepath: this.usuario.midia.midiaprofilepath, midiabannerpath: this.usuario.midia.midiabannerpath}
     },
-    // async salvar(){
-    //   await axios.patch(
-    //     `/midias-usuarios/${this.usuario.midia.id}/`, 
-    //     {midiabannerpath: this.midiaBack.midiabannerpath
-    //   }).then(()=>{
-    //     this.getDadosUsuarioLogado()
-    //   })
-    // }
+    async salvar(){
+      await axios.patch(`/usuarios/${this.usuario.id}/`, this.usuarioAlterado)
+      await axios.patch(`/midias-usuarios/${this.usuario.midia.id}/`, this.midiaBack)
+      this.getDadosUsuarioLogado()
+      console.log(this.usuario)
+    }
   },
 
 }
