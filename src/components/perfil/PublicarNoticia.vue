@@ -1,51 +1,67 @@
 <template>
-  <div class="container-publicar">
-    <div class="row">
-        <div class="inputzada">
-            <label for="titulo">Título da notícia</label>
-            <input name="titulo" type="text" placeholder="Escreva um título">
-        </div>
-        <div class="selectzada">
-            <label for="topico">Tópico da notícia</label>
-            <select name="topico" aria-placeholder="Escolha o tópico" id="">
-                <option value="League of Legends">League of Legends</option>
-                <option value="VALORANT">VALORANT</option>
-                <option value="Wild Rift">Wild Rift</option>
-                <option value="Teamfight Tatics">Teamfight Tatics</option>
-                <option value="Legends Of Runeterra">Legends Of Runeterra</option>
-            </select>
-        </div>
-    </div>
-    <div class="row2">
-        <TextArea/>
-        <div class="imagemzada">
-            <label for="imagem">Imagem para a notícia</label>
-            <input type="file" id="input-file" @change="Convert64()" aria-hidden="true">
-            <div class="imagem" @click="enviarArquivo">
-                <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
+  <div>
+      <PopupMidia :pop="pop" @fecharpop="fecharpop"/>
+      <div class="container-publicar">
+        <div class="row">
+            <div class="inputzada">
+                <label for="titulo">Título da notícia</label>
+                <input name="titulo" type="text" placeholder="Escreva um título">
+            </div>
+            <div class="selectzada">
+                <label for="topico">Tópico da notícia</label>
+                <select name="topico" aria-placeholder="Escolha o tópico" id="">
+                    <option value="League of Legends">League of Legends</option>
+                    <option value="VALORANT">VALORANT</option>
+                    <option value="Wild Rift">Wild Rift</option>
+                    <option value="Teamfight Tatics">Teamfight Tatics</option>
+                    <option value="Legends Of Runeterra">Legends Of Runeterra</option>
+                </select>
             </div>
         </div>
-    </div>
-    <div class="row2">
-        <button class="publicar">Publicar</button>
-    </div>
+        <div class="row2">
+            <TextArea/>
+            <div class="imagemzada">
+                <label for="imagem">Imagem para a capa da notícia</label>
+                <input type="file" id="input-file-principal" @change="Convert64()" aria-hidden="true">
+                <div class="imagem" :style="{backgroundImage: midiaPrincipal ? `url('${midiaPrincipal}')` : ''}" @click="enviarArquivo">
+                    <img v-if="!midiaPrincipal" src="@/assets/iconsPerfil/alterarImg.png" alt="">
+                </div>
+                <label for="midias">Selecione imagens para o texto da notícia</label>
+                <button class="popupimagens" @click="pop = true">Imagens</button>
+            </div>
+        </div>
+        <div class="row2">
+            <button class="publicar">Publicar</button>
+        </div>
+      </div>
   </div>
 </template>
 
 <script>
 import TextArea from '@/components/perfil/TextArea.vue'
+import PopupMidia from '@/components/perfil/PopupMidia.vue'
 export default {
-    components:{TextArea},
+    data(){
+        return{
+            pop: false,
+            midiaPrincipal: '',
+        }
+    },
+    components:{TextArea,PopupMidia},
     methods:{
+        fecharpop(){
+            this.pop = false
+        },
         enviarArquivo(){
-            document.getElementById('input-file').click()
+            document.getElementById('input-file-principal').click()
         },
         Convert64(){
-            let file = document.querySelector('#input-file').files[0]
+            let file = document.querySelector('#input-file-principal').files[0]
             var reader = new FileReader();
+            const _this = this
             reader.readAsDataURL(file);
             reader.onload = function () {
-                console.log(reader.result);
+                _this.midiaPrincipal = reader.result
             };
         }
 
@@ -128,6 +144,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-size: cover;
+    background-position: center;
 }
 .publicar{
   width: 200px;
@@ -144,6 +162,18 @@ export default {
   margin: 0 auto;
   cursor: pointer;
   transition: 200ms ease-in-out;
-  transform: translateY(150%);
+  /* transform: translateY(45%); */
+}
+.popupimagens{
+    width: 200px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #2095AE;
+    font-size: 30px;
+    font-family: 'Share Tech', serif;
+    color: #fff;
+    cursor: pointer;
+    outline: 0;
+    border: 0;
 }
 </style>

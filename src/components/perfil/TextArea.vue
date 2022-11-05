@@ -3,11 +3,13 @@
         <div class="textareazada">
             <div class="acoes">
                 <label for="texto">Texto da notícia</label>
-                <button class="negrito" @click="formatar('*')">B</button>
-                <span class="tutorial">- Subtítulo</span>
-                <button @click="enviar()">Send</button>
+                <div class="alinhamento-direita">
+                    <button class="negrito" @click="formatar('*')">B</button>
+                    <span class="tutorial">- Subtítulo</span>
                 </div>
-                <span class="tutorial">Para inserir o local das imagens utilize &lt;img&gt;</span>
+                <!-- <button @click="enviar()">Send</button> -->
+                </div>
+                
             <textarea name="texto" ref="textarea" @select="select($event)" placeholder="Escreva o texto da notícia">
             </textarea>
         </div>
@@ -89,7 +91,7 @@ export default {
     display: flex;
     gap: 10px;
     margin-bottom: 5px;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
 }
 .acoes button{
@@ -105,5 +107,6 @@ export default {
 .tutorial{
     color: rgb(112, 112, 112);
     font-size: 25px;
+    margin-left: 10px;
 }
 </style>

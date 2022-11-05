@@ -58,6 +58,7 @@ export default {
   },
   methods:{
     ...mapActions('usuario',['getDadosUsuarioLogado']),
+    ...mapActions('usuariovisitado', ['getUsuariovisitado']),
     enviarBanner(){
       document.getElementById('enviarBanner').click()
     },
@@ -100,7 +101,7 @@ export default {
       await axios.patch(`/usuarios/${this.usuario.id}/`, this.usuarioAlterado)
       await axios.patch(`/midias-usuarios/${this.usuario.midia.id}/`, this.midiaBack)
       this.getDadosUsuarioLogado()
-      console.log(this.usuario)
+      this.getUsuariovisitado(this.$route.params.id)
     }
   },
 
