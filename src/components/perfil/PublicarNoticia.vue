@@ -5,16 +5,16 @@
         <div class="row">
             <div class="inputzada">
                 <label for="titulo">Título da notícia</label>
-                <input name="titulo" type="text" placeholder="Escreva um título">
+                <input name="titulo" v-model="titulo" type="text" placeholder="Escreva um título">
             </div>
             <div class="selectzada">
                 <label for="topico">Tópico da notícia</label>
-                <select name="topico" aria-placeholder="Escolha o tópico" id="">
-                    <option value="League of Legends">League of Legends</option>
-                    <option value="VALORANT">VALORANT</option>
-                    <option value="Wild Rift">Wild Rift</option>
-                    <option value="Teamfight Tatics">Teamfight Tatics</option>
-                    <option value="Legends Of Runeterra">Legends Of Runeterra</option>
+                <select name="topico" v-model="topico" @change="setTopicoNoticia(topico)" aria-placeholder="Escolha o tópico" id="">
+                    <option value="1">League of Legends</option>
+                    <option value="2">VALORANT</option>
+                    <option value="3">Teamfight Tatics</option>
+                    <option value="4">Wild Rift</option>
+                    <option value="5">Legends Of Runeterra</option>
                 </select>
             </div>
         </div>
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="row2">
-            <button class="publicar">Publicar</button>
+            <button class="publicar" @click="postarNoticia">Publicar</button>
         </div>
       </div>
   </div>
@@ -40,15 +40,32 @@
 <script>
 import TextArea from '@/components/perfil/TextArea.vue'
 import PopupMidia from '@/components/perfil/PopupMidia.vue'
+import {mapMutations, mapActions, mapState} from 'vuex'
 export default {
+    computed:{
+        ...mapState('enviarnoticia',['noticiatitulo','texto', 'midia', 'topico_idtopico'])
+    },
     data(){
         return{
             pop: false,
             midiaPrincipal: '',
+            titulo: '',
+            topico: 1,
+        }
+    },
+    mounted(){
+        this.limparDados()
+        this.setTopicoNoticia(this.topico)
+    },
+    watch:{
+        titulo(){
+            this.setTituloNoticia(this.titulo)
         }
     },
     components:{TextArea,PopupMidia},
     methods:{
+        ...mapMutations('enviarnoticia', ['setTituloNoticia', 'limparDados', 'setTextoNoticia', 'setTopicoNoticia', 'setMidiaPrincipalNoticia']),
+        ...mapActions('enviarnoticia', ['postNoticia']),
         fecharpop(){
             this.pop = false
         },
@@ -62,9 +79,12 @@ export default {
             reader.readAsDataURL(file);
             reader.onload = function () {
                 _this.midiaPrincipal = reader.result
+                _this.setMidiaPrincipalNoticia(reader.result.split(',')[1])
             };
+        },
+        postarNoticia(){
+            this.postNoticia({noticiatitulo: this.noticiatitulo, texto: this.texto, midia: this.midia, topico_idtopico: this.topico_idtopico})
         }
-
     }   
 }
 
@@ -82,7 +102,7 @@ export default {
 }
 .row{
     display: flex;
-    gap: 100px;
+    gap: 170px;
     margin-bottom: 35px;
 }
 .row2{

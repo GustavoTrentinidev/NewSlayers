@@ -7,16 +7,16 @@
                     <button class="negrito" @click="formatar('*')">B</button>
                     <span class="tutorial">- Subtítulo</span>
                 </div>
-                <!-- <button @click="enviar()">Send</button> -->
                 </div>
                 
-            <textarea name="texto" ref="textarea" @select="select($event)" placeholder="Escreva o texto da notícia">
+            <textarea name="texto" ref="textarea" @change="enviar" @select="select($event)" placeholder="Escreva o texto da notícia">
             </textarea>
         </div>
     </div>
 </template>
 
 <script>
+import {mapMutations} from "vuex"
 export default {
     data(){
         return{
@@ -32,6 +32,7 @@ export default {
         this.textarea = this.$refs.textarea
     },
     methods: {
+        ...mapMutations('enviarnoticia', ['setTextoNoticia']),
         select(e){
             let textoSelecionado = e.target.value.substring(e.target.selectionStart, e.target.selectionEnd)
             let textoNaoSelecionado1 = e.target.value.substring(0, e.target.selectionStart)
@@ -64,7 +65,7 @@ export default {
                     textasso = textasso.substring(0, textasso.indexOf(iAntigo)) + i + textasso.substring(textasso.indexOf(iAntigo)+1,textasso.length) 
                 }
             }
-            console.log(textasso)
+            this.setTextoNoticia(textasso)
         }
     }
 }

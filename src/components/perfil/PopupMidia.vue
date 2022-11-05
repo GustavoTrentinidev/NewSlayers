@@ -13,7 +13,7 @@
             :key="index"
             :style="`background-image: url(${midia})`"
             >
-            <Close class="icons" @click="midiasFront.splice(index,1)" :size="50"/>
+            <Close class="icons" @click="excluirMidia(index)" :size="50"/>
             </div>
         </div>
     </div>
@@ -22,6 +22,7 @@
 
 <script>
 import Close from 'vue-material-design-icons/Close.vue';
+import {mapMutations} from 'vuex'
 export default {
     props: ['pop'],
     components: {Close},
@@ -36,6 +37,7 @@ export default {
         })
     },
     methods:{
+        ...mapMutations('enviarnoticia', ['setMidiaTextoNoticia', 'apagarIndexMidias']),
         fecharPop(){
             this.$emit('fecharpop')
         },
@@ -53,7 +55,12 @@ export default {
         adicionarMidia(){
             this.Convert64().then(data=>{
                 this.midiasFront.push(data)
+                this.setMidiaTextoNoticia(data.split(',')[1])
             })
+        },
+        excluirMidia(index){
+            this.midiasFront.splice(index,1)
+            this.apagarIndexMidias(index)
         }
     }
 }

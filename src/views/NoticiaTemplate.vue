@@ -126,6 +126,7 @@ export default {
             this.verificaUsuarioNasCurtidas()
             this.comentarios = this.noticia.comentarios
         })
+        console.log(this.noticia.texto)
     },
 }
 </script>
