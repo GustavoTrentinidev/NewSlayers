@@ -57,7 +57,7 @@ export default {
                 if(i == "*"){
                     let iAntigo = i
                     if(tituloAberto){
-                        i = "<h1/>"
+                        i = "</h1>"
                     }else{
                         i = "<h1>"
                     }
