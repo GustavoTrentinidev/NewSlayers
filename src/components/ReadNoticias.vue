@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container">
-            <div v-for="(noticia, index) in noticias" :key="index" class="noticia" @click="$router.push({path: `/noticia/${noticia.id}`})">
+            <div v-for="(noticia, index) in noticias.results" :key="index" class="noticia" @click="$router.push({path: `/noticia/${noticia.id}`})">
                 <div class="parte-de-cima">
                     <img draggable="false" :src="noticia.midia[0].midiapath" alt="">
                     <div class="editor-holder">
@@ -19,8 +19,14 @@
                 </div>
             </div>
             <div class="numero-de-paginas">
-                <div class="numero" v-for="index in numeroDePaginas" :key="index" @click="passarPagina(index)">
-                    {{index}}
+                <div class="numero outrasPaginas" @click="page -= 1" v-if="noticias.previous">
+                    Anterior
+                </div>
+                <div class="numero paginaAtual">
+                    {{page}}
+                </div>
+                <div class="numero outrasPaginas" @click="page += 1" v-if="noticias.next">
+                    Próximo
                 </div>
             </div>
         </div>  
@@ -33,48 +39,23 @@ export default {
     data(){
         return{
             numeroDePaginas: 0,
-            noticias: []
+            noticias: [],
+            page: 1,
         }
     },
     mounted(){
         this.getNoticias()
-        var classeNoticia = document.querySelectorAll('.noticia')
-        var numerodapag = 0
-        classeNoticia.forEach((noticia,index)=>{
-            index += 1
-            if(index / 9 > numerodapag){
-                numerodapag = numerodapag + 1
-            }
-            if(numerodapag == this.$route.params.pagina){
-                noticia.style.display = "block"
-            }else{
-                noticia.style.display = "none"
-            }
-            
-        this.numeroDePaginas = numerodapag
-        })
-        setTimeout(()=>{
-            var botoes = document.querySelectorAll('.numero')
-            botoes.forEach((botao)=>{
-                botao.classList.add('outrasPaginas')
-            })
-            var index = parseInt(this.$route.path.split('/')[2])
-            botoes[index-1].classList.add('paginaAtual')
-            botoes[index-1].classList.remove('outrasPaginas')
-        },10)
     },
     methods:{
         async getNoticias(){
-            const {data} = await axios.get('/noticias/')
-            this.noticias = data.reverse()
+            const {data} = await axios.get(`/noticias/?page=${this.page}`)
+            this.noticias = data
         },
-        passarPagina(index){
-            let paginaReq = `/noticias/${index}`
-            if(paginaReq != this.$route.path){
-                this.$router.push({path: paginaReq}).finally(()=>{
-                    window.scroll({top:1300})
-                })
-            }
+    },
+    watch:{
+        page(){
+            this.getNoticias()
+            window.scroll({top:1300})
         }
     }
 }
@@ -181,13 +162,20 @@ export default {
     cursor: pointer;
     padding-top: 5px;
     transition: transform 200ms ease-in-out;
+    margin: auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.numero:hover{
-    transform: scale(1.1);
+
+.outrasPaginas:hover{
+    transform: scale(1.05);
     background-color: #3a326a;
 }
 
 .outrasPaginas{
+    width: 150px;
+    font-size: 30px;
     background-color: #060126;
 }
 .paginaAtual{

@@ -84,7 +84,7 @@ export default {
         },
         async getNoticiasTopico(idtopico){
             const {data} = await axios.get(`/noticias/?idtopico=${idtopico}`)
-            let threeNews = data.reverse().splice(0,3)
+            let threeNews = data.results.reverse().splice(0,3)
             return threeNews
         }
     },
