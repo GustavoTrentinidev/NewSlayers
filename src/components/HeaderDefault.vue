@@ -5,7 +5,6 @@
       <router-link to="/" class="logo-name"><h1>NewSlayers</h1></router-link>
       <h1 class="label-noticias" @click="clicado = !clicado">Notícias</h1>
       <ul class="ul-noticias" id="noticias" :class="clicado ? 'aparecendo' : ''" name="noticias">
-        <li class="item-dropdown"><router-link class="item-text" :is="!clicado ? 'span' : 'router-link'" to="/noticias/1">Todas as notícias</router-link></li>
         <li class="item-dropdown"><router-link class="item-text" :is="!clicado ? 'span' : 'router-link'" to="/topicos/lol">League of Legends</router-link></li>
         <li class="item-dropdown"><router-link class="item-text" :is="!clicado ? 'span' : 'router-link'" to="/topicos/valorant">VALORANT</router-link></li>
         <li class="item-dropdown"><router-link class="item-text" :is="!clicado ? 'span' : 'router-link'" to="/topicos/tft">TeamfightTatics</router-link></li>

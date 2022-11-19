@@ -9,53 +9,34 @@
       <div class="botao-topico" @click="$router.push({path:'/topicos/'+ currentTopico.topico})">Ver notícias</div>
       <div class="fade"></div>  
     </div>
-    <div class="noticias">
-      <h1>Notícias em destaque</h1>
-      <div class="noticias-block box-loading" v-if="loading">
-        <div class="loading-block" >
-          <img class="loading" src="@/assets/loading.gif" alt="">
-        </div>
-      </div>
-      <div v-else class="noticias-block">
-        <div class="error" v-if="error">
-          Este tópico ainda não possue notícias cadastradas...
-        </div>
-        <div v-for="(noticia, index) in currentTopico.noticias" :key="index" class="noticia-topico " @click="$router.push({path: `/noticia/${noticia.id}`})">
-          <div class="imagem-noticia" :style="`background-image: url('${noticia.midia[0].midiapath}')`"></div>
-          <div class="other-info">
-            <h1>{{noticia.noticiatitulo | truncate(20, '...')}}</h1>
-            <h2 style="color: #fff">{{noticia.texto | truncate(100, '...') }}</h2>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="button-holder">
-      <button @click="$router.push({path:'/topicos/'+ currentTopico.topico})" class="vermais">Ver mais &#8594;</button>
-    </div>
+    <NoticiasDestaque :page="page" @trocaPagina="trocaPagina"/>
     <div class="fade2"></div> 
-    <MelhoresAutores/>
+    <ReadNoticias/>
 
   </div>
 </template>
 
 <script>
 import { Carousel, Slide } from "vue-carousel";
-import MelhoresAutores from "@/components/MelhoresAutores.vue"
-import axios from "axios"
+import ReadNoticias from "@/components/ReadNoticias.vue"
+import NoticiasDestaque from "@/components/NoticiasDestaque.vue"
 
 export default {
   components: {
     Carousel,
     Slide,
-    MelhoresAutores
+    ReadNoticias,
+    NoticiasDestaque
   },
   mounted(){
-    this.trocarNoticias()
+    this.show()
+    this.$refs.carousel.currentPage = 4
+    this.$refs.carousel.goToPage(4)
+    console.log(this.$refs.carousel)
   },
   data(){
     return{
-      loading: false,
-      error: false,
+      page: 0,
       currentTopico:{},
       noticiasDestaqueLol: {
         topico: 'lol',
@@ -65,55 +46,35 @@ export default {
         topico: 'valorant',
         noticias: []
       },
-      noticiasDestaqueWR: {
-        topico: 'wr',
-        noticias:[]
-      },
       noticiasDestaqueTFT: {
         topico: 'tft',
+        noticias:[]
+      },
+      noticiasDestaqueWR: {
+        topico: 'wr',
         noticias:[]
       },
       noticiasDestaqueLor:{
         topico: 'lor',
         noticias:[]
     },
-      imagensTopicos: [require('@/assets/carrosselHome/lol-topico.png'), require('@/assets/carrosselHome/valorant-topico.png'), require('@/assets/carrosselHome/wr-topico.png'), require('@/assets/carrosselHome/tft-topico.png'), require('@/assets/carrosselHome/lor-topico.png')] 
+      imagensTopicos: [require('@/assets/carrosselHome/lol-topico.png'), require('@/assets/carrosselHome/valorant-topico.png'), require('@/assets/carrosselHome/tft-topico.png'), require('@/assets/carrosselHome/wr-topico.png'), require('@/assets/carrosselHome/lor-topico.png')] 
     }
   },
   methods: {
     show(){
-      let noticias = document.querySelectorAll('.noticia-topico')
-      noticias.forEach( noticia =>{
-        noticia.classList.add('animacao-aparecer')
-        setTimeout(()=>{
-          noticia.classList.remove('animacao-aparecer')
-        }, 500)
-      })
+      const topicos = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant, this.noticiasDestaqueTFT, this.noticiasDestaqueWR, this.noticiasDestaqueLor]
+      this.currentTopico = topicos[this.$refs.carousel.currentPage]
       let botaoTopico = document.querySelector('.botao-topico')
       botaoTopico.classList.add('animacao-aparecer')
       setTimeout(()=>{
           botaoTopico.classList.remove('animacao-aparecer')
         }, 500)
-      this.trocarNoticias()
+        this.page = this.$refs.carousel.currentPage
     },
-    trocarNoticias(){
-      const topicos = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant, this.noticiasDestaqueWR, this.noticiasDestaqueTFT, this.noticiasDestaqueLor]
-      this.currentTopico = topicos[this.$refs.carousel.currentPage]
-      this.loading = true
-      this.getNoticiasTopico(this.$refs.carousel.currentPage + 1).then((data)=>{
-        this.loading = false
-        this.currentTopico.noticias = data
-        console.log(data.length)
-        this.error = false
-        if(data.length == 0){
-          this.error = true
-        }
-      })
-    },
-    async getNoticiasTopico(idtopico){
-        const {data} = await axios.get(`/noticias/?idtopico=${idtopico}`)
-        let threeNews = data.reverse().splice(0,3)
-        return threeNews
+    trocaPagina(page){
+      this.$refs.carousel.currentPage = page
+      this.$refs.carousel.goToPage(page)
     }
   }
 };
@@ -183,7 +144,7 @@ export default {
 .fade{
   height: 100px;
   width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), #0D0641);
+  background-image: linear-gradient(rgba(0, 0, 0, 0), #060126);
   top: 600px;
   position: absolute;
 }
@@ -211,7 +172,7 @@ export default {
 .fade2{
   height: 100px;
   width: 100%;
-  background-image: linear-gradient(#0D0641,rgba(0, 0, 0, 0));
+  background-image: linear-gradient(#060126,rgba(0, 0, 0, 0));
 }
 .noticias{
   width: 100%;

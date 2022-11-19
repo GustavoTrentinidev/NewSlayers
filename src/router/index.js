@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/HomePage.vue'
 import Login from '@/views/LoginPage.vue'
-import NoticiasHome from '@/views/NoticiasHome.vue'
 import TopicoView from '@/views/TopicoView.vue'
 import About from '@/views/SiteAbout.vue'
 import NoticiaTemplate from '@/views/NoticiaTemplate.vue'
@@ -20,11 +19,6 @@ const routes = [
       {
         path: '/',
         component: Home
-      },
-      {
-        path:'/noticias/:pagina',
-        component: NoticiasHome,
-        props: true
       },
       {
         path:`/topicos/:topico`,

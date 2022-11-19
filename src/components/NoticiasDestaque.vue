@@ -8,7 +8,7 @@
     <div class="esquerda">
         <div class="noticias">
             <ul class="topicos">
-                <li :class="index == 0 ? 'selected' : 'no-selected'" v-for="(topico, index) in topicos" :key="index" @click="mudarParaTopico(topico,$event)">
+                <li class="li" :class="index == 0 ? 'selected' : 'no-selected'" v-for="(topico, index) in topicos" :key="index" @click="mudarParaTopico(topico,$event)">
                     {{topico}}
                 </li>
             </ul>
@@ -38,7 +38,19 @@
 <script>
 import axios from 'axios'
 export default {
+    props: ['page'],
     watch:{
+        page(){
+            let noticias = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant,  this.noticiasDestaqueTFT, this.noticiasDestaqueWR, this.noticiasDestaqueLor]
+            this.currentTopico = noticias[this.page]
+            let topicos = document.querySelectorAll('.li')
+            topicos.forEach(category=>{
+                category.classList = ['li']
+                category.classList.add('no-selected')
+            })
+            topicos[this.page].classList = ['li']
+            topicos[this.page].classList.add('selected')
+        },
         currentTopico(){
             this.loading = true
             this.getNoticiasTopico(this.currentTopico["id"]).then((data)=>{
@@ -54,18 +66,19 @@ export default {
     },
     methods:{
         mudarParaTopico(topico,e){
-            let topicos = document.querySelectorAll('li')
+            let topicos = document.querySelectorAll('.li')
             topicos.forEach(category=>{
-                category.classList = []
+                category.classList = ['li']
                 category.classList.add('no-selected')
             })
-            e.target.classList = []
+            e.target.classList = ['li']
             e.target.classList.add('selected')
             
-            let noticias = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant, this.noticiasDestaqueWR, this.noticiasDestaqueLor, this.noticiasDestaqueTFT]
-            noticias.forEach(noticiasdestaque=>{
+            let noticias = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant, this.noticiasDestaqueTFT, this.noticiasDestaqueWR, this.noticiasDestaqueLor]
+            noticias.forEach((noticiasdestaque, index)=>{
                 if(topico == noticiasdestaque.topico){
                     this.currentTopico = noticiasdestaque
+                    this.$emit('trocaPagina', index)
                 }
             })
         },

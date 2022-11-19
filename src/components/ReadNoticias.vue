@@ -66,8 +66,7 @@ export default {
     methods:{
         async getNoticias(){
             const {data} = await axios.get('/noticias/')
-            this.noticias = data
-            console.log(this.noticias)
+            this.noticias = data.reverse()
         },
         passarPagina(index){
             let paginaReq = `/noticias/${index}`
