@@ -28,9 +28,10 @@
       <label for="nome">Email:</label>
       <input name="email" type="email" v-model="usuarioAlterado.email">
       <label for="senha">Senha:</label>
-      <input name="senha" type="text" placeholder="Alterar senha">
+      <input name="senha" type="text" v-model="usuarioAlterado.password" placeholder="Alterar senha">
       <label for="senha">Confirmar senha:</label>
-      <input type="text" placeholder="Confirmar alteração">
+      <input type="text" v-model="confirmarSenha" placeholder="Confirmar alteração">
+      <div class="error" v-if="error">As senhas não coincidem</div>
       <button @click="salvar">Confirmar alterações</button>
     </div>
   </div>
@@ -53,7 +54,9 @@ export default {
       imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png'),
       midiaFront: {},
       midiaBack: {},
-      usuarioAlterado: {}
+      usuarioAlterado: {},
+      confirmarSenha: '',
+      error: false
     }
   },
   methods:{
@@ -98,8 +101,15 @@ export default {
       this.midiaFront = {midiaprofilepath: this.usuario.midia.midiaprofilepath, midiabannerpath: this.usuario.midia.midiabannerpath}
     },
     async salvar(){
-      await axios.patch(`/usuarios/${this.usuario.id}/`, this.usuarioAlterado)
-      await axios.patch(`/midias-usuarios/${this.usuario.midia.id}/`, this.midiaBack)
+      this.error = false
+      if(this.usuarioAlterado.password && this.usuarioAlterado.password != this.confirmarSenha){
+        this.error = true
+      }else{
+        await axios.patch(`/usuarios/${this.usuario.id}/`, this.usuarioAlterado)
+      }
+      if(this.midiaBack){
+        await axios.patch(`/midias-usuarios/${this.usuario.midia.id}/`, this.midiaBack)
+      }
       this.getDadosUsuarioLogado()
       this.getUsuariovisitado(this.$route.params.id)
     }
@@ -215,5 +225,14 @@ export default {
 }
 .forms button:hover{
   transform: scale(1.05);
+}
+
+.forms input:last-child{
+  margin: 0 25px 0px 25px;
+}
+.error{
+  color: #eb3223;
+  margin-left: 25px;
+  margin-top: -25px;
 }
 </style>
