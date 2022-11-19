@@ -3,7 +3,7 @@
     <div class="topico-imagem" :style="'background-image:' + 'url(' + imagemPrincipal + ')'">
     </div>
     <div class="noticias-topico">
-      <div class="noticia" @click="$router.push({path: `/noticia/${noticia.id}`})" :key="index" v-for="(noticia,index) in noticias" >
+      <div class="noticia" @click="$router.push({path: `/noticia/${noticia.id}`})" :key="index" v-for="(noticia,index) in noticias.results" >
         <div class="editor-img" :style="'background-image: url(' + noticia.user_iduser.midia.midiaprofilepath + ');'"></div>
         <div class="imagem" :style="'background-image: url(' + noticia.midia[0].midiapath + ');'"></div>
         <div class="noticia-textos">
