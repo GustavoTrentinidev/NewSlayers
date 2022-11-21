@@ -30,9 +30,6 @@ export default {
   },
   mounted(){
     this.show()
-    this.$refs.carousel.currentPage = 4
-    this.$refs.carousel.goToPage(4)
-    console.log(this.$refs.carousel)
   },
   data(){
     return{

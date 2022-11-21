@@ -3,30 +3,28 @@
     <div class="img-chamada" :style="'background-image: url(' + midiaprincipal.midiapath + ')'"></div>
     <div class="chamada">
         <div class="container-chamada">
+            <div class="date">
+                {{noticia.noticiadatacadastro.split('-').reverse().join('/')}}
+            </div>
+            <div class="titulo">
+                {{noticia.noticiatitulo}} 
+            </div>
             <div class="area-editor" @click="$router.push({name: 'Perfil', params:{id:noticia.user_iduser.id}})">
                 <div class="img-editor" :style="'background-image: url(' + noticia.user_iduser.midia.midiaprofilepath + ')'"></div>
                 <div class="nome-editor">{{noticia.user_iduser.username}}</div>
-            </div>
-            <div class="titulo-e-data">
-                <div class="titulo">
-                    {{noticia.noticiatitulo}} 
-                    <div class="data">
-                        {{noticia.noticiadatacadastro.split('-').reverse().join('/')}}
-                    </div>
-                </div>
-            </div>
-            <div class="inteiracoes">
-                <div class="curtir" @click="mudarCurtida">CURTIR<CardsHeart class="icon" :size="30" :class="curtiu ? 'curtido' : 'nao-curtido'"/></div>
-                <div class="compartilhar" @click="compartilhar">COMPARTILHAR<Link class="icon" :size="30"/></div>
-            </div>
-            <div class="snackbar" id="snackbar">
-                <div class="quadrado"></div>
-                Link copiado!
             </div>
         </div>
     </div>
     <div class="texto-container">
         <div class="texto" v-html="noticia.texto"></div>
+        <div class="inteiracoes">
+            <div class="curtir" @click="mudarCurtida"><CardsHeart class="icon" :size="30" :class="curtiu ? 'curtido' : 'nao-curtido'"/></div>
+            <div class="compartilhar" @click="compartilhar"><Link class="icon" :size="30"/></div>
+        </div>
+        <div class="snackbar" id="snackbar">
+            <div class="quadrado"></div>
+            Link copiado!
+        </div>
     </div>
     <ConteudoComentarios/>
   </div>
@@ -152,15 +150,22 @@ export default {
     background-position: center;
 }
 .chamada{
+    width: 70%;
     height: 325px;
-    background-color: #03123D;
+    margin: 0 auto;
+    background-color: #060E25;
     box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    border-radius: 0 0 40px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 .container-chamada{
     height: 300px;
     margin: 25px auto;
     width: 1200px;
     color: #fff;
+    position: relative;
 }
 .area-editor{
     display: flex;
@@ -168,6 +173,7 @@ export default {
     gap: 20px;
     cursor: pointer;
     width: fit-content;
+    margin: 30px 0 0 0;
 }
 .img-editor{
     width: 70px;
@@ -179,18 +185,25 @@ export default {
 .nome-editor{
     font-size: 30px;
 }
-.titulo-e-data{
+.titulo{
+    width: fit-content;
     display: flex;
     align-items: center;
     font-size: 38px;
     font-family: 'Kadwa', serif;
     gap: 25px;
+    margin: 50px 0 0 0;
 }
-.data{
+.date{
     color: #04B9CC;
     display: inline;
+    font-size: 38px;
+    right: 0;
+    position: absolute;
 }
 .inteiracoes{
+    color: #fff;
+    margin-left: 140px;
     display: flex;
     gap: 20px;
 }
@@ -199,10 +212,14 @@ export default {
     justify-content: center;
     align-items: center;
     font-size: 20px;
-    background-color: #04B9CC;
+    background-color: #020013;
     gap: 10px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 4px;
 }
-.curtir{
+/* .curtir{
     width: 140px;
     height: 50px;
     cursor: pointer;
@@ -210,11 +227,13 @@ export default {
 .compartilhar{
     width: 220px;
     cursor: pointer;
-}
+} */
+
 .snackbar{
+    color: #fff;
     opacity: 0;
     position: relative;
-    left: 215px;
+    left: 175px;
     background-color: #04B9CC;
     margin-top: 30px;
     width: 120px;
@@ -260,8 +279,8 @@ export default {
 .texto-container{
     width: 1480px;
     margin: 0 auto;
-    border-left: 2px solid #000;
-    border-right: 2px solid #000;
+    /* border-left: 2px solid #000;
+    border-right: 2px solid #000; */
 }
 .texto{
     width: 1200px;
