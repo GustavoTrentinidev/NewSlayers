@@ -100,11 +100,12 @@ export default {
         },
         async getNoticiasRelacionadas(){
             const {data} = await axios.get(`/noticias/?idtopico=${this.noticia.topico_idtopico.id}`)
-            const noticia = data.find((noticia)=>{
+            console.log(data)
+            const noticia = data.results.find((noticia)=>{
                 return noticia.id == this.noticia.id
             })
-            data.splice(data.indexOf(noticia),1)
-            this.noticiasRelacionadas = data.reverse().splice(0,5) //Limita as notícias, para não ficar um scroll infinito caso existam muitas notícias
+            data.results.splice(data.results.indexOf(noticia),1)
+            this.noticiasRelacionadas = data.results.reverse().splice(0,5) //Limita as notícias, para não ficar um scroll infinito caso existam muitas notícias
         },
         async getComentarios(){
             const {data} = await axios.get(`/comentarios/?idnoticia=${this.noticia.id}`)
