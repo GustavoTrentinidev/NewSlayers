@@ -9,106 +9,92 @@
       <div class="botao-topico" @click="$router.push({path:'/topicos/'+ currentTopico.topico})">Ver notícias</div>
       <div class="fade"></div>  
     </div>
-    <div class="noticias">
-      <h1>Notícias em destaque</h1>
-      <div class="noticias-block">
-        <div v-for="(noticia, index) in currentTopico.noticias" :key="index" class="noticia-topico " @click="$router.push({path: '/noticia/1'})">
-          <div class="imagem-noticia" :style="`background-image: url('${noticia.img}')`"></div>
-          <div class="other-info">
-            <h1>{{noticia.titulo | truncate(10, '...')}}</h1>
-            <h2 style="color: #fff">{{noticia.texto | truncate(100, '...') }}</h2>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="button-holder">
-      <button @click="$router.push({path:'/topicos/'+ currentTopico.topico})" class="vermais">Ver mais &#8594;</button>
-    </div>
+    <NoticiasDestaque :page="page" @trocaPagina="trocaPagina"/>
     <div class="fade2"></div> 
-    <MelhoresAutores/>
+    <ReadNoticias/>
 
   </div>
 </template>
 
 <script>
 import { Carousel, Slide } from "vue-carousel";
-import MelhoresAutores from "@/components/MelhoresAutores.vue"
+import ReadNoticias from "@/components/ReadNoticias.vue"
+import NoticiasDestaque from "@/components/NoticiasDestaque.vue"
 
 export default {
   components: {
     Carousel,
     Slide,
-    MelhoresAutores
+    ReadNoticias,
+    NoticiasDestaque
   },
   mounted(){
-    this.trocarNoticias()
+    this.show()
   },
   data(){
     return{
+      page: 0,
       currentTopico:{},
       noticiasDestaqueLol: {
         topico: 'lol',
-        noticias:[
-        {img: require('@/assets/melhoresAutoresImg/cinematic1.jpg') ,titulo: 'dolor sit', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/melhoresAutoresImg/cinematic2.jpg') ,titulo: 'dolor sit', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/melhoresAutoresImg/cinematic3.jpg'),titulo: 'dolor sit', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-      ]},
+        noticias:[]
+      },
       noticiasDestaqueValorant: {
         topico: 'valorant',
-        noticias: [
-        {img: require('@/assets/melhoresAutoresImg/cinematic4.jpg'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/melhoresAutoresImg/cinematic6.jpg'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/melhoresAutoresImg/cinematic7.jpg'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        ]},
-      noticiasDestaqueWR: {
-        topico: 'wr',
-        noticias:[
-        {img: require('@/assets/melhoresAutoresImg/cinematic8.jpg'),titulo: 'amet, consectetur', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/melhoresAutoresImg/cinematic9.jpg'),titulo: 'amet, consectetur', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/imagensTeste/wild.jpg'),titulo: 'amet, consectetur', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        ]},
+        noticias: []
+      },
       noticiasDestaqueTFT: {
         topico: 'tft',
-        noticias:[
-        {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        ]},
+        noticias:[]
+      },
+      noticiasDestaqueWR: {
+        topico: 'wr',
+        noticias:[]
+      },
       noticiasDestaqueLor:{
         topico: 'lor',
-        noticias:[
-        {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-        {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-      ]},
-      imagensTopicos: [require('@/assets/carrosselHome/lol-topico.png'), require('@/assets/carrosselHome/valorant-topico.png'), require('@/assets/carrosselHome/wr-topico.png'), require('@/assets/carrosselHome/tft-topico.png'), require('@/assets/carrosselHome/lor-topico.png')] 
+        noticias:[]
+    },
+      imagensTopicos: [require('@/assets/carrosselHome/lol-topico.png'), require('@/assets/carrosselHome/valorant-topico.png'), require('@/assets/carrosselHome/tft-topico.png'), require('@/assets/carrosselHome/wr-topico.png'), require('@/assets/carrosselHome/lor-topico.png')] 
     }
   },
   methods: {
     show(){
-      let noticias = document.querySelectorAll('.noticia-topico')
-      noticias.forEach( noticia =>{
-        noticia.classList.add('animacao-aparecer')
-        setTimeout(()=>{
-          noticia.classList.remove('animacao-aparecer')
-        }, 500)
-      })
+      const topicos = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant, this.noticiasDestaqueTFT, this.noticiasDestaqueWR, this.noticiasDestaqueLor]
+      this.currentTopico = topicos[this.$refs.carousel.currentPage]
       let botaoTopico = document.querySelector('.botao-topico')
       botaoTopico.classList.add('animacao-aparecer')
       setTimeout(()=>{
           botaoTopico.classList.remove('animacao-aparecer')
         }, 500)
-      this.trocarNoticias()
+        this.page = this.$refs.carousel.currentPage
     },
-    trocarNoticias(){
-      const topicos = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant, this.noticiasDestaqueWR, this.noticiasDestaqueTFT, this.noticiasDestaqueLor]
-      this.currentTopico = topicos[this.$refs.carousel.currentPage]
+    trocaPagina(page){
+      this.$refs.carousel.currentPage = page
+      this.$refs.carousel.goToPage(page)
     }
   }
 };
 </script>
 
 <style scoped>
+.error{
+  color:white;
+  font-size: 30px;
+  margin: auto 0;
+}
+.box-loading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 415px;   
+}
+.loading{
+    width: 100px;
+    display: flex;
+}
 .main {
   display: flex;
   flex-direction: column;
@@ -155,7 +141,7 @@ export default {
 .fade{
   height: 100px;
   width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), #0D0641);
+  background-image: linear-gradient(rgba(0, 0, 0, 0), #060126);
   top: 600px;
   position: absolute;
 }
@@ -183,7 +169,7 @@ export default {
 .fade2{
   height: 100px;
   width: 100%;
-  background-image: linear-gradient(#0D0641,rgba(0, 0, 0, 0));
+  background-image: linear-gradient(#060126,rgba(0, 0, 0, 0));
 }
 .noticias{
   width: 100%;
@@ -202,7 +188,7 @@ export default {
 .noticias-block{
   border-top: 1px solid#fff;
   border-bottom: 1px solid #fff;
-  height: 100%;
+  height: 500px;
   display: flex;
   justify-content: space-around;
   gap:50px;

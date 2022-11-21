@@ -1,16 +1,23 @@
 <template>
   <div class="main">
     <div class="container-login" v-show="actualContainer == 'Login'">
-        <div class="logo-login">
+        <div class="logo-login" @click="$router.push({path:'/'})">
             <img class="logo" src="@/assets/logo.png" alt="">
             <div class="logo-text">NewSlayers</div>
         </div>
         <div class="forms">
             <span>Login</span>
             <form>
-                <input required type="text" placeholder="Usuário">
-                <input required type="text" placeholder="Senha">
-                <button type="submit" @click="$router.push({path:'/'})">Entrar</button>
+                <input required type="text" v-model="usuario.username" placeholder="Usuário">
+                <div class="input-icons">
+                    <input required :type="showing ? 'text' : 'password'" v-model="usuario.password" placeholder="Senha">
+                    <div class="eyes">
+                        <Eye style="color: grey;" class="icon" v-show="showing" @click="showing = !showing" :size="40" />
+                        <EyeOff style="color: grey;" class="icon" v-show="!showing" @click="showing = !showing" :size="40" />
+                    </div>
+                </div>
+                <div class="error" v-show="error">{{errorMessage}}</div>
+                <button type="submit" @click.stop.prevent="submitLogin">Entrar</button>
             </form>
         </div>
         <div class="opcoes">
@@ -20,18 +27,19 @@
     </div>
     <!-- Cadastro -->
     <div class="container-cadastro" v-show="actualContainer == 'Cadastro'">
-        <div class="logo-login">
+        <div class="logo-login" @click="$router.push({path:'/'})">
             <img class="logo" src="@/assets/logo.png" alt="">
             <div class="logo-text">NewSlayers</div>
         </div>
         <div class="forms">
             <span>Cadastro</span>
             <form>
-                <input required type="text" placeholder="Usuário">
-                <input required type="email" placeholder="Email">
-                <input required type="text" placeholder="Senha">
-                <input required type="text" placeholder="Confirmar Senha">
-                <button type="submit">Cadastrar</button>
+                <input required type="text" placeholder="Usuário" v-model="novoUsuario.username">
+                <input required type="email" placeholder="Email" v-model="novoUsuario.email">
+                <input required type="text" placeholder="Senha" v-model="novoUsuario.password">
+                <input required type="text" placeholder="Confirmar Senha" v-model="conf">
+                <div class="error" v-show="error">{{errorMessage}}</div>
+                <button @click.stop.prevent="submitRegister">Cadastrar</button>
             </form>
         </div>
         <div class="opcoes">
@@ -40,7 +48,7 @@
     </div>
     <!-- Container esqueceu a senha senha -->
     <div class="container-rec-senha" v-show="actualContainer == 'Recuperar'">
-        <div class="logo-login">
+        <div class="logo-login" @click="$router.push({path:'/'})">
             <img class="logo" src="@/assets/logo.png" alt="">
             <div class="logo-text">NewSlayers</div>
         </div>
@@ -57,7 +65,7 @@
     </div>
     <!-- Container código rec -->
     <div class="container-rec-senha" v-show="actualContainer == 'Código'">
-        <div class="logo-login">
+        <div class="logo-login" @click="$router.push({path:'/'})">
             <img class="logo" src="@/assets/logo.png" alt="">
             <div class="logo-text">NewSlayers</div>
         </div>
@@ -74,7 +82,7 @@
     </div>
     <!-- Container nova senha -->
     <div class="container-nova-senha" v-show="actualContainer == 'Senha'">
-        <div class="logo-login">
+        <div class="logo-login" @click="$router.push({path:'/'})">
             <img class="logo" src="@/assets/logo.png" alt="">
             <div class="logo-text">NewSlayers</div>
         </div>
@@ -94,16 +102,70 @@
 </template>
 
 <script>
+import Eye from 'vue-material-design-icons/Eye.vue';
+import EyeOff from 'vue-material-design-icons/EyeOff.vue';
+import {mapActions} from "vuex"
+import axios from "axios"
 export default {
+    components:{Eye,EyeOff},
     props: ['cadastro'],
     mounted(){
         if(this.cadastro != undefined){
             this.actualContainer = this.cadastro
         }
+        this.logout()
     },
     data(){
         return{
+            showing: false,
             actualContainer: 'Login',
+            usuario: {},
+            error: false,
+            errorMessage: '',
+            novoUsuario: {},
+            conf: ''
+        }
+    },
+    watch: {
+        actualContainer(){
+            this.error = false
+            this.errorMessage = ''
+        }
+    },
+    methods: {
+        ...mapActions('auth',['login','logout']),
+        async submitLogin(){
+            try{
+                await this.login(this.usuario)
+                this.$router.push({path: '/'})
+            } catch (e){
+                this.error = true
+                this.errorMessage = e.response.data.detail
+            }
+        },
+        async register(){
+            if(this.conf != this.novoUsuario.password){
+                this.error = true
+                this.errorMessage = 'As senhas não coincidem'
+            }else{
+                try {
+                    await axios.post('/usuarios/', this.novoUsuario)
+                }catch(e){
+                    this.error = true
+                    this.errorMessage = e.response.data["username"][0]
+                    return e
+                }
+            }
+        },
+        async submitRegister(){
+            let err = await this.register()
+            if(!err){
+                const {username, password} = this.novoUsuario
+                await this.login({username, password})
+                this.$router.push({path: '/'})
+            }else{
+                console.log(err)
+            }
         }
     }
 }
@@ -131,6 +193,7 @@ export default {
     display: flex;
     margin: 20px 30px;
     position: relative;
+    cursor: pointer;
 }
 .logo{
     position: absolute;
@@ -167,6 +230,11 @@ export default {
     margin: 0 35px 35px 35px;
     padding: 15px;
     box-sizing: border-box;
+}
+.error{
+    font-size: 20px;
+    margin: -30px 0 0 35px;
+    color: #FC575E;
 }
 .forms form input::placeholder{
     color: rgba(0, 0, 0, 0.8);
@@ -226,5 +294,19 @@ export default {
     width: 635px;
     background-color: #020013;
     position: relative;
+}
+.input-icons{
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+.input-icons input{
+    width: 565px;
+}
+.eyes{
+    top: 20px;
+    right: 50px;
+    position: absolute;
+    cursor: pointer;
 }
 </style>

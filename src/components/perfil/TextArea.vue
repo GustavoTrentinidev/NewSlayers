@@ -3,18 +3,20 @@
         <div class="textareazada">
             <div class="acoes">
                 <label for="texto">Texto da notícia</label>
-                <button class="negrito" @click="formatar('*')">B</button>
-                <span class="tutorial">- Subtítulo</span>
-                <button @click="enviar()">Send</button>
+                <div class="alinhamento-direita">
+                    <button class="negrito" @click="formatar('*')">B</button>
+                    <span class="tutorial">- Subtítulo</span>
                 </div>
-                <span class="tutorial">Para inserir o local das imagens utilize &lt;img&gt;</span>
-            <textarea name="texto" ref="textarea" @select="select($event)" placeholder="Escreva o texto da notícia">
+                </div>
+                
+            <textarea name="texto" ref="textarea" @change="enviar" @select="select($event)" placeholder="Escreva o texto da notícia">
             </textarea>
         </div>
     </div>
 </template>
 
 <script>
+import {mapMutations} from "vuex"
 export default {
     data(){
         return{
@@ -30,6 +32,7 @@ export default {
         this.textarea = this.$refs.textarea
     },
     methods: {
+        ...mapMutations('enviarnoticia', ['setTextoNoticia']),
         select(e){
             let textoSelecionado = e.target.value.substring(e.target.selectionStart, e.target.selectionEnd)
             let textoNaoSelecionado1 = e.target.value.substring(0, e.target.selectionStart)
@@ -54,7 +57,7 @@ export default {
                 if(i == "*"){
                     let iAntigo = i
                     if(tituloAberto){
-                        i = "<h1/>"
+                        i = "</h1>"
                     }else{
                         i = "<h1>"
                     }
@@ -62,7 +65,7 @@ export default {
                     textasso = textasso.substring(0, textasso.indexOf(iAntigo)) + i + textasso.substring(textasso.indexOf(iAntigo)+1,textasso.length) 
                 }
             }
-            console.log(textasso)
+            this.setTextoNoticia(textasso)
         }
     }
 }
@@ -89,7 +92,7 @@ export default {
     display: flex;
     gap: 10px;
     margin-bottom: 5px;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
 }
 .acoes button{
@@ -105,5 +108,6 @@ export default {
 .tutorial{
     color: rgb(112, 112, 112);
     font-size: 25px;
+    margin-left: 10px;
 }
 </style>

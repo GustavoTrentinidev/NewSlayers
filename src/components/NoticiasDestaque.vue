@@ -8,22 +8,25 @@
     <div class="esquerda">
         <div class="noticias">
             <ul class="topicos">
-                <li :class="index == 0 ? 'selected' : 'no-selected'" v-for="(topico, index) in topicos" :key="index" @click="mudarParaTopico(topico,$event)">
+                <li class="li" :class="index == 0 ? 'selected' : 'no-selected'" v-for="(topico, index) in topicos" :key="index" @click="mudarParaTopico(topico,$event)">
                     {{topico}}
                 </li>
             </ul>
-            <div class="noticias-destacadas">
-                <div v-for="(noticia,index) in currentTopico.noticias" :key="index" class="noticia" :style="'background-image: url(' + noticia.img + ');'" @click="$router.push({path: '/noticia/1'})">
+            <div class="box-loading" v-if="loading">
+                <img class="loading" src="@/assets/loading.gif" alt="">
+            </div>
+            <div v-else class="noticias-destacadas" >
+                <div v-for="(noticia,index) in currentTopico.noticias" :key="index" class="noticia" :style="'background-image: url(' + noticia.midia[0].midiapath + ');'" @click="$router.push({path: `/noticia/${noticia.id}`})">
                     <div class="editor-holder">
-                        <div class="editor-img" :style="'background-image: url(' + noticia.editor.img + ');'"></div>
-                        <div class="editor-nome">{{noticia.editor.nome}}</div>
+                        <div class="editor-img" :style="'background-image: url(' + noticia.user_iduser.midia.midiaprofilepath + ');'"></div>
+                        <div class="editor-nome">{{noticia.user_iduser.username}}</div>
                     </div>
                     <div class="info-noticia">
                         <div class="texto-noticia">
-                            <div class="data"> {{noticia.data}}</div>
-                            <div class="titulo">{{noticia.titulo | truncate(30, '...')}}</div>
+                            <div class="data"> {{noticia.noticiadatacadastro.split('-').reverse().join('/')}}</div>
+                            <div class="titulo">{{noticia.noticiatitulo | truncate(30, '...')}}</div>
                         </div>
-                        <div class="texto-noticia-texto">{{noticia.texto | truncate(280, ('...'))}}</div>
+                        <div class="texto-noticia-texto">{{noticia.texto | truncate(130, ('...'))}}</div>
                     </div>
                 </div>
             </div>
@@ -33,73 +36,107 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-    mounted(){
+    props: ['page'],
+    watch:{
+        page(){
+            let noticias = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant,  this.noticiasDestaqueTFT, this.noticiasDestaqueWR, this.noticiasDestaqueLor]
+            this.currentTopico = noticias[this.page]
+            let topicos = document.querySelectorAll('.li')
+            topicos.forEach(category=>{
+                category.classList = ['li']
+                category.classList.add('no-selected')
+            })
+            topicos[this.page].classList = ['li']
+            topicos[this.page].classList.add('selected')
+        },
+        currentTopico(){
+            this.loading = true
+            this.getNoticiasTopico(this.currentTopico["id"]).then((data)=>{
+                this.loading = false
+                return this.currentTopico["noticias"] = data    
+            }).catch(()=>{
+                this.loading = false
+            })
+        }
+    },
+    created(){
         this.currentTopico = this.noticiasDestaqueLol
     },
     methods:{
         mudarParaTopico(topico,e){
-            let topicos = document.querySelectorAll('li')
+            let topicos = document.querySelectorAll('.li')
             topicos.forEach(category=>{
-                category.classList = []
+                category.classList = ['li']
                 category.classList.add('no-selected')
             })
-            e.target.classList = []
+            e.target.classList = ['li']
             e.target.classList.add('selected')
             
-            let noticias = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant, this.noticiasDestaqueWR, this.noticiasDestaqueLor, this.noticiasDestaqueTFT]
-            noticias.forEach(noticiasdestaque=>{
+            let noticias = [this.noticiasDestaqueLol, this.noticiasDestaqueValorant, this.noticiasDestaqueTFT, this.noticiasDestaqueWR, this.noticiasDestaqueLor]
+            noticias.forEach((noticiasdestaque, index)=>{
                 if(topico == noticiasdestaque.topico){
                     this.currentTopico = noticiasdestaque
+                    this.$emit('trocaPagina', index)
                 }
             })
+        },
+        async getNoticiasTopico(idtopico){
+            const {data} = await axios.get(`/noticias/?idtopico=${idtopico}`)
+            let threeNews = data.results.reverse().splice(0,3)
+            return threeNews
         }
     },
     data(){
         return{
+            loading: false,
             currentTopico:{},
             topicos: ['League of Legends', 'Valorant', 'TeamfightTatics', 'Wild Rift', 'Runeterra'],
             noticiasDestaqueLol: {
                 topico: 'League of Legends',
-                noticias:[
-                {img: require('@/assets/melhoresAutoresImg/cinematic1.jpg') ,titulo: 'dolor sit', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/melhoresAutoresImg/cinematic2.jpg') ,titulo: 'dolor sit', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/melhoresAutoresImg/cinematic3.jpg'),titulo: 'dolor sit', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-            ]},
+                id: 1,
+                noticias:[]
+            },
             noticiasDestaqueValorant: {
                 topico: 'Valorant',
-                noticias: [
-                {img: require('@/assets/melhoresAutoresImg/cinematic4.jpg'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/melhoresAutoresImg/cinematic6.jpg'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/melhoresAutoresImg/cinematic7.jpg'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                ]},
+                id: 2,
+                noticias: []
+            },
             noticiasDestaqueWR: {
                 topico: 'Wild Rift',
-                noticias:[
-                {img: require('@/assets/melhoresAutoresImg/cinematic8.jpg'),titulo: 'amet, consectetur', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/melhoresAutoresImg/cinematic9.jpg'),titulo: 'amet, consectetur', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/imagensTeste/wild.jpg'),titulo: 'amet, consectetur', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                ]},
+                id:4,
+                noticias:[]
+            },
             noticiasDestaqueTFT: {
                 topico: 'TeamfightTatics',
-                noticias:[
-                {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/carrosselHome/tft-topico.png'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                ]},
+                id: 3,
+                noticias:[]
+            },
             noticiasDestaqueLor:{
                 topico: 'Runeterra',
-                noticias:[
-                {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-                {img: require('@/assets/carrosselHome/lor-topico.png'),titulo: 'Lorem ipsum', data: '06/08/2022', editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}, texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'},
-            ]},
+                id: 5,
+                noticias:[]
+            },
         }
     }
 }
 </script>
 
 <style scoped>
+.box-loading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 415px;   
+}
+.loading{
+    width: 100px;
+    display: flex;
+    margin-right: 200px;
+}
 .destaque{
     height: 650px;
     background-color: #060126;
@@ -213,7 +250,7 @@ export default {
     transition: color 1.2s ease-out; */
 }
 .noticia:hover .texto-noticia{
-    transform: translateY(-300%);
+    transform: translateY(-100%);
 }
 .noticia:hover .info-noticia{
     max-height: 400px;

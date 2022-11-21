@@ -2,7 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import "@/assets/global.css"
+import store from "./store"
+import "@/plugins/axios"
+
+
 Vue.config.productionTip = false
+
 import VueCarousel from 'vue-carousel';
 Vue.use(VueCarousel);
 
@@ -19,5 +24,6 @@ Vue.filter('truncate', filter);
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

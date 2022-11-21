@@ -1,60 +1,96 @@
 <template>
-  <div class="container-publicar">
-    <div class="row">
-        <div class="inputzada">
-            <label for="titulo">Título da notícia</label>
-            <input name="titulo" type="text" placeholder="Escreva um título">
-        </div>
-        <div class="selectzada">
-            <label for="topico">Tópico da notícia</label>
-            <select name="topico" aria-placeholder="Escolha o tópico" id="">
-                <option value="League of Legends">League of Legends</option>
-                <option value="VALORANT">VALORANT</option>
-                <option value="Wild Rift">Wild Rift</option>
-                <option value="Teamfight Tatics">Teamfight Tatics</option>
-                <option value="Legends Of Runeterra">Legends Of Runeterra</option>
-            </select>
-        </div>
-    </div>
-    <div class="row2">
-        <TextArea/>
-        <div class="imagemzada">
-            <label for="imagem">Imagem para a notícia</label>
-            <input type="file" id="input-file" @change="Convert64()" aria-hidden="true">
-            <div class="imagem" @click="enviarArquivo">
-                <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
+  <div>
+      <PopupMidia :pop="pop" @fecharpop="fecharpop"/>
+      <div class="container-publicar">
+        <div class="row">
+            <div class="inputzada">
+                <label for="titulo">Título da notícia</label>
+                <input name="titulo" v-model="titulo" type="text" placeholder="Escreva um título">
+            </div>
+            <div class="selectzada">
+                <label for="topico">Tópico da notícia</label>
+                <select name="topico" v-model="topico" @change="setTopicoNoticia(topico)" aria-placeholder="Escolha o tópico" id="">
+                    <option value="1">League of Legends</option>
+                    <option value="2">VALORANT</option>
+                    <option value="3">Teamfight Tatics</option>
+                    <option value="4">Wild Rift</option>
+                    <option value="5">Legends Of Runeterra</option>
+                </select>
             </div>
         </div>
-    </div>
-    <div class="row2">
-        <button class="publicar">Publicar</button>
-    </div>
+        <div class="row2">
+            <TextArea/>
+            <div class="imagemzada">
+                <label for="imagem">Imagem para a capa da notícia</label>
+                <input type="file" id="input-file-principal" @change="Convert64()" aria-hidden="true">
+                <div class="imagem" :style="{backgroundImage: midiaPrincipal ? `url('${midiaPrincipal}')` : ''}" @click="enviarArquivo">
+                    <img v-if="!midiaPrincipal" src="@/assets/iconsPerfil/alterarImg.png" alt="">
+                </div>
+                <label for="midias">Selecione imagens para o texto da notícia</label>
+                <button class="popupimagens" @click="pop = true">Imagens</button>
+            </div>
+        </div>
+        <div class="row2">
+            <button class="publicar" @click="postarNoticia">Publicar</button>
+        </div>
+      </div>
   </div>
 </template>
 
 <script>
 import TextArea from '@/components/perfil/TextArea.vue'
+import PopupMidia from '@/components/perfil/PopupMidia.vue'
+import {mapMutations, mapActions, mapState} from 'vuex'
 export default {
-    components:{TextArea},
+    computed:{
+        ...mapState('enviarnoticia',['noticiatitulo','texto', 'midia', 'topico_idtopico'])
+    },
+    data(){
+        return{
+            pop: false,
+            midiaPrincipal: '',
+            titulo: '',
+            topico: 1,
+        }
+    },
+    mounted(){
+        this.limparDados()
+        this.setTopicoNoticia(this.topico)
+    },
+    watch:{
+        titulo(){
+            this.setTituloNoticia(this.titulo)
+        }
+    },
+    components:{TextArea,PopupMidia},
     methods:{
+        ...mapMutations('enviarnoticia', ['setTituloNoticia', 'limparDados', 'setTextoNoticia', 'setTopicoNoticia', 'setMidiaPrincipalNoticia']),
+        ...mapActions('enviarnoticia', ['postNoticia']),
+        fecharpop(){
+            this.pop = false
+        },
         enviarArquivo(){
-            document.getElementById('input-file').click()
+            document.getElementById('input-file-principal').click()
         },
         Convert64(){
-            let file = document.querySelector('#input-file').files[0]
+            let file = document.querySelector('#input-file-principal').files[0]
             var reader = new FileReader();
+            const _this = this
             reader.readAsDataURL(file);
             reader.onload = function () {
-                console.log(reader.result);
+                _this.midiaPrincipal = reader.result
+                _this.setMidiaPrincipalNoticia(reader.result.split(',')[1])
             };
+        },
+        postarNoticia(){
+            this.postNoticia({noticiatitulo: this.noticiatitulo, texto: this.texto, midia: this.midia, topico_idtopico: this.topico_idtopico})
         }
-
     }   
 }
 
 </script>
 
-<style>
+<style scoped>
 .container-publicar{
     width: 1280px;
     height: 720px;
@@ -66,7 +102,7 @@ export default {
 }
 .row{
     display: flex;
-    gap: 100px;
+    gap: 170px;
     margin-bottom: 35px;
 }
 .row2{
@@ -128,6 +164,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-size: cover;
+    background-position: center;
 }
 .publicar{
   width: 200px;
@@ -144,6 +182,18 @@ export default {
   margin: 0 auto;
   cursor: pointer;
   transition: 200ms ease-in-out;
-  transform: translateY(150%);
+  /* transform: translateY(45%); */
+}
+.popupimagens{
+    width: 200px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #2095AE;
+    font-size: 30px;
+    font-family: 'Share Tech', serif;
+    color: #fff;
+    cursor: pointer;
+    outline: 0;
+    border: 0;
 }
 </style>

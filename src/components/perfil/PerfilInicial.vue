@@ -1,40 +1,44 @@
 <template>
   <div class="informacoes-usuario">
     <div class="card-usuario">
-        <div class="banner" :style="'background-image: url('+ usuarioVisitado.banner + ')'"></div>
-        <div class="img-usuario" :style="'background-image: url('+ usuarioVisitado.img + ')'"></div>
+        <div class="banner" v-if="usuarioVisitado.midia && usuarioVisitado.midia.midiabannerpath" :style="'background-image: url('+ usuarioVisitado.midia.midiabannerpath + ')'"></div>
+        <div class="banner" v-else :style="'background-image: url('+ require('@/assets/noticiasImagem.png') + ')'"></div>
+        <div class="img-usuario" v-if="usuarioVisitado.midia && usuarioVisitado.midia.midiaprofilepath" :style="'background-image: url('+ usuarioVisitado.midia.midiaprofilepath + ')'"></div>
+        <div class="img-usuario" v-else :style="'background-image: url('+ imgUserDefault + ')'"></div>
         <div class="nome-e-email">
-            <div class="nome">{{usuarioVisitado.nome}}</div>
+            <div class="nome">{{usuarioVisitado.username}}</div>
             <div class="email">{{usuarioVisitado.email}}</div>
         </div>
-        <!-- <div v-show="usuarioLogado.id != usuarioVisitado.id"> -->
-            <button v-if="seguindo == false" @click="seguindo = !seguindo" class="seguir">seguir</button>
-            <button v-else class="unfollow" @click="seguindo = !seguindo">deixar de seguir</button>
-        <!-- </div> -->
+        <div v-if="usuarioLogado.id != usuarioVisitado.id">
+            <button v-if="seguindo == false" @click="seguir" class="seguir">seguir</button>
+            <button v-else class="unfollow" @click="seguir">deixar de seguir</button>
+        </div>
     </div>
     <div class="seguidores">
         <div class="quantos-seguidores">
-            <span class="length">{{usuarioVisitado.seguidores.length}}</span>
+            <span v-if="usuarioVisitado.seguidores" class="length">{{usuarioVisitado.seguidores.length}}</span>
             <span class="oque">SEGUIDORES</span>
         </div>
         <div class="lista-seguidores">
-            <div class="seguidor" v-for="(seguidor,index) in usuarioVisitado.seguidores" :key="index">
-                <div class="img-seguidor" :style="'background-image: url('+ seguidor.img + ')'"></div>
-                <div class="nome-seguidor">{{seguidor.nome}}</div>
-                <div class="tipo-seguidor" v-if="seguidor.tipo == 0">Padrão</div>
+            <div class="seguidor" @click="$router.push({name: 'Perfil', params:{id: seguidor.id}})" v-for="(seguidor,index) in usuarioVisitado.seguidores" :key="index">
+                <div class="img-seguidor" v-if="seguidor.midia && seguidor.midia.midiaprofilepath" :style="'background-image: url('+ seguidor.midia.midiaprofilepath + ')'"></div>
+                <div class="img-seguidor" v-else :style="'background-image: url('+ imgUserDefault + ')'"></div>
+                <div class="nome-seguidor">{{seguidor.username}}</div>
+                <div class="tipo-seguidor" v-if="seguidor.tipo == 1">Leitor</div>
                 <div class="tipo-seguidor" v-else>Editor</div>
             </div>
         </div>
     </div>
     <div class="seguidores">
         <div class="quantos-seguidores">
-            <span class="length">{{usuarioVisitado.seguindo.length}}</span>
+            <span v-if="usuarioVisitado.seguindo" class="length">{{usuarioVisitado.seguindo.length}}</span>
             <span class="oque">SEGUINDO</span>
         </div>
         <div class="lista-seguidores">
-            <div class="seguidor" v-for="(manoSeguido,index) in usuarioVisitado.seguindo" :key="index">
-                <div class="img-seguidor" :style="'background-image: url('+ manoSeguido.img + ')'"></div>
-                <div class="nome-seguidor">{{manoSeguido.nome}}</div>
+            <div class="seguidor" @click="$router.push({name: 'Perfil', params:{id: manoSeguido.id}})" v-for="(manoSeguido,index) in usuarioVisitado.seguindo" :key="index">
+                <div class="img-seguidor" v-if="manoSeguido.midia && manoSeguido.midia.midiaprofilepath" :style="'background-image: url('+ manoSeguido.midia.midiaprofilepath + ')'"></div>
+                <div class="img-seguidor" v-else :style="'background-image: url('+ imgUserDefault + ')'"></div>
+                <div class="nome-seguidor">{{manoSeguido.username}}</div>
                 <div class="tipo-seguidor" v-if="manoSeguido.tipo == 0">Padrão</div>
                 <div class="tipo-seguidor" v-else>Editor</div>
             </div>
@@ -44,13 +48,52 @@
 </template>
 
 <script>
+import {mapState} from "vuex"
+import {mapActions} from "vuex"
+import axios from "axios"
+
+
 export default {
-    props: ['usuarioVisitado', 'usuarioLogado'],
+    computed: {
+        ...mapState('usuario', {usuarioLogado: 'usuario'}),
+        ...mapState('usuariovisitado', {usuarioVisitado: 'usuariovisitado'})
+    },
     data(){
         return{
             seguindo: false,
+            imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png')
         }
     },
+    watch:{
+        usuarioVisitado(){
+            this.atualizaSeguindo()
+        }
+    },
+    mounted(){
+        this.atualizaSeguindo()
+    },
+    methods:{
+        atualizaSeguindo(){
+            this.seguindo = false
+            this.usuarioVisitado.seguidores.forEach((seguidor)=>{
+                if(seguidor.id == this.usuarioLogado.id){
+                    return this.seguindo = true
+                }
+                return this.seguindo
+            })
+        },
+        ...mapActions('usuariovisitado', ['getUsuariovisitado']),
+        async seguir(){
+            try{
+                await axios.get(`/usuarios/${this.usuarioVisitado.id}/seguir/`)
+            }catch{
+                this.$router.push({path:'/login'})
+            }
+            this.getUsuariovisitado(this.$route.params.id).then(()=>{
+                this.atualizaSeguindo()
+            })
+        }
+    }
 }
 </script>
 
@@ -79,6 +122,7 @@ export default {
     background-position: center;
 }
 .img-usuario{
+    background: #fff;
     width: 100px;
     height: 100px;
     background-size: cover;
@@ -185,8 +229,10 @@ export default {
     align-items: center;
     gap: 10px;
     background-color: #060F29;
+    cursor: pointer;
 }
 .img-seguidor{
+    background-color: #fff;
     width: 30px;
     height: 30px;
     background-size: cover;

@@ -2,11 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/HomePage.vue'
 import Login from '@/views/LoginPage.vue'
-import NoticiasHome from '@/views/NoticiasHome.vue'
 import TopicoView from '@/views/TopicoView.vue'
 import About from '@/views/SiteAbout.vue'
 import NoticiaTemplate from '@/views/NoticiaTemplate.vue'
 import ResultadoBusca from '@/views/ResultadoBusca.vue'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -21,11 +21,6 @@ const routes = [
         component: Home
       },
       {
-        path:'/noticias/:pagina',
-        component: NoticiasHome,
-        props: true
-      },
-      {
         path:`/topicos/:topico`,
         component: TopicoView,
         props: true
@@ -35,8 +30,10 @@ const routes = [
         component: About,
       },
       {
+        name: 'Noticia',
         path:'/noticia/:id',
-        component: NoticiaTemplate
+        component: NoticiaTemplate,
+        props: true
       },
       {
         name: 'Busca',
@@ -47,8 +44,10 @@ const routes = [
     ]
   },
   {
-    path: '/perfil',
+    name: "Perfil",
+    path: '/perfil/:id',
     component: () => import("@/layouts/AreaPerfil.vue"),
+    props:true,
   },
   {
     path: '',
@@ -71,6 +70,20 @@ const router = new VueRouter({
   routes,
   scrollBehavior () {
     return { x: 0, y: 0 }
+  }
+})
+
+router.beforeEach((to, from, next)=>{
+  if (to.matched.some(record => record.meta.auth)){
+    if(!store.state.auth.loggedIn){
+      next({
+        name: "Login"
+      })
+    }else{
+      next()
+    }
+  }else{
+    next()
   }
 })
 

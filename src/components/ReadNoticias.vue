@@ -1,26 +1,32 @@
 <template>
     <div>
         <div class="container">
-            <div v-for="(noticia, index) in noticias" :key="index" class="noticia" @click="$router.push({path: '/noticia/1'})">
+            <div v-for="(noticia, index) in noticias.results" :key="index" class="noticia" @click="$router.push({path: `/noticia/${noticia.id}`})">
                 <div class="parte-de-cima">
-                    <img draggable="false" :src="noticia.img" alt="">
+                    <img draggable="false" :src="noticia.midia[0].midiapath" alt="">
                     <div class="editor-holder">
-                        <div class="editor-img" :style="'background-image: url(' + noticia.editor.img + ');'"></div>
-                        <div class="editor-nome">{{noticia.editor.nome}}</div>
+                        <div class="editor-img" :style="'background-image: url(' + noticia.user_iduser.midia.midiaprofilepath + ');'"></div>
+                        <div class="editor-nome">{{noticia.user_iduser.username}}</div>
                     </div>
                 </div>
                 <div class="info-noticia">
                     <div class="informacoes">
-                        <div class="data">{{noticia.data}}</div>
-                        <div class="titulo">{{noticia.titulo | truncate(30, '...')}}</div>
-                        <div class="texto">{{noticia.texto | truncate(225, '...')}}</div>
-                        <div class="topico">{{noticia.topico}}</div>
+                        <div class="data">{{noticia.noticiadatacadastro.split('-').reverse().join('/')}}</div>
+                        <div class="titulo">{{noticia.noticiatitulo | truncate(30, '...')}}</div>
+                        <div class="texto">{{noticia.texto | truncate(200, '...')}}</div>
+                        <div class="topico">{{noticia.topico_idtopico.nometopico}}</div>
                     </div>
                 </div>
             </div>
             <div class="numero-de-paginas">
-                <div class="numero" v-for="index in numeroDePaginas" :key="index" @click="passarPagina(index)">
-                    {{index}}
+                <div class="numero outrasPaginas" @click="page -= 1" v-if="noticias.previous">
+                    Anterior
+                </div>
+                <div class="numero paginaAtual">
+                    {{page}}
+                </div>
+                <div class="numero outrasPaginas" @click="page += 1" v-if="noticias.next">
+                    Próximo
                 </div>
             </div>
         </div>  
@@ -28,65 +34,28 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
     data(){
         return{
             numeroDePaginas: 0,
-            noticias: [
-                {titulo: 'NOTAS DA ATUALIZAÇÃO 12.14', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean convallis ipsum in porta dictum. Fusce non pellentesque arcu, eget egestas mauris. Pellentesque consequat sem eu pretium egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic1.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic2.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic3.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic4.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic7.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic6.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic8.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/melhoresAutoresImg/cinematic9.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/wild.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/wild.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/gnar.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/pyke.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'Lorem ipsum', texto: 'fhasaysifhasjhafsyigffhasaysifhasjhafsyigfuasfhgyfsfyiagfuogsuuogasyfysuoasgfugsuasfhgyfsfyiagfuogsuuogasyfysuoasgfuags', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/imagensTeste/yasuo.jpg'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-                {titulo: 'ATUALIZAÇÃO NA CONSISTÊNCIA DAS PARTIDAS DO VALORANT – 2', texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', data: '05/08/2022', topico: 'League of Legends', img: require('@/assets/noticiaTemplateChamada.png'), editor :{img: require('@/assets/melhoresAutoresImg/nicolas.jpg'), nome: 'yK1ngz'}},
-            ]
+            noticias: [],
+            page: 1,
         }
     },
     mounted(){
-        var classeNoticia = document.querySelectorAll('.noticia')
-        var numerodapag = 0
-        classeNoticia.forEach((noticia,index)=>{
-            index += 1
-            if(index / 9 > numerodapag){
-                numerodapag = numerodapag + 1
-            }
-            if(numerodapag == this.$route.params.pagina){
-                noticia.style.display = "block"
-            }else{
-                noticia.style.display = "none"
-            }
-            
-        this.numeroDePaginas = numerodapag
-        })
-        setTimeout(()=>{
-            var botoes = document.querySelectorAll('.numero')
-            botoes.forEach((botao)=>{
-                botao.classList.add('outrasPaginas')
-            })
-            var index = parseInt(this.$route.path.split('/')[2])
-            botoes[index-1].classList.add('paginaAtual')
-            botoes[index-1].classList.remove('outrasPaginas')
-        },10)
+        this.getNoticias()
     },
     methods:{
-        passarPagina(index){
-            let paginaReq = `/noticias/${index}`
-            if(paginaReq != this.$route.path){
-                this.$router.push({path: paginaReq}).finally(()=>{
-                    window.scroll({top:1300})
-                })
-            }
+        async getNoticias(){
+            const {data} = await axios.get(`/noticias/?page=${this.page}`)
+            this.noticias = data
+        },
+    },
+    watch:{
+        page(){
+            this.getNoticias()
+            window.scroll({top:1300})
         }
     }
 }
@@ -193,13 +162,20 @@ export default {
     cursor: pointer;
     padding-top: 5px;
     transition: transform 200ms ease-in-out;
+    margin: auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.numero:hover{
-    transform: scale(1.1);
+
+.outrasPaginas:hover{
+    transform: scale(1.05);
     background-color: #3a326a;
 }
 
 .outrasPaginas{
+    width: 150px;
+    font-size: 30px;
     background-color: #060126;
 }
 .paginaAtual{
