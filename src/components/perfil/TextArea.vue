@@ -1,23 +1,23 @@
 <template>
     <div>
         <div class="textareazada">
-            <div class="acoes">
-                <label for="texto">Texto da notícia</label>
-                <div class="alinhamento-direita">
-                    <button class="negrito" @click="formatar('*')">B</button>
-                    <span class="tutorial">- Subtítulo</span>
-                </div>
-                </div>
-                
-            <textarea name="texto" ref="textarea" @change="enviar" @select="select($event)" placeholder="Escreva o texto da notícia">
-            </textarea>
+            <quillEditor class="editor" :options="quillOptions"/>
+            
         </div>
     </div>
 </template>
 
 <script>
 import {mapMutations} from "vuex"
+import {quillEditor} from 'vue-quill-editor'
+import 'quill/dist/quill.core.css' 
+import 'quill/dist/quill.snow.css' 
+import 'quill/dist/quill.bubble.css'
+
 export default {
+    components:{
+        quillEditor
+    },
     data(){
         return{
             primeiro: '',
@@ -26,6 +26,12 @@ export default {
             textoSelecionado: '',
             textoNaoSelecionado1: '',
             textoNaoSelecionado2: '',
+            quillOptions: {
+                modules: {
+                    toolbar: this.toolbarOptions
+                }
+            },
+            toolbarOptions: ['bold', 'italic', 'underline', 'strike']
         }
     },
     mounted(){
@@ -76,8 +82,10 @@ export default {
     font-size: 30px;
     display: flex;
     flex-direction: column;
+    background-color: #fff;
+    color: #000;
 }
-.textareazada textarea{
+.textareazada .editor{
     resize: none;
     outline: 0;
     border: 0;
@@ -88,26 +96,5 @@ export default {
     box-sizing: border-box;
     padding: 20px;
 }
-.acoes{
-    display: flex;
-    gap: 10px;
-    margin-bottom: 5px;
-    justify-content: space-between;
-    align-items: center;
-}
-.acoes button{
-    width: 35px;
-    height: 35px;
-    border-radius: 0;
-    outline: 0;
-}
-.negrito{
-    font-weight: bold;
-    font-size: 20px;
-}
-.tutorial{
-    color: rgb(112, 112, 112);
-    font-size: 25px;
-    margin-left: 10px;
-}
+
 </style>
