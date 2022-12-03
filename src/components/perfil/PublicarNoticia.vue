@@ -1,6 +1,6 @@
 <template>
-  <div>
-      <PopupMidia :pop="pop" @fecharpop="fecharpop"/>
+  <div class="limitador">
+      <!-- <PopupMidia :pop="pop" @fecharpop="fecharpop"/> -->
       <div class="container-publicar">
         <div class="row">
             <div class="inputzada">
@@ -19,15 +19,19 @@
             </div>
         </div>
         <div class="row2">
-            <TextArea/>
+            <div>
+                <div class="textareazada">
+                    <quillEditor class="editor" v-model="textao" :options="quillOptions"/>
+                </div>
+            </div>
             <div class="imagemzada">
                 <label for="imagem">Imagem para a capa da notícia</label>
                 <input type="file" id="input-file-principal" @change="Convert64()" aria-hidden="true">
                 <div class="imagem" :style="{backgroundImage: midiaPrincipal ? `url('${midiaPrincipal}')` : ''}" @click="enviarArquivo">
                     <img v-if="!midiaPrincipal" src="@/assets/iconsPerfil/alterarImg.png" alt="">
                 </div>
-                <label for="midias">Selecione imagens para o texto da notícia</label>
-                <button class="popupimagens" @click="pop = true">Imagens</button>
+                <!-- <label for="midias">Selecione imagens para o texto da notícia</label>
+                <button class="popupimagens" @click="pop = true">Imagens</button> -->
             </div>
         </div>
         <div class="row2">
@@ -38,19 +42,38 @@
 </template>
 
 <script>
-import TextArea from '@/components/perfil/TextArea.vue'
-import PopupMidia from '@/components/perfil/PopupMidia.vue'
+// import PopupMidia from '@/components/perfil/PopupMidia.vue'
 import {mapMutations, mapActions, mapState} from 'vuex'
+
+import {quillEditor} from 'vue-quill-editor'
+import 'quill/dist/quill.core.css' 
+import 'quill/dist/quill.snow.css' 
+import 'quill/dist/quill.bubble.css'
+
 export default {
     computed:{
-        ...mapState('enviarnoticia',['noticiatitulo','texto', 'midia', 'topico_idtopico'])
+        ...mapState('enviarnoticia',['noticiatitulo','texto', 'midia', 'topico_idtopico', 'MIDIASFRONT'])
     },
     data(){
         return{
-            pop: false,
+            // pop: false,
             midiaPrincipal: '',
             titulo: '',
             topico: 1,
+            textao: '',
+            quillOptions: {
+                placeholder: 'Escreva aqui sua notícia',
+                modules: {
+                    toolbar: [
+                        [{ 'header': '1' }],
+                        [ 'bold', 'italic', 'underline', 'strike' ],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet'}],
+                        [],
+                        [ 'link', 'image'],
+                        []
+                    ]
+                }
+            },
         }
     },
     mounted(){
@@ -62,9 +85,9 @@ export default {
             this.setTituloNoticia(this.titulo)
         }
     },
-    components:{TextArea,PopupMidia},
+    components:{quillEditor},
     methods:{
-        ...mapMutations('enviarnoticia', ['setTituloNoticia', 'limparDados', 'setTextoNoticia', 'setTopicoNoticia', 'setMidiaPrincipalNoticia']),
+        ...mapMutations('enviarnoticia', ['setTituloNoticia', 'setMIDIASFRONT', 'setMidiaTextoNoticia', 'limparDados', 'setTextoNoticia', 'setTopicoNoticia', 'setMidiaPrincipalNoticia']),
         ...mapActions('enviarnoticia', ['postNoticia']),
         fecharpop(){
             this.pop = false
@@ -83,14 +106,42 @@ export default {
             };
         },
         postarNoticia(){
+            this.fazerTudo()
             this.postNoticia({noticiatitulo: this.noticiatitulo, texto: this.texto, midia: this.midia, topico_idtopico: this.topico_idtopico})
-        }
+        },
+
+        separarFotos(){
+            let i = 1
+            while(i <= this.textao.split('<img src="').length -1){
+                let foto = this.textao.split('<img src="')[i].split('"').join('').split('>')[0]
+                // console.log(this.textao.split('<img src="')[i+1].split('"').join('').split('>')[0])
+                this.setMIDIASFRONT(foto) 
+                this.setMidiaTextoNoticia(foto.split(',')[1])
+                i ++
+            }
+            // console.log(this.textao.split('<img src="')[1].split('"').join('').split('>')[0])
+        },    
+        mudarTexto(){
+            this.MIDIASFRONT.forEach(foto=>{
+                this.textao = this.textao.replace(`<img src="${foto}">`, '<img>')
+                // console.log(this.textao.includes(`<img src="${foto}">`))
+                console.log(this.textao)
+            })
+            this.setTextoNoticia(this.textao)
+        },
+        fazerTudo(){
+            this.separarFotos()
+            this.mudarTexto()
+        },
     }   
 }
 
 </script>
 
 <style scoped>
+.limitador{
+    max-height: calc(720px - 500px);
+}
 .container-publicar{
     width: 1280px;
     height: 720px;
@@ -145,6 +196,24 @@ export default {
     width: 50px;
 }
 
+.textareazada{
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    color: #000;
+    height: 450px;
+}
+.textareazada .editor{
+    resize: none;
+    outline: 0;
+    border: 0;
+    font-size: 30px;
+    font-family: 'Share Tech', sans-serif;
+    width: 800px;
+    box-sizing: border-box;
+    height: calc(100% - 50px);
+}
 .imagemzada input{
     display: none;
 }

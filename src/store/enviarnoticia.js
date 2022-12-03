@@ -6,6 +6,7 @@ export const enviarnoticia = {
         texto: '',
         midiaprincipal: {},
         midiastexto: [],
+        MIDIASFRONT: [],
         topico_idtopico: 0,
         midia: [],
     },
@@ -27,6 +28,9 @@ export const enviarnoticia = {
         },
         apagarIndexMidias(state,index){
             state.midiastexto.splice(index,1)
+        },
+        setMIDIASFRONT(state,mf){
+            state.MIDIASFRONT.push(mf)
         },
         setMidias(state){
             state.midia.unshift(state.midiaprincipal)

@@ -1,78 +1,69 @@
 <template>
     <div>
         <div class="textareazada">
-            <quillEditor class="editor" :options="quillOptions"/>
-            
+            <quillEditor class="editor" v-model="textao" :options="quillOptions"/>
+            <button @click="fazerTudo">TESTE</button>
         </div>
     </div>
 </template>
 
 <script>
-import {mapMutations} from "vuex"
+import {mapMutations, mapState} from "vuex"
 import {quillEditor} from 'vue-quill-editor'
 import 'quill/dist/quill.core.css' 
 import 'quill/dist/quill.snow.css' 
 import 'quill/dist/quill.bubble.css'
 
 export default {
+    computed:{
+        ...mapState('enviarnoticia', ['midiastexto', 'MIDIASFRONT'])
+    },
     components:{
         quillEditor
     },
     data(){
         return{
-            primeiro: '',
-            ultimo: '',
-            textarea: '',
-            textoSelecionado: '',
-            textoNaoSelecionado1: '',
-            textoNaoSelecionado2: '',
+            textao: '',
             quillOptions: {
+                placeholder: 'Escreva aqui sua notícia',
                 modules: {
-                    toolbar: this.toolbarOptions
+                    toolbar: [
+                        [{ 'header': '1' }],
+                        [ 'bold', 'italic', 'underline', 'strike' ],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet'}],
+                        [],
+                        [ 'link', 'image'],
+                        []
+                    ]
                 }
             },
-            toolbarOptions: ['bold', 'italic', 'underline', 'strike']
         }
-    },
-    mounted(){
-        this.textarea = this.$refs.textarea
     },
     methods: {
-        ...mapMutations('enviarnoticia', ['setTextoNoticia']),
-        select(e){
-            let textoSelecionado = e.target.value.substring(e.target.selectionStart, e.target.selectionEnd)
-            let textoNaoSelecionado1 = e.target.value.substring(0, e.target.selectionStart)
-            let textoNaoSelecionado2 = e.target.value.substring(e.target.selectionEnd, e.target.value.length)
-            this.primeiro = textoSelecionado[0]
-            this.ultimo = textoSelecionado[textoSelecionado.length-1]
-            this.textoSelecionado = textoSelecionado
-            this.textoNaoSelecionado1 = textoNaoSelecionado1
-            this.textoNaoSelecionado2 = textoNaoSelecionado2
-        },
-        formatar(formatacao){
-            if(this.primeiro != formatacao || this.ultimo != formatacao){    
-                this.textarea.value = this.textoNaoSelecionado1 + (formatacao + this.textoSelecionado + formatacao) + this.textoNaoSelecionado2
-            }else{
-                this.textarea.value = this.textoNaoSelecionado1 + this.textoSelecionado.substring(1,this.textoSelecionado.length-1) + this.textoNaoSelecionado2
-            } 
-        },
-        enviar(){
-            let textasso = this.textarea.value.replace(/[\r\n]/gm, '<br>')
-            let tituloAberto = false
-            for (let i of textasso){
-                if(i == "*"){
-                    let iAntigo = i
-                    if(tituloAberto){
-                        i = "</h1>"
-                    }else{
-                        i = "<h1>"
-                    }
-                    tituloAberto = !tituloAberto
-                    textasso = textasso.substring(0, textasso.indexOf(iAntigo)) + i + textasso.substring(textasso.indexOf(iAntigo)+1,textasso.length) 
-                }
+        ...mapMutations('enviarnoticia', ['setMidiaTextoNoticia', 'setMIDIASFRONT', 'setTextoNoticia']),
+        separarFotos(){
+            let i = 1
+            while(i <= this.textao.split('<img src="').length -1){
+                let foto = this.textao.split('<img src="')[i].split('"').join('').split('>')[0]
+                // console.log(this.textao.split('<img src="')[i+1].split('"').join('').split('>')[0])
+                this.setMIDIASFRONT(foto) 
+                this.setMidiaTextoNoticia(foto.split(',')[1])
+                i ++
             }
-            this.setTextoNoticia(textasso)
-        }
+            // console.log(this.textao.split('<img src="')[1].split('"').join('').split('>')[0])
+        },    
+        mudarTexto(){
+            this.MIDIASFRONT.forEach(foto=>{
+                this.textao = this.textao.replace(`<img src="${foto}">`, '<img>')
+                // console.log(this.textao.includes(`<img src="${foto}">`))
+                console.log(this.textao)
+            })
+            this.setTextoNoticia(this.textao)
+        },
+        fazerTudo(){
+            this.separarFotos()
+            this.mudarTexto()
+        },
     }
 }
 </script>
@@ -94,7 +85,11 @@ export default {
     width: 800px;
     height: 450px;
     box-sizing: border-box;
-    padding: 20px;
 }
-
+.ql-container{
+    max-height: calc(100% - 50px);
+}
+.ql-container, .ql-editor, .ql-toolbar, .quill-editor, .editor{
+    border: 0;
+}
 </style>
