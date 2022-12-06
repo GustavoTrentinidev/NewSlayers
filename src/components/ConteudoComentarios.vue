@@ -27,7 +27,8 @@
             <div class="comentario" v-for="(comentario,index) in comentarios" :key="index">
                 <div class="row">
                     <div class="usuario" @click="$router.push({name: 'Perfil', params:{id: comentario.user_iduser.id}})">
-                        <div class="img-usuario img-editor" :style="'background-image: url('+ comentario.user_iduser.midia.midiaprofilepath + ')'"></div>
+                        <div class="img-usuario img-editor" v-if="comentario.user_iduser.midia && comentario.user_iduser.midia.midiaprofilepath" :style="'background-image: url('+ comentario.user_iduser.midia.midiaprofilepath + ')'"></div>
+                        <div class="img-usuario img-editor" v-else :style="'background-image: url('+ imgUserDefault + ')'"></div>
                         <div class="nome-usuario nome-editor">{{comentario.user_iduser.username}}</div>
                     </div>
                     <div class="data">{{comentario.datacomentario.split('-').reverse().join('/')}}</div>
@@ -69,6 +70,7 @@ export default {
     },
     data(){
         return{
+            imgUserDefault: require('@/assets/iconsPerfil/imgdefault.png'),
             comentarios: [],
             comentar: '',
             opcoes: ['Conteúdo Relacionado', 'Comentários'],
@@ -185,6 +187,7 @@ export default {
     align-items: center;
 }
 .img-editor{
+    background-color: #fff;
     width: 50px;
     height: 50px;
     background-size: cover;
