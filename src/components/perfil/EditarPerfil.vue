@@ -5,7 +5,7 @@
         <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
       </div>
     </div>
-    <div class="banner" @click="enviarBanner" v-else :style="'background-image: url('+ require('@/assets/noticiasImagem.png') + ')'">
+    <div class="banner" @click="enviarBanner" v-else :style="midiaFront.midiabannerpath ? 'background-image: url(' + midiaFront.midiabannerpath + ')' : 'background-image: url('+ require('@/assets/noticiasImagem.png') + ')'">
       <div class="overlay">
           <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
       </div>
@@ -16,7 +16,7 @@
         <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
       </div>
     </div>
-    <div class="img-user" @click="enviarProfile" v-else :style="'background-image: url(' + imgUserDefault + ')'">
+    <div class="img-user" @click="enviarProfile" v-else :style="midiaFront.midiaprofilepath ? 'background-image: url(' + midiaFront.midiaprofilepath + ')' : 'background-image: url(' + imgUserDefault + ')'">
       <div class="overlay">
         <img src="@/assets/iconsPerfil/alterarImg.png" alt="">
       </div>
@@ -98,7 +98,11 @@ export default {
       console.log(this.midiaBack)
     },
     getMidia(){
-      this.midiaFront = {midiaprofilepath: this.usuario.midia.midiaprofilepath, midiabannerpath: this.usuario.midia.midiabannerpath}
+      if(this.usuario.midia){
+        this.midiaFront = {midiaprofilepath: this.usuario.midia.midiaprofilepath, midiabannerpath: this.usuario.midia.midiabannerpath}
+      }else{
+        this.midiaFront = {midiaprofilepath: '', midiabannerpath: ''}
+      }
     },
     async salvar(){
       this.error = false
@@ -107,9 +111,20 @@ export default {
       }else{
         await axios.patch(`/usuarios/${this.usuario.id}/`, this.usuarioAlterado)
       }
-      if(this.midiaBack){
-        await axios.patch(`/midias-usuarios/${this.usuario.midia.id}/`, this.midiaBack)
+      if(this.usuario.midia){
+        if(this.midiaBack){
+          await axios.patch(`/midias-usuarios/${this.usuario.midia.id}/`, this.midiaBack)
+        }
+      }else if(this.usuario.midia == null){
+        const dados = {
+          user_iduser: this.usuario.id,
+          ...this.midiaBack
+        }
+        if(this.midiaBack){
+          await axios.post(`/midias-usuarios/`, dados)
+        }
       }
+
       this.getDadosUsuarioLogado()
       this.getUsuariovisitado(this.$route.params.id)
     }
