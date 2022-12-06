@@ -93,8 +93,8 @@ export default {
     },
     methods: {
         async getNoticias(){
-            const {data} = await axios.get('/noticias/')
-            this.noticias = data.results
+            const {data} = await axios.get('/noticias-all/')
+            this.noticias = data
         },
         async getUsuarios(){
             const {data} = await axios.get('/usuarios/')
