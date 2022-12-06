@@ -9,6 +9,7 @@ export const enviarnoticia = {
         MIDIASFRONT: [],
         topico_idtopico: 0,
         midia: [],
+        idIr: -1,
     },
     mutations: {
         setTituloNoticia(state, titulo){
@@ -45,6 +46,9 @@ export const enviarnoticia = {
             state.midiaprincipal = {}
             state.topico = 0
             state.midia = []
+        },
+        mudarIdNoticiaPublicada(state,id){
+            state.idIr = id
         }
     },
     actions:{
@@ -53,6 +57,7 @@ export const enviarnoticia = {
             commit('setMidias')
             const {data} = await axios.post('/noticias/', noticia)
             console.log(data)
+            commit('mudarIdNoticiaPublicada', data.id)
         }
     }
 }

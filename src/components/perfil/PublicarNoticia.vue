@@ -35,7 +35,10 @@
             </div>
         </div>
         <div class="row2">
-            <button class="publicar" @click="postarNoticia">Publicar</button>
+            <button class="publicar" @click="postarNoticia">
+                <div class="loading" :style="{backgroundImage: `url(${this.gif})`}" v-if="loading"></div>
+                <div class="publicar-texto-botao" v-else>Publicar</div>
+            </button>
         </div>
       </div>
   </div>
@@ -52,11 +55,13 @@ import 'quill/dist/quill.bubble.css'
 
 export default {
     computed:{
-        ...mapState('enviarnoticia',['noticiatitulo','texto', 'midia', 'topico_idtopico', 'MIDIASFRONT'])
+        ...mapState('enviarnoticia',['noticiatitulo','texto', 'midia', 'topico_idtopico', 'MIDIASFRONT', 'idIr'])
     },
     data(){
         return{
             // pop: false,
+            gif: require('@/assets/loading.gif'),
+            loading: false,
             midiaPrincipal: '',
             titulo: '',
             topico: 1,
@@ -77,12 +82,16 @@ export default {
         }
     },
     mounted(){
+        this.loading = false
         this.limparDados()
         this.setTopicoNoticia(this.topico)
     },
     watch:{
         titulo(){
             this.setTituloNoticia(this.titulo)
+        },
+        idIr(){
+            this.$router.push({name: 'Noticia', params:{id: this.idIr}})
         }
     },
     components:{quillEditor},
@@ -107,6 +116,7 @@ export default {
         },
         postarNoticia(){
             this.fazerTudo()
+            this.loading = true
             this.postNoticia({noticiatitulo: this.noticiatitulo, texto: this.texto, midia: this.midia, topico_idtopico: this.topico_idtopico})
         },
 
@@ -139,6 +149,14 @@ export default {
 </script>
 
 <style scoped>
+.loading{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 .limitador{
     max-height: calc(720px - 500px);
 }
