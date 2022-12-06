@@ -6,8 +6,10 @@ export const enviarnoticia = {
         texto: '',
         midiaprincipal: {},
         midiastexto: [],
+        MIDIASFRONT: [],
         topico_idtopico: 0,
         midia: [],
+        idIr: -1,
     },
     mutations: {
         setTituloNoticia(state, titulo){
@@ -28,6 +30,9 @@ export const enviarnoticia = {
         apagarIndexMidias(state,index){
             state.midiastexto.splice(index,1)
         },
+        setMIDIASFRONT(state,mf){
+            state.MIDIASFRONT.push(mf)
+        },
         setMidias(state){
             state.midia.unshift(state.midiaprincipal)
             for(let m of state.midiastexto){
@@ -41,6 +46,9 @@ export const enviarnoticia = {
             state.midiaprincipal = {}
             state.topico = 0
             state.midia = []
+        },
+        mudarIdNoticiaPublicada(state,id){
+            state.idIr = id
         }
     },
     actions:{
@@ -49,6 +57,7 @@ export const enviarnoticia = {
             commit('setMidias')
             const {data} = await axios.post('/noticias/', noticia)
             console.log(data)
+            commit('mudarIdNoticiaPublicada', data.id)
         }
     }
 }

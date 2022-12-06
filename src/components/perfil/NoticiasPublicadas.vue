@@ -8,7 +8,7 @@
                     <div class="titulo">{{noticia.noticiatitulo | truncate(30, '...')}}</div>
                     <div class="texto">{{noticia.texto | truncate(225, '...')}}</div>
                 </div>
-            <Trash class="icon" style="color:white"/>
+            <Trash @click.stop="excluirNoticia(noticia.id)" class="icon" style="color:white"/>
             <DotsVertical class="icon2" style="color:white"/>
             </div>
         </div>
@@ -18,8 +18,8 @@
 <script>
 import Trash from 'vue-material-design-icons/TrashCan.vue';
 import DotsVertical from 'vue-material-design-icons/DotsVertical.vue';
-import {mapState} from "vuex"
-
+import {mapState, mapActions} from "vuex"
+import axios from "axios"
 
 export default {
     computed:{
@@ -27,6 +27,13 @@ export default {
     },
     mounted(){
         console.log(this.usuariovisitado.noticias.id)
+    },
+    methods:{
+        ...mapActions('usuariovisitado', ['getUsuariovisitado']),
+        async excluirNoticia(id){
+            await axios.delete('/noticias/' + id + '/')
+            this.getUsuariovisitado(this.$route.params.id)
+        }
     },
     components:{Trash,DotsVertical},
     props: ['noticiasPublicadas'],
@@ -38,17 +45,18 @@ export default {
     width: 100%;
     height: calc(100% - 500px);
     background-color: #060F29;
+    overflow-x: scroll;
+    overflow-y: hidden;
 }
 .noticiasPublicadas{
     width: 1580px;
     display: flex;
     flex-wrap: nowrap;
-    overflow-x: auto;
     gap: 15px;
     padding: 15px 20px 5px 50px;
     box-sizing: border-box;
 }
-.noticiasPublicadas::-webkit-scrollbar{
+.area-curtidas::-webkit-scrollbar{
     background-color: #616161;
     height: 7px;
     border-radius: 5px;
@@ -57,7 +65,7 @@ export default {
     border-left: 50px transparent solid;
     border-right: 50px transparent solid;
 }
-.noticiasPublicadas::-webkit-scrollbar-thumb {
+.area-curtidas::-webkit-scrollbar-thumb {
     background-color: #fff;
     border-radius: 5px;
     cursor: pointer;
@@ -72,6 +80,8 @@ export default {
     margin: 0;
     background-color: #03123D;
     position: relative;
+    min-width: 370px;
+    min-height: 100%;
 }
 .img-noticia{
     height: 200px;
