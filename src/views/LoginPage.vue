@@ -36,8 +36,20 @@
             <form>
                 <input required type="text" placeholder="Usuário" v-model="novoUsuario.username">
                 <input required type="email" placeholder="Email" v-model="novoUsuario.email">
-                <input required type="text" placeholder="Senha" v-model="novoUsuario.password">
-                <input required type="text" placeholder="Confirmar Senha" v-model="conf">
+                <div class="input-icons">
+                    <input required :type="showingSenha ? 'text' : 'password'" placeholder="Senha" v-model="novoUsuario.password">
+                    <div class="eyes">
+                        <Eye style="color: grey;" class="icon" v-show="showingSenha" @click="showingSenha = !showingSenha" :size="40" />
+                        <EyeOff style="color: grey;" class="icon" v-show="!showingSenha" @click="showingSenha = !showingSenha" :size="40" />
+                    </div>
+                </div>
+                <div class="input-icons">
+                    <input required :type="showing ? 'text' : 'password'" placeholder="Confirmar Senha" v-model="conf">
+                    <div class="eyes">
+                        <Eye style="color: grey;" class="icon" v-show="showing" @click="showing = !showing" :size="40" />
+                        <EyeOff style="color: grey;" class="icon" v-show="!showing" @click="showing = !showing" :size="40" />
+                    </div>
+                </div>
                 <div class="error" v-show="error">{{errorMessage}}</div>
                 <button @click.stop.prevent="submitRegister">Cadastrar</button>
             </form>
@@ -118,6 +130,7 @@ export default {
     data(){
         return{
             showing: false,
+            showingSenha: false,
             actualContainer: 'Login',
             usuario: {},
             error: false,
