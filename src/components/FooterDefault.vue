@@ -1,13 +1,8 @@
 <template>
     <div class="tudo">
         <div class="footer">
-            <div class="box-conteudo">
-                <div class="box-linha">
-                    <img src="@/assets/logo.png" class="logo" alt="">
-                    <h1>NewSlayers</h1>
-                </div>
-                <h1 class="texto">Notícias sobre a Riot Games</h1>
-            </div>
+            <img src="@/assets/logo.png" class="logo" alt="">
+            <div>NewSlayers</div>
         </div>
         <div class="parte-branca">
             <div class="contribuicao">
@@ -49,42 +44,21 @@ export default {
     height: 240px;
     position: relative;
     bottom: 0;
-    background-color: #14112C;
-    border-top: 2px solid #fff;
+    background-color: #020013;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     color: #fff;
-}
-.box-conteudo{
-    width: 440px;
-    height: 90px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-
-}
-.box-linha{
-    display: flex;
-    gap: 20px;
-    margin: 0 auto;
-    position: relative;
-    top: 30px;
-}
-.box-linha h1{
-    font-weight: normal;
-}
-.box-conteudo .texto{
-    position: relative;
-    top: -30px;
-    font-weight: normal;
+    font-family: 'Playfair Display SC', sans-serif;
+    font-size: 100px;
+    gap: 55px;
+    font-weight: 300;
 }
 .logo{
   position: relative;
-  width: 60px;
-  height: 100px;
-  top: -15px;
+  width: 135px;
+  height: 250px;
+  top: -5px;
   left: 15px;
 }
 .parte-branca{
