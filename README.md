@@ -7,6 +7,6 @@ yarn install
 ```
 yarn serve
 ```
-
-Editor user: Gragustavo
-Editor password: 123123
+https://newslayers.surge.sh/#/
+## Editor user: Gragustavo
+## Editor password: 123123
