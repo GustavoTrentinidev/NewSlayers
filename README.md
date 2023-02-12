@@ -1,12 +1,13 @@
 # newslayers
-## Project setup
+## Instalar as dependências necessárias para rodar o projeto
 ```
-yarn install
+npm i
 ```
-### Compiles and hot-reloads for development
+### Rodar o projeto
 ```
-yarn serve
+npm run serve
 ```
-## https://newslayers.surge.sh/#/
-## Editor user: Gragustavo
-## Editor password: 123123
+## Deploy na web
+```
+https://newslayers.surge.sh/#/
+```
